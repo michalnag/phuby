@@ -1,5 +1,7 @@
 <?php
 
+namespace Lumen;
+
 abstract class AbstractAttribute {
 
   protected $attr_value;

@@ -1,8 +1,6 @@
 <?php
 
-namespace Attribute;
-
-use AbstractAttribute;
+namespace Lumen\Attribute;
 
 class EmailAttr extends AbstractAttribute implements AttributeInterface {
 

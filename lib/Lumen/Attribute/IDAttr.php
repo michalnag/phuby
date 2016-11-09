@@ -1,10 +1,6 @@
 <?php
 
-namespace Attribute;
-
-use AbstractAttribute;
-use Helpers\Validator\IntegerValidator;
-use Error\InvalidAttributeError;
+namespace Lumen\Attribute;
 
 class IDAttr extends AbstractAttribute implements AttributeInterface {
 

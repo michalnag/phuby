@@ -118,21 +118,5 @@ class DBI {
     Logger::debug("Returning affected rows ".self::$affected_rows);
     return self::$affected_rows;
   }
-
   
-  /****************************************************
-   *********************** USER ***********************
-   ****************************************************/
-
-  /**
-   * Creates new record in the users table
-   */
-  public static function create_user(Array $params) {
-    $sql = "INSERT INTO users (uuid, email, password, activation_token) VALUES (:uuid, :email, :password, :activation_token)";
-    self::query($sql, $params);
-    return self::get_last_inserted_id();
-  }
-
-
-
 }

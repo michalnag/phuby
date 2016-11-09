@@ -1,6 +1,6 @@
 <?php
 
-namespace Attribute;
+namespace Lumen\Attribute;
 
 interface AttributeInterface {
    

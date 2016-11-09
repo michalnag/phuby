@@ -1,8 +1,6 @@
 <?php
 
-namespace Attribute;
-
-use AbstractAttribute;
+namespace Lumen\Attribute;
 
 class StringAttr extends AbstractAttribute implements AttributeInterface {
 

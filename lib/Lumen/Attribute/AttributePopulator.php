@@ -1,11 +1,8 @@
 <?php
 
-namespace Attribute;
-use AbstractCore;
-use Logger;
-use Error;
+namespace Lumen\Attribute;
 
-abstract class AttributePopulator extends AbstractCore {
+class AttributePopulator extends AbstractCore {
   
   /**
   * Method is responsible for assigning attributes to the class based on the configuration
@@ -14,46 +11,46 @@ abstract class AttributePopulator extends AbstractCore {
   * @param mixed[] Array containind data to be assigned to attributes
   * @return TODO
   */
-  public function poulate_attributes(Array $data) {
-    Logger::debug(get_class($this) . " will be built from the array.");
+  public static function poulate_attributes(&$object, Array $data) {
+    Logger::debug(get_class($object) . " will be built from the array.");
     // Loop through the array and assign correct attributes
     foreach($data as $key => $value) {
       
       // Check is the attribute is allowed to be set on the object
-      if($this->is_attribute_allowed($key)) {
+      if($object->is_attribute_allowed($key)) {
 
         // Check if the passed attribute is a child class or standard attribute
-        if($this->is_attribute_a_child_class($key)) {
+        if($object->is_attribute_a_child_class($key)) {
 
           // Get class name and build the child from the array
-          $child_class_name = $this::CHILD_CLASS_MAP[$key];
-          $this->$key = new $child_class_name();
-          $this->$key->poulate_attributes($value);
+          $child_class_name = $object::CHILD_CLASS_MAP[$key];
+          $object->$key = new $child_class_name();
+          $object->$key->poulate_attributes($value);
 
         } else {
           // Attribute is a standard attribute class
           // Get a class name that is configured for this attribute
-          $attribute_class = "Attribute\\" . $this::ATTRIBUTE_MAP[$key]["attribute_class"];        
-          Logger::debug("Attribute $key is configured on the class " . get_class($this) . " as $attribute_class");
+          $attribute_class = "Attribute\\" . $object::ATTRIBUTE_MAP[$key]["attribute_class"];        
+          Logger::debug("Attribute $key is configured on the class " . get_class($object) . " as $attribute_class");
 
           // Create an instance of the attribute
-          $this->$key = new $attribute_class();
+          $object->$key = new $attribute_class();
 
           // Check if there are custom options set on the object
-          if(array_key_exists("attribute_options", $this::ATTRIBUTE_MAP[$key])) {
-            $this->$key->set_attribute_options($this::ATTRIBUTE_MAP[$key]["attribute_options"]);
+          if(array_key_exists("attribute_options", $object::ATTRIBUTE_MAP[$key])) {
+            $object->$key->set_attribute_options($object::ATTRIBUTE_MAP[$key]["attribute_options"]);
           }    
 
           // Assign the value to the attribute
-          $this->$key->set($value);
+          $object->$key->set($value);
         }
 
       } else {
-        throw new Error\InvalidAttributeError("Attribute $key is not allowed to be set on the class " . get_class($this));
+        throw new Error\InvalidAttributeError("Attribute $key is not allowed to be set on the class " . get_class($object));
       }
     }
 
-    return $this;
+    return $object;
   }
 
   /**

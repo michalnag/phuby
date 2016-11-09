@@ -1,10 +1,6 @@
 <?php
 
-namespace Attribute;
-
-use AbstractAttribute;
-use Error;
-use Helpers\Validator\StringValidator;
+namespace Lumen\Attribute;
 
 class TokenAttr extends AbstractAttribute implements AttributeInterface {
 

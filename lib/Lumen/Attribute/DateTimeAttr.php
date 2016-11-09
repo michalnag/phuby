@@ -1,11 +1,6 @@
 <?php
 
-namespace Attribute;
-
-use AbstractAttribute;
-use DateTime;
-use Helpers\Validator\DateTimeValidator;
-use Error\InvalidAttributeError;
+namespace Lumen\Attribute;
 
 class DateTimeAttr extends AbstractAttribute implements AttributeInterface {
 

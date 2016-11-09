@@ -1,8 +1,9 @@
 <?php
 
-namespace Attribute;
+namespace Lumen\Attribute;
 
-use AbstractAttribute;
+use Lumen\AbstractAttribute;
+use Lumen\Attribute\AttributeInterface;
 
 class BooleanAttr extends AbstractAttribute implements AttributeInterface {
 
