@@ -1,3 +1,5 @@
 <?php
 
-abstract class AbstractError extends Exception {}
+namespace Lumen;
+
+abstract class AbstractError extends \Exception {}

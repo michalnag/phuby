@@ -9,9 +9,7 @@ abstract class AbstractAttribute {
   protected $attr_options = array();
 
   public function __construct($value = null) {
-    if($value) {
-      $this->set($value);
-    }
+    $this->set($value);
   }
 
   public function __toString() {
