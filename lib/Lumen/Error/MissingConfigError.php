@@ -1,7 +1,7 @@
 <?php
 
-namespace Error;
+namespace Lumen\Error;
 
-use AbstractError;
+use Lumen\AbstractError;
 
 class MissingConfigError extends AbstractError {}

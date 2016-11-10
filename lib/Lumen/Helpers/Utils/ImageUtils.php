@@ -1,10 +1,11 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen\Helpers\Utils;
 
-use Error\FileError;
+use Lumen\Helpers\AbstractUtils;
+use Lumen\Error\FileError;
 
-class ImageUtils implements FileTypeInterface {
+class ImageUtils extends AbstractUtils implements FileTypeInterface {
 
   const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png'];
   const DPI_OPTIONS = [

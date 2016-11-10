@@ -1,6 +1,8 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen\Helpers\Utils;
+
+use Lumen\Helpers\AbstractUtils;
 
 class FormUtils {
  

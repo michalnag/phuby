@@ -1,10 +1,10 @@
 <?php
 
-namespace Helpers\Validator;
+namespace Lumen\Helpers\Validator;
 
-use Helpers\AbstractValidator;
-use Helpers\Validator\StringValidator;
-use Error\ValidationError;
+use Lumen\Helpers\AbstractValidator;
+use Lumen\Helpers\Validator\StringValidator;
+use Lumen\Error\ValidationError;
 
 class DateTimeValidator extends AbstractValidator implements ValidatorInterface {
   

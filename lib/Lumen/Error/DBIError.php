@@ -1,6 +1,7 @@
 <?php
 
-namespace Error;
-use AbstractError;
+namespace Lumen\Error;
+
+use Lumen\AbstractError;
 
 class DBIError extends AbstractError {}

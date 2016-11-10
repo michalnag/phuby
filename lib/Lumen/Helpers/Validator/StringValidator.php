@@ -1,9 +1,9 @@
 <?php
 
-namespace Helpers\Validator;
+namespace Lumen\Helpers\Validator;
 
-use Helpers\AbstractValidator;
-use Error\ValidationError;
+use Lumen\Helpers\AbstractValidator;
+use Lumen\Error\ValidationError;
 
 class StringValidator extends AbstractValidator implements ValidatorInterface {
   

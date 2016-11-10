@@ -32,9 +32,15 @@ class BooleanAttrTest extends TestCase implements AttributeTestInterface {
       $this->assertEquals(0, $this->booleanAttr->to_int());   
     };
 
-    $invalid_values = [2, 3, "test", new stdClass];
-
-
+    foreach([2, 3, "test", new stdClass] as $value) {
+      $exception_caught = false;
+      try {
+        $this->booleanAttr->set($value);
+      } catch(Lumen\Error\InvalidAttributeError $e) {
+        $exception_caught = true;
+      }
+      $this->assertTrue($exception_caught);
+    };
 
   }
   

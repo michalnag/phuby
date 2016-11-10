@@ -1,7 +1,9 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen\Helpers\Utils;
 
-class DirUtils {
+use Lumen\Helpers\AbstractUtils;
+
+class DirUtils extends AbstractUtils {
    
 }

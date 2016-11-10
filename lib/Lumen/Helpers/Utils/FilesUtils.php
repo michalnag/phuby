@@ -1,8 +1,10 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen\Helpers\Utils;
 
-class FilesUtils {
+use Lumen\Helpers\AbstractUtils;
+
+class FilesUtils extends AbstractUtils {
   
   static function fetch_files_from_dir($dir) {
 

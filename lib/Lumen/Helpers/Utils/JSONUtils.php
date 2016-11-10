@@ -1,10 +1,11 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen/Helpers\Utils;
 
-use Error\FileError;
+use Lumen\Helpers\AbstractUtils;
+use Lumen\Error\FileError;
 
-class JSONUtils implements FileTypeInterface {
+class JSONUtils extends AbstractUtils implements FileTypeInterface {
 
   const ALLOWED_EXTENSIONS = ['json'];
 

@@ -2,14 +2,38 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+use Lumen\Attribute\AttributeInterface;
+use Lumen\Error\InvalidAttributeError;
+use Lumen\Helpers\Validator\DateTimeValidator;
+
 class DateTimeAttr extends AbstractAttribute implements AttributeInterface {
 
-  public function set($string) {
-    if(DateTimeValidator::is_valid($string)) {
-      $this->attr_value = new \DateTime($string);
-      return true;
+
+
+  public function set($value) {
+    if(is_object($value)) {
+      // We allow instances of the DateTime and DateTimeAttr
+      if($value instanceof \DateTime) {
+        $this->attr_value = $value;
+      } elseif($value instanceof DateTimeAttr) {
+        $this->attr_value = $value->get();
+      } else {
+        throw new InvalidAttributeError("Invalid object passed to the attribute. Got " . get_class($value));
+      }
+    } elseif(is_string($value)) {
+      if(DateTimeValidator::is_valid($value)) {
+        $this->attr_value = new \DateTime($value);
+        return true;
+      } else {
+        throw new InvalidAttributeError(DateTimeValidator::get_first_validation_error()->getMessage());      
+      }
+
+    // UNIX timestamp      
+    } elseif(is_int($value)) {
+      // TODO
     } else {
-      throw new InvalidAttributeError(DateTimeValidator::get_first_validation_error()->getMessage());      
+      throw new InvalidAttributeError("Invalid value passed to the DateTimeAttr. Got " . gettype($value));
     }
   } 
 

@@ -1,6 +1,5 @@
 <?php
 
-namespace App;
-use \AbstractCore;
+namespace Lumen;
 
 abstract class AbstractController extends AbstractCore {}

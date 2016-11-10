@@ -1,6 +1,6 @@
 <?php
 
-namespace Helpers\Validator;
+namespace Lumen\Helpers\Validator;
 
 interface ValidatorInterface {
 

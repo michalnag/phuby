@@ -1,10 +1,11 @@
 <?php
 
-namespace Helpers\Utils;
+namespace Lumen\Helpers\Utils;
 
-use Error;
+use Lumen\Helpers\AbstractUtils;
+use Lumen\Error;
 
-class ObjectUtils {
+class ObjectUtils extends AbstractUtils {
  
   public static function check_required_attributes($object, Array $attributes, $attribute_type = "dynamic") {
     

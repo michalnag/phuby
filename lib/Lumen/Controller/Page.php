@@ -5,17 +5,9 @@ namespace App\Controller;
 use App\Config;
 use App\AbstractController;
 
-abstract class AbstractPage extends AbstractController {
+abstract class Page extends AbstractController {
 
   private $twig;
-
-  public $main_nav = [
-    "contact" => [
-      "label" => "Contact",
-      "href" => "/contact",
-      "title" => "###"
-    ]
-  ];
 
   public function __construct(Array $params = []) {
     $this->setup_twig();

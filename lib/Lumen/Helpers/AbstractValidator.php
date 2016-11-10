@@ -1,6 +1,6 @@
 <?php
 
-namespace Helpers;
+namespace Lumen\Helpers;
 
 abstract class AbstractValidator {
 

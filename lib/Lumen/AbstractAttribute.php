@@ -8,8 +8,10 @@ abstract class AbstractAttribute {
 
   protected $attr_options = array();
 
-  public function __construct($value = null) {
-    $this->set($value);
+  public function __construct(...$args) {
+    if(count($args) > 0) {
+      $this->set($args[0]);
+    }
   }
 
   public function __toString() {
