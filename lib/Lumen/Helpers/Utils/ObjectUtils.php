@@ -21,15 +21,15 @@ class ObjectUtils extends AbstractUtils {
     foreach($data as $key => $value) {
       
       // Check is the attribute is allowed to be set on the object
-      if($object->is_attribute_allowed($key)) {
+      if(self::is_attribute_allowed($object, $key)) {
 
         // Check if the passed attribute is a child class or standard attribute
-        if($object->is_attribute_a_child_class($key)) {
+        if(self::is_attribute_a_child_class($object, $key)) {
 
           // Get class name and build the child from the array
           $child_class_name = $object::CHILD_CLASS_MAP[$key];
           $object->$key = new $child_class_name();
-          $object->$key->poulate_attributes($value);
+          $object->$key->populate_attributes($value);
 
         } else {
           // Attribute is a standard attribute class
@@ -64,11 +64,22 @@ class ObjectUtils extends AbstractUtils {
    * @param string $attr_name represents the attribute name
    * @return boolean true if 
    */
-  public function is_attribute_allowed(&$object, $attr_name) {
-    return array_key_exists($attr_name, $object::ATTRIBUTE_MAP) || self::is_attribute_a_child_class($object, $attr_name);
+  public function is_attribute_allowed($object, $attr_name) {
+    $caller_class = get_class($object);
+    if(defined("$caller_class::ATTRIBUTE_MAP")) {
+      if(array_key_exists($attr_name, $object::ATTRIBUTE_MAP)) {
+        return true;
+      }
+    }
+    if(self::is_attribute_a_child_class($object, $attr_name)) {
+      return true;
+    }
+
+    return false;
+
   }
 
-  public function is_attribute_a_child_class(&$object, $attr_name) {
+  public function is_attribute_a_child_class($object, $attr_name) {
     $caller_class = get_class($object);
     return defined("$caller_class::CHILD_CLASS_MAP") && array_key_exists($attr_name, $object::CHILD_CLASS_MAP);
   }

@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace Lumen;
 
-use Logger;
-use Error;
+use Lumen\Logger;
+use Lumen\Error;
 
 abstract class AbstractModelCollection extends AbstractModel implements BaseModelInterface {
 
