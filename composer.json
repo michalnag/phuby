@@ -1,9 +1,13 @@
 {
-  "autoload" : {
-    "psr-4": {
-      "Lumen\\" : "lib/"
+  "name" : "michalnag/lumen",
+  "type" : "framework",
+  "authors" : [
+    {
+      "name": "Michal Nagielski",
+      "email": "michal.nagielski@gmail.com",
+      "role": "Lead Developer"
     }
-  },
+  ],
   "require": {
     "twig/twig":"~1.0",
     "phroute/phroute": "^2.1",
@@ -11,5 +15,10 @@
   },
   "require-dev": {
     "phpunit/phpunit": "5.5.*"
+  },
+  "autoload" : {
+    "psr-0": {
+      "Lumen\\" : "lib/"
+    }
   }
 }
