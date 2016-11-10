@@ -2,6 +2,8 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+
 class EmailAttr extends AbstractAttribute implements AttributeInterface {
 
   public function set($string) {

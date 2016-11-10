@@ -20,7 +20,7 @@ class FilesUtils extends AbstractUtils {
         return null;
       }
     } else {
-      throw new \Exception("passed argument is not a directory");
+      throw new \Exception("Passed argument $dir is not a directory");
     }
 
   }

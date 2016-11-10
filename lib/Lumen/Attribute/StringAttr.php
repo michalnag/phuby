@@ -2,6 +2,8 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+
 class StringAttr extends AbstractAttribute implements AttributeInterface {
 
   public function set($string) {

@@ -2,6 +2,8 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+
 class TextAttr extends AbstractAttribute implements AttributeInterface {
 
   public function set($text) {

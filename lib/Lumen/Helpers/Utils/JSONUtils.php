@@ -1,6 +1,6 @@
 <?php
 
-namespace Lumen/Helpers\Utils;
+namespace Lumen\Helpers\Utils;
 
 use Lumen\Helpers\AbstractUtils;
 use Lumen\Error\FileError;

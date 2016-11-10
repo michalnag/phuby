@@ -2,6 +2,9 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+use Lumen\Helpers\Validator\IntegerValidator;
+
 class IDAttr extends AbstractAttribute implements AttributeInterface {
 
   public function set($var) {

@@ -1,9 +1,11 @@
 <?php
 
-use Error\FileError;
-use Error\MissingConfigError;
-use Helpers\Utils\FilesUtils;
-use Helpers\Utils\JSONUtils;
+namespace Lumen;
+
+use Lumen\Error\FileError;
+use Lumen\Error\MissingConfigError;
+use Lumen\Helpers\Utils\FilesUtils;
+use Lumen\Helpers\Utils\JSONUtils;
 
 class Config {
 
@@ -13,24 +15,10 @@ class Config {
   private static 
       $config_files,
       $relative_config_root = "/../config.d",
-      $absolute_config_root;
+      $config_root;
 
-  /** @var string containing the default directory of the config files */
-  private $config_root = "/../config.d";
-
-  /**
-   * @todo describe this method
-   */
-  private static function set_absolute_config_root() {
-    // Check if the absolute path is set    
-    if(!self::$absolute_config_root) {
-      // Absolute config root is not set. Set one
-      self::$absolute_config_root = __DIR__ . self::$relative_config_root;
-      return true;  
-    } else {
-      // Absolute config root is set. return true
-      return true;    
-    }
+  public static function set_config_root($config_root) {
+    self::$config_root = $config_root;
   }
 
   public static function set_config(Config $config = null) {
@@ -44,7 +32,6 @@ class Config {
         self::$data = $config::$data;
       } else {
         // Get data from config.d json files
-        self::set_absolute_config_root();
         self::get_configuration_files();
       }
     }
@@ -92,7 +79,7 @@ class Config {
    */
   private static function get_configuration_files() {
     // Fetch all configuration files from the specified directory
-    self::$config_files = FilesUtils::fetch_files_from_dir(self::$absolute_config_root);
+    self::$config_files = FilesUtils::fetch_files_from_dir(self::$config_root);
 
     // Loop through all found files and add them to the config array
     foreach(self::$config_files as $config_file) {
@@ -102,9 +89,9 @@ class Config {
         $config_name = FilesUtils::get_file_name_without_extension($config_file);
         if(!is_object(self::$data)) {
           // $data attribute needs to be converted to the object
-          self::$data = new stdClass(); 
+          self::$data = new \stdClass(); 
         }        
-        self::$data->$config_name = JSONUtils::read(self::$absolute_config_root.self::DS.$config_file);
+        self::$data->$config_name = JSONUtils::read(self::$config_root.self::DS.$config_file);
       } else {
 
         // found configuration in the format different then JSON. 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Lumen;
+
 use \Monolog\Logger as MonologLogger;
 use \Monolog\Handler\StreamHandler as MonologStreamHandler;
 
@@ -73,7 +75,7 @@ class Logger {
     }
   }
 
-  private static function instantiate_monolog_logger(stdClass $logger_details) {
+  private static function instantiate_monolog_logger(\stdClass $logger_details) {
     // Check if all details 
     self::$logger = new MonologLogger($logger_details->name);
     self::$logger->pushHandler(new MonologStreamHandler($logger_details->output, constant("\Monolog\Logger::".strtoupper($logger_details->level))));

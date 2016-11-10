@@ -2,6 +2,8 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+
 class PasswordAttr extends AbstractAttribute implements AttributeInterface {
 
   const HASHING_ALGORYTHM = PASSWORD_DEFAULT;

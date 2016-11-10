@@ -1,9 +1,7 @@
 <?php
 
-Namespace App;
+Namespace Lumen;
 
 interface BaseModelInterface {
    
-   public function poulate_attributes(Array $data);
-
 }

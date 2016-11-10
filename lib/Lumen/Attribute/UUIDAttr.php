@@ -2,12 +2,12 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+use Lumen\Helpers\Validator\StringValidator;
+use Lumen\Error;
+
 class UUIDAttr extends AbstractAttribute implements AttributeInterface {
 
-  public function __construct($value = null) {
-    parent::__construct($value);
-  }
-  
   protected $attr_options = [
               'allow_spaces'  => false,
               'length'        => ['exact' => 32]

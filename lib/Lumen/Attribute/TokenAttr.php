@@ -2,12 +2,12 @@
 
 namespace Lumen\Attribute;
 
+use Lumen\AbstractAttribute;
+use Lumen\Error;
+use Lumen\Helpers\Validator\StringValidator;
+
 class TokenAttr extends AbstractAttribute implements AttributeInterface {
 
-  public function __construct($value = null) {
-    parent::__construct($value);
-  }
-  
   protected $attr_options = [
               'allow_spaces'  => false,
               'length'        => ['exact' => 32]
