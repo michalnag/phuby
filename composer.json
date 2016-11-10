@@ -1,4 +1,23 @@
 {
+  "package" : {
+    "name" : "michalnag/lumen",
+    "version" : "master",
+    "source" : {
+      "url" : "https://michalnag@bitbucket.org/michalnag/lumen.git",
+      "type" : "git",
+      "reference" : "master",
+      "autoload" : {
+        "psr-4": {
+          "Lumen\\" : "lib/"
+        }
+      } 
+    }
+  },
+  "autoload" : {
+    "psr-4": {
+      "Lumen\\" : "lib/"
+    }
+  },
   "require": {
     "twig/twig":"~1.0",
     "phroute/phroute": "^2.1",
