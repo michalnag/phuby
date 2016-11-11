@@ -3,11 +3,17 @@
 namespace Lumen\Attribute;
 
 use Lumen\AbstractAttribute;
+use Lumen\Error\InvalidAttributeError;
 
 class StringAttr extends AbstractAttribute implements AttributeInterface {
 
-  public function set($string) {
-    $this->attr_value = $string;
+  public function set($value) {
+    if(is_string($value)) {
+      $this->attr_value = $value;
+      return true;
+    } else {
+      throw new InvalidAttributeError("This attribute accepts strings only. Got " . gettype($value));
+    }
   }
 
   public function get() {

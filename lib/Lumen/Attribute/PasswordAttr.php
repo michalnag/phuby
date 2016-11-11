@@ -3,15 +3,31 @@
 namespace Lumen\Attribute;
 
 use Lumen\AbstractAttribute;
+use Lumen\Helpers\Validator\StringValidator;
+use Lumen\Error\InvalidAttributeError;
 
 class PasswordAttr extends AbstractAttribute implements AttributeInterface {
 
-  const HASHING_ALGORYTHM = PASSWORD_DEFAULT;
+  const
+    HASHING_ALGORYTHM = PASSWORD_DEFAULT,
+    HASH_LENGTH = 60;
 
-  public function set($password_hash) {
-    /** @todo check is the hash is correct length */
-    $this->attr_value = $password_hash;
-    return true;   
+
+  public function set($value) {
+    // Hash passed to the setter must be as Long as what's set on constant
+    if(is_string($value)) {
+      if(StringValidator::is_valid($value, ['length' => ['exact' => self::HASH_LENGTH]])) {
+        $this->attr_value = $value;
+        return true;
+      } else {
+        throw new InvalidAttributeError("Provided password hash $value is invalid");
+      }
+    } elseif(is_object($value) && $value instanceof PasswordAttr) {
+      $this->attr_value = $value->get();
+      return true;   
+    } else {
+      throw new InvalidAttributeError("Password attribute accepts string only. Got ".gettype($value));
+    }
   }
 
   public function verify($password) {

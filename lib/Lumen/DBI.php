@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace Lumen;
 
 use PDO;
-use Config;
-use Logger;
+use Lumen\Config;
+use Lumen\Logger;
 
-class DBI {
+class AbstractDBI {
    
   /** @var PDO object containing a connection do the db */
   private static
