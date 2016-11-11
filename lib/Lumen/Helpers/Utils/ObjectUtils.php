@@ -20,7 +20,6 @@ class ObjectUtils extends AbstractUtils {
     // Loop through the array and assign correct attributes
     foreach($data as $key => $value) {
       
-      // Check is the attribute is allowed to be set on the object
       if(self::is_attribute_allowed($object, $key)) {
 
         // Check if the passed attribute is a child class or standard attribute
@@ -49,12 +48,29 @@ class ObjectUtils extends AbstractUtils {
           $object->$key->set($value);
         }
 
+      // We need to check if we are dealing with a value being an array inside collection class
+      } elseif(is_array($value) && self::is_collection_class(get_class($object))) {
+        // This is a collection class
+        $object->populate_collection($data);
+
+      // Check is the attribute is allowed to be set on the object
       } else {
         throw new Error\InvalidAttributeError("Attribute $key is not allowed to be set on the class " . get_class($object));
       }
     }
 
     return $object;
+  }
+
+
+  public static function populate_collection(&$object, Array $data) {
+
+
+
+  }
+
+  public static function is_collection_class($class_name) {
+    return preg_match("/Collection/", $class_name) == 1;
   }
 
   /**
@@ -64,18 +80,16 @@ class ObjectUtils extends AbstractUtils {
    * @param string $attr_name represents the attribute name
    * @return boolean true if 
    */
-  public function is_attribute_allowed($object, $attr_name) {
+  public static function is_attribute_allowed($object, $attr_name) {
     $caller_class = get_class($object);
-    if(defined("$caller_class::ATTRIBUTE_MAP")) {
-      if(array_key_exists($attr_name, $object::ATTRIBUTE_MAP)) {
-        return true;
-      }
-    }
-    if(self::is_attribute_a_child_class($object, $attr_name)) {
+    if(defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($attr_name, $object::ATTRIBUTE_MAP)) {
       return true;
+    } elseif(self::is_attribute_a_child_class($object, $attr_name)) {
+      return true;
+    } else {
+      return false;      
     }
 
-    return false;
 
   }
 
