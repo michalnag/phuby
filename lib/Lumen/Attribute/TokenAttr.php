@@ -10,11 +10,14 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
 
   protected $attr_options = [
               'allow_spaces'  => false,
-              'length'        => ['exact' => 32]
+              'length'        => 32
             ];
 
   public function set($string) {
-    if(StringValidator::is_valid($string, $this->attr_options)) {
+    if(StringValidator::is_valid($string, [
+        "allow_spaces" => $this->attr_options["allow_spaces"],
+        "length" => ["exact" => $this->attr_options["length"]]
+      ])) {
       $this->attr_value = $string;
       return true;      
     } else {
@@ -22,8 +25,14 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     }
   }
 
-  public function generate_value($length = null) {
-    $length = $length ? $length : $this->get_exact_length();
+  public function generate(Array $params = null) {
+    if($params) {
+      if(array_key_exists('length', $params)) {
+        $length = $params['length'];
+      } else {
+        $length = $this->attr_options['length'];
+      }
+    }
     $this->attr_value = substr(md5(uniqid(rand(),true)), 0, $length);
     return $this->attr_value;
   }

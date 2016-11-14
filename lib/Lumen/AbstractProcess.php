@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
-use \AbstractCore;
+namespace Lumen;
+use Lumen\AbstractCore;
 
 abstract class AbstractProcess extends AbstractCore {}

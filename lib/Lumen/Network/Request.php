@@ -32,7 +32,7 @@ class Request extends AbstractNetwork {
       if(array_key_exists("required", $param_options)) {
         // This parameter is required. Check if the value exists
         if(!$this->is_parameter_passed($param_details_parts[0], $param_details_parts[1])) {
-          throw new Error\MissingParameterError("Required parameter $param_details_parts[0] is missing from the request");
+          throw new Error\NetworkError("Required parameter $param_details_parts[0] is missing from the request", Error\NetworkError::EC_MISSING_PARAMETER);
         }
       }
 
@@ -47,19 +47,14 @@ class Request extends AbstractNetwork {
 
       // Assign options
       if($param_options) {
-        $request_param->set_param_options($param_options);
+        $request_param->set_options($param_options);
       }
 
       // Retrieve paramter value from superglobal
       $request_param->retrive_value();
 
-      // Check if this is a required parameter and if so, check if the value has been
-      if($request_param->is_required() && !$request_param->is_value_set()) {
-        throw new Error\MissingParameterError("Parameter $request_param->name->__toString() cannot be found in $request_param->source->__toString() superglobal.");
-      }
-
       // If we've got here, it means that we can now add this parameter to the array
-      $this->add_to_parameters($request_param);
+      $this->add_to_params($request_param);
 
     }
     
@@ -70,7 +65,7 @@ class Request extends AbstractNetwork {
    */
   public function add_to_params(RequestParam $param) {
     if(!array_key_exists($param->get_name(), $this->parameters)) {
-      $this->parameters[$this->get_name()] = $param;      
+      $this->parameters[$param->get_name()] = $param;      
     } else {
       // Duplicated parameter
       throw new Error\InvalidParameterError("Parameter is ");
@@ -98,7 +93,8 @@ class Request extends AbstractNetwork {
    *
    */
   public function get_param($param_name) {
-
+    Logger::debug("Retrieving parameter $param_name");
+    return $this->parameters[$param_name];
   }
 
 

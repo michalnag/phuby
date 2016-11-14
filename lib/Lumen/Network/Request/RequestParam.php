@@ -1,9 +1,10 @@
 <?php
 
-namespace Network\Request;
-use Attribute\AttributePopulator;
+namespace Lumen\Network\Request;
+use Lumen\Helpers\Utils\ObjectUtils;
+use Lumen\Logger;
 
-class RequestParam extends AttributePopulator {  
+class RequestParam {  
 
   const ATTRIBUTE_MAP = [
     "name" => [
@@ -36,15 +37,21 @@ class RequestParam extends AttributePopulator {
     return $this->options;
   }
 
+  public function populate_attributes(Array $attributes) {
+    return ObjectUtils::populate_attributes($this, $attributes);
+  }
+
   /**
    * Method retrieves the value from the superglobal
    */
   public function retrive_value() {
-    $superglobal = "_" . strtoupper($this->source->__toString());
-    if(isset($$superglobal[$this->name->__toString()])) {
-      $this->value = $$superglobal[$this->name->__toString()];
-    } else {
-      $this->value = null;
+    switch($this->source->__toString()) {
+      case "POST":
+        $this->value = isset($_POST[$this->name->__toString()]) ? $_POST[$this->name->__toString()] : null;
+        break;
+      case "GET":
+        $this->value = isset($_GET[$this->name->__toString()]) ? $_GET[$this->name->__toString()] : null;
+        break;
     }
   }
 
@@ -54,6 +61,15 @@ class RequestParam extends AttributePopulator {
 
   public function is_required() {
     return $this->get_options()["required"];
+  }
+
+  public function get_name() {
+    return $this->name->__toString();
+  }
+
+  public function get_value() {
+    Logger::debug("Returning value $this->value");
+    return $this->value;
   }
 
 }

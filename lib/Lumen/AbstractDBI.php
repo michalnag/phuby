@@ -5,6 +5,7 @@ namespace Lumen;
 use PDO;
 use Lumen\Config;
 use Lumen\Logger;
+use Lumen\Error\DBIError;
 
 abstract class AbstractDBI {
    
@@ -13,6 +14,9 @@ abstract class AbstractDBI {
     $dbh,
     $last_inserted_id,
     $affected_rows;
+
+  const
+    MYSQL_EC_DUPLICATE_ENTRY      = 1062;
 
   public static function connect_to_db(\stdClass $db_details = null) {
     // If there are no DB details passed then we fall back to default
@@ -38,7 +42,7 @@ abstract class AbstractDBI {
       Logger::debug("Connection with the database established");
       return true;
     } catch(PDOException $exception) {
-      throw new Error\DBIError($exception->getMessage() , $exception->getCode());
+      throw new DBIError($exception->getMessage() , $exception->getCode());
     }    
   }
 
@@ -81,8 +85,14 @@ abstract class AbstractDBI {
           $sth->execute();
         }
       } catch(\PDOException $e) {
-        Logger::error($e);
-        throw $e;
+
+        switch($e->errorInfo[1]) {
+          case self::MYSQL_EC_DUPLICATE_ENTRY:
+            throw new DBIError($e->getMessage(), DBIError::EC_DB_DUPLICATED_ENTRY);
+
+          default:
+            throw new DBIError($e->getMessage(), DBIError::EC_DB_OTHER);
+        }
       }
 
       self::$last_inserted_id = self::$dbh->lastInsertId();
@@ -90,7 +100,7 @@ abstract class AbstractDBI {
       Logger::debug("Statement last inserted id: ".self::$last_inserted_id.", row count: ".self::$affected_rows);
       return $sth;
     } else {
-      throw new Error\DBIError("SQL is not provided");
+      throw new DBIError("SQL is not provided");
     }
   }
 
