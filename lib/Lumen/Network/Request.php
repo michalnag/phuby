@@ -1,11 +1,11 @@
 <?php
 
-namespace Network;
+namespace Lumen\Network;
 
-use AbstractNetwork;
-use Logger;
-use Error;
-use Network\Request\RequestParam;
+use Lumen\AbstractNetwork;
+use Lumen\Logger;
+use Lumen\Error;
+use Lumen\Network\Request\RequestParam;
 
 class Request extends AbstractNetwork {
 
@@ -17,7 +17,7 @@ class Request extends AbstractNetwork {
    * Method 
    *
    * @param string[] $params_details Array with strings 
-   * @throws Error\MissingParameterError if parameter is required and not found
+   * @throws Lumen\Error\MissingParameterError if parameter is required and not found
    */
   public function get_params_from_request(Array $params_details) {
     
@@ -31,23 +31,24 @@ class Request extends AbstractNetwork {
       // Check if the parameter is required
       if(array_key_exists("required", $param_options)) {
         // This parameter is required. Check if the value exists
-        $this->is_parameter_passed();
+        if(!$this->is_parameter_passed($param_details_parts[0], $param_details_parts[1])) {
+          throw new Error\MissingParameterError("Required parameter $param_details_parts[0] is missing from the request");
+        }
       }
 
       // Assign core details and extract options
       $request_param = new RequestParam();
 
-      $request_param->populate_attributes(
+      $request_param->populate_attributes([
           'name'    => $param_details_parts[0],
           'source'  => $param_details_parts[1],
           'type'    => $param_details_parts[2]
-        );
+        ]);
 
       // Assign options
       if($param_options) {
         $request_param->set_param_options($param_options);
       }
-
 
       // Retrieve paramter value from superglobal
       $request_param->retrive_value();
@@ -73,6 +74,23 @@ class Request extends AbstractNetwork {
     } else {
       // Duplicated parameter
       throw new Error\InvalidParameterError("Parameter is ");
+    }
+  }
+
+  /**
+   *
+   */
+  public function is_parameter_passed($param_name, $source) {    
+    switch($source) {
+      case "GET":
+        return isset($_GET[$param_name]);
+        break;
+      case "POST":
+        return isset($_POST[$param_name]);
+        break;
+      default:
+        /** @todo Unsupported source - throw exception */
+        break;
     }
   }
 

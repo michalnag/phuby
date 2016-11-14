@@ -6,7 +6,7 @@ use PDO;
 use Lumen\Config;
 use Lumen\Logger;
 
-class AbstractDBI {
+abstract class AbstractDBI {
    
   /** @var PDO object containing a connection do the db */
   private static

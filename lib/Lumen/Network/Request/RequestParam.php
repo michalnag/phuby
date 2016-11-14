@@ -23,7 +23,8 @@ class RequestParam extends AttributePopulator {
   private 
     $value,       // Native value passed to the class
     $options = [
-      "required" => false
+      "required" => false,
+      "custom_validator" => null
     ];
 
   /** @todo */
@@ -34,7 +35,6 @@ class RequestParam extends AttributePopulator {
   public function get_options() {
     return $this->options;
   }
-
 
   /**
    * Method retrieves the value from the superglobal

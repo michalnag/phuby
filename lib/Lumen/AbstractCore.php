@@ -2,4 +2,4 @@
 
 namespace Lumen;
 
-abstract class Abstractore {}
+abstract class AbstractCore {}

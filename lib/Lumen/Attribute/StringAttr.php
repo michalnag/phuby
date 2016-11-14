@@ -11,6 +11,9 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
     if(is_string($value)) {
       $this->attr_value = $value;
       return true;
+    } elseif(is_object($value) && $value instanceof StringAttr) {
+      $this->attr_value = $value->get();
+      return true;
     } else {
       throw new InvalidAttributeError("This attribute accepts strings only. Got " . gettype($value));
     }
