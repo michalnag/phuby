@@ -88,7 +88,7 @@ abstract class AbstractDBI {
 
         switch($e->errorInfo[1]) {
           case self::MYSQL_EC_DUPLICATE_ENTRY:
-            throw new DBIError($e->getMessage(), DBIError::EC_DB_DUPLICATED_ENTRY);
+            throw new DBIError\DBIDuplicateEntryError($e->getMessage());
 
           default:
             throw new DBIError($e->getMessage(), DBIError::EC_DB_OTHER);
