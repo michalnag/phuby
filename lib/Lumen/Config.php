@@ -55,10 +55,10 @@ class Config {
 
     // Iterate over the group parts to find the desired config
     $return_config = self::$data;
-  
+
     for($i = 0; $i < count($group_parts); $i++) {
-      if(property_exists($return_config, (string) $group_parts[$i])) {
-        $return_config = $return_config->$group_parts[$i];          
+      if(property_exists($return_config, $group_parts[$i])) {
+        $return_config = $return_config->{$group_parts[$i]};          
       } else {        
         // Missing config - throw an exception
         throw new MissingConfigError("Requested config group $group cannot be found");

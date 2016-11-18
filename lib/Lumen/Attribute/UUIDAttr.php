@@ -34,7 +34,7 @@ class UUIDAttr extends AbstractAttribute implements AttributeInterface {
       }
     }
     $this->attr_value = substr(md5(uniqid(rand(),true)), 0, $length);
-    return $this->attr_value;
+    return $this;
   }
 
   public function get() {
