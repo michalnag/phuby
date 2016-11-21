@@ -19,7 +19,7 @@ class Logger {
       // It looks like this is not a class name that is defined inside lib folder
       return null;
     }
-  } 
+  }
 
   public static function array_to_string(Array $data) {
     $string_parts = [];

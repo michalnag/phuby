@@ -41,6 +41,10 @@ class RequestParam {
     return ObjectUtils::populate_attributes($this, $attributes);
   }
 
+  public function __toString() {
+    return $this->value;
+  }
+
   /**
    * Method retrieves the value from the superglobal
    */
