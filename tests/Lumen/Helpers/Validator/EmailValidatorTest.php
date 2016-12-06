@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../lib/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
 
-use Helpers\Validator\EmailValidator as EV;
+use Lumen\Helpers\Validator\EmailValidator as EV;
 use PHPUnit\Framework\TestCase;
 
 

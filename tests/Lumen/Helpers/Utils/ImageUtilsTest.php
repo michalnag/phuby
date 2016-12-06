@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../lib/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
 
-use Helpers\Utils\ImageUtils as IU;
+use Lumen\Helpers\Utils\ImageUtils as IU;
 use PHPUnit\Framework\TestCase;
 
 

@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
+require_once __DIR__ . "/../../../../lib/autoload.php";
+require_once __DIR__ . "/../../../../vendor/autoload.php";
 
-use Helpers\Validator\StringValidator as SV;
+use Lumen\Helpers\Validator\StringValidator as SV;
 use PHPUnit\Framework\TestCase;
 
 
