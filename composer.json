@@ -11,7 +11,8 @@
   "require": {
     "twig/twig":"~1.0",
     "phroute/phroute": "^2.1",
-    "monolog/monolog" : "1.11.0"
+    "monolog/monolog" : "1.11.0",
+    "robmorgan/phinx" : "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "5.5.*"
