@@ -1,5 +1,5 @@
 {
-  "name" : "michalnag/lumen",
+  "name" : "michalnag/phuby",
   "type" : "framework",
   "authors" : [
     {
@@ -19,7 +19,7 @@
   },
   "autoload" : {
     "psr-0": {
-      "Lumen\\" : "lib/"
+      "PHuby\\" : "lib/"
     }
   }
 }
