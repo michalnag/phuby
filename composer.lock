@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f999e80517717efe653bd17d2073d3c",
-    "content-hash": "e70127fa45739135ef5ed0df0e1e7814",
+    "hash": "7bbe096d0f40b61530959ce6f13eda90",
+    "content-hash": "55f228efee53d1efe13aa6c1e99a0540",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -172,7 +172,7 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "dev-master",
+            "version": "v0.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/robmorgan/phinx.git",
@@ -1895,9 +1895,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "robmorgan/phinx": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
