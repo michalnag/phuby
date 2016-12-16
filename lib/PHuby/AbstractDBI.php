@@ -106,7 +106,7 @@ abstract class AbstractDBI {
 
   public function query_and_fetch($sql, Array $vars = null) {
     if($sql) {
-      $sth = $this->query($sql, $vars);
+      $sth = self::query($sql, $vars);
       return $sth->fetchAll(PDO::FETCH_ASSOC);
     } else {
       throw new Error\DBIError("SQL is not provided");
