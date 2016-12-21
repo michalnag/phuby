@@ -17,8 +17,9 @@ class BooleanAttr extends AbstractAttribute implements AttributeInterface {
    */
   public function set($value) {
     // Check if the value passed is an integer
-    if(is_int($value)) {
+    if(is_int($value) || is_numeric($value)) {
       // Check if the integer is representing true or false
+      $value = intval($value);
       if($value == 1) {        
         $this->attr_value = true;
       } elseif($value == 0) {

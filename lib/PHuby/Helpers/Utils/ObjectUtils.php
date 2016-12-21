@@ -33,7 +33,7 @@ class ObjectUtils extends AbstractUtils {
         } else {
           // Attribute is a standard attribute class
           // Get a class name that is configured for this attribute
-          $attribute_class = "PHuby\Attribute\\" . $object::ATTRIBUTE_MAP[$key]["attribute_class"];        
+          $attribute_class = $object::ATTRIBUTE_MAP[$key]["attribute_class"];        
           Logger::debug("Attribute $key is configured on the class " . get_class($object) . " as $attribute_class");
 
           // Create an instance of the attribute
@@ -82,15 +82,14 @@ class ObjectUtils extends AbstractUtils {
    */
   public static function is_attribute_allowed($object, $attr_name) {
     $caller_class = get_class($object);
-    if(defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($attr_name, $object::ATTRIBUTE_MAP)) {
+    Logger::debug("Checking if $attr_name is allowed to be set on class $caller_class}");
+    if(defined("\\$caller_class::ATTRIBUTE_MAP") && array_key_exists($attr_name, $object::ATTRIBUTE_MAP)) {
       return true;
     } elseif(self::is_attribute_a_child_class($object, $attr_name)) {
       return true;
     } else {
       return false;      
     }
-
-
   }
 
   public function is_attribute_a_child_class($object, $attr_name) {

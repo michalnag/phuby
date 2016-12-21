@@ -14,7 +14,10 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
             ];
 
   public function set($string) {
-    if(StringValidator::is_valid($string, [
+    if(is_null($string)) {
+      $this->attr_value = $string;
+      return true;     
+    } elseif(StringValidator::is_valid($string, [
         "allow_spaces" => $this->attr_options["allow_spaces"],
         "length" => ["exact" => $this->attr_options["length"]]
       ])) {

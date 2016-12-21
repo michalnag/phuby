@@ -20,6 +20,10 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
       return true;  
 
     // We were unable to set an integer from a provided arguments
+    } elseif(is_string($value) && is_numeric($value)) {
+      $this->attr_value = intval($value);
+      return true;
+ 
     } else {
       throw new Error\InvalidAttributeError("Invalid argument of type " . gettype($value) . " passed.");
     }
