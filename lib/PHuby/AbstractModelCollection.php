@@ -15,7 +15,8 @@ abstract class AbstractModelCollection extends AbstractModel implements BaseMode
     foreach ($array as $data) {
       // Create an instance of the Collectable class
       $class_name = $this::COLLECT_CLASS['name'];
-      $this->collection[] = ObjectUtils::populate_attributes(new $class_name(), $data);
+      $collectable_object = new $class_name();
+      $this->collection[] = ObjectUtils::populate_attributes($collectable_object, $data);
     }
   }
 
