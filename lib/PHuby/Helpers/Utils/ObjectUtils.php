@@ -15,15 +15,14 @@ class ObjectUtils extends AbstractUtils {
   * @param mixed[] Array containind data to be assigned to attributes
   * @return TODO
   */
-  public static function populate_attributes(&$object, Array $data) {
+  public static function populate_attributes(&$object, $data) {
     Logger::debug(get_class($object) . " will be built from the array.");
     // Loop through the array and assign correct attributes
     foreach($data as $key => $value) {
-      
-      if(self::is_attribute_allowed($object, $key)) {
+      if(!self::is_collection_class(get_class($object)) && self::is_attribute_allowed($object, $key)) {
 
         // Check if the passed attribute is a child class or standard attribute
-        if(self::is_attribute_a_child_class($object, $key)) {
+        if(self::is_attribute_a_child_class($object, $key) && !self::is_collection_class(get_class($object))) {
 
           // Get class name and build the child from the array
           $child_class_name = $object::CHILD_CLASS_MAP[$key];
@@ -47,13 +46,15 @@ class ObjectUtils extends AbstractUtils {
 
           // Assign the value to the attribute
           $object->$key->set($value);
+
         }
 
       // We need to check if we are dealing with a value being an array inside collection class
       } elseif(is_array($value) && self::is_collection_class(get_class($object))) {
         // This is a collection class
+        Logger::debug(get_class($object) . " is a collection class. Populate data: " . json_encode($data));
         $object->populate_collection($data);
-
+        break;
       // Check is the attribute is allowed to be set on the object
       } else {
         throw new Error\InvalidAttributeError("Attribute $key is not allowed to be set on the class " . get_class($object));
@@ -61,13 +62,6 @@ class ObjectUtils extends AbstractUtils {
     }
 
     return $object;
-  }
-
-
-  public static function populate_collection(&$object, Array $data) {
-
-
-
   }
 
   public static function is_collection_class($class_name) {

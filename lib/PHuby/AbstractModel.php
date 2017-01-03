@@ -3,10 +3,11 @@
 namespace PHuby;
 
 use PHuby\Helpers\Utils\ObjectUtils;
+use PHuby\Logger;
 
 abstract class AbstractModel implements BaseModelInterface {
 
-  public function populate_attributes(Array $attributes) {
+  public function populate_attributes($attributes) {
     return ObjectUtils::populate_attributes($this, $attributes);
   }
 

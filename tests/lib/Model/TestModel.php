@@ -8,7 +8,8 @@ class TestModel extends AbstractModel {
 
   public 
     $id,
-    $dtm_added;
+    $dtm_added,
+    $collection;
 
   const ATTRIBUTE_MAP = [
     'id'        => [
