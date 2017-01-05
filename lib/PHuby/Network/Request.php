@@ -15,6 +15,7 @@ class Request extends AbstractNetwork {
    
   /**
    * Method 
+   * example value
    *
    * @param string[] $params_details Array with strings 
    * @throws PHuby\Error\MissingParameterError if parameter is required and not found
@@ -26,7 +27,7 @@ class Request extends AbstractNetwork {
       $param_details_parts = explode(':', $param_details[0]);
       
       // Check if options have been passed
-      $param_options = isset($param_details[1]) ? $param_details[1] : null;
+      $param_options = isset($param_details[1]) ? $param_details[1] : [];
 
       // Check if the parameter is required
       if(array_key_exists("required", $param_options)) {
@@ -46,7 +47,7 @@ class Request extends AbstractNetwork {
         ]);
 
       // Assign options
-      if($param_options) {
+      if(!empty($param_options)) {
         $request_param->set_options($param_options);
       }
 

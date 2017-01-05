@@ -5,6 +5,28 @@ namespace PHuby\Helpers\Utils;
 use PHuby\Helpers\AbstractUtils;
 
 class FilesUtils extends AbstractUtils {
+
+  const 
+    NO_UPLOAD_ERR = 0,
+    UPLOAD_ERR_TOO_LARGE_PARAM = 1,
+    UPLOAD_ERR_TOO_LARGE_SERVER = 2,
+    UPLOAD_ERR_TOO_PARTIAL_UPLOAD = 3,
+    UPLOAD_ERR_NO_FILE_SELECTED = 4,
+    UPLOAD_ERR_NO_TEMP_DIR = 6,
+    UPLOAD_ERR_CANNOT_WRITE_TO_DISC = 7,
+    UPLOAD_ERR_STOPPED_BY_EXTENSION = 8;
+
+
+  private $upload_errors = [
+      0   =>  'No error',
+      1   =>  'File is too large',                // Larger than upload_max_filesize
+      2   =>  'File is too large',                // Larger then MAX_FILE_SIZE
+      3   =>  'Partial upload',
+      4   =>  'No file selected',
+      6   =>  'No temporary directory',
+      7   =>  'Cannot write to the disc',
+      8   =>  'File upload stopped by extension'
+  ];
   
   static function fetch_files_from_dir($dir) {
 
