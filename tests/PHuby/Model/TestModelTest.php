@@ -17,47 +17,25 @@ class TestModelTest extends TestCase {
 
   public function test_populate_attributes() {
     $data = [
-      "id" => 1,
-      "dtm_added" => "2016-12-12 12:12:12"
+      "int" => 1,
+      "datetime" => "2016-12-12 12:12:12",
+      "email" => "test@test.com",
+      "uuid" => "TODO",
+      "string" => "asdfghjk",
+      "password" => '$2y$10$2CFEq2lryIaYkd7M1X0o7ebFxrdpU1H5rPElBifCxPEX/NWb35MVG',
+      "token" => "aaaaaabbbbbb",
+      "boolean" => 1,
+      "text" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam maximus egestas tellus id tempor. Cras mollis varius tempor. Maecenas id ante justo. Morbi aliquet elit vel accumsan feugiat. Aliquam hendrerit rhoncus metus a faucibus. Nam a malesuada purus. Donec convallis sapien vel nibh placerat, id porttitor lorem placerat."
     ];
 
     $this->obj_tm->populate_attributes($data);
-    $this->assertInstanceOf('\PHuby\Attribute\IntAttr', $this->obj_tm->id);
-    $this->assertEquals(1, $this->obj_tm->id->get());
-    $this->assertInstanceOf('\PHuby\Attribute\DateTimeAttr', $this->obj_tm->dtm_added);
-    $this->assertEquals('2016-12-12 12:12:12', $this->obj_tm->dtm_added->to_db_format());
+
+    
+
   }
 
+  // TODO
   public function test_populate_with_collection() {
-    $data = [
-      "id" => 1,
-      "collection" => [
-        [
-          "id" => 2,
-          "dtm_added" => "2016-12-14 12:12:12",
-        ],
-        [
-          "id" => 3,
-          "dtm_added" => "2016-12-15 12:12:12",
-        ]
-      ],
-      "dtm_added" => "2016-12-12 12:12:12"
-    ];  
-
-    $this->obj_tm->populate_attributes($data);  
-
-    $this->assertInstanceOf('\Model\TestModel', $this->obj_tm);
-    $this->assertInstanceOf('\PHuby\Attribute\DateTimeAttr', $this->obj_tm->dtm_added);
-    $this->assertEquals('2016-12-12 12:12:12', $this->obj_tm->dtm_added->to_db_format());
-
-    $this->assertInstanceOf('\Model\TestModelCollection', $this->obj_tm->collection);
-    $this->assertEquals(2, count($this->obj_tm->collection->collection));
-    $this->assertInstanceOf('\Model\TestModel', $this->obj_tm->collection->collection[0]);
-    $this->assertInstanceOf('\PHuby\Attribute\IntAttr', $this->obj_tm->collection->collection[0]->id);
-    $this->assertInstanceOf('\PHuby\Attribute\DateTimeAttr', $this->obj_tm->collection->collection[0]->dtm_added);
-    $this->assertInstanceOf('\Model\TestModel', $this->obj_tm->collection->collection[1]);
-    $this->assertInstanceOf('\PHuby\Attribute\IntAttr', $this->obj_tm->collection->collection[1]->id);
-    $this->assertInstanceOf('\PHuby\Attribute\DateTimeAttr', $this->obj_tm->collection->collection[1]->dtm_added);
 
   }
 

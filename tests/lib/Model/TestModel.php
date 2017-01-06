@@ -7,20 +7,49 @@ use PHuby\AbstractModel;
 class TestModel extends AbstractModel {
 
   public 
-    $id,
-    $dtm_added,
+    $int,
+    $datetime,
+    $email,
+    $uuid,
+    $string,
+    $password,
+    $token,
+    $boolean,
+    $text,
     $collection;
 
   const ATTRIBUTE_MAP = [
-    'id'        => [
-      "attribute_class" => "\PHuby\Attribute\IntAttr"
+    'int'        => [
+      "class" => "\PHuby\Attribute\IntAttr"
     ],
-    'dtm_added'        => [
-      "attribute_class" => "\PHuby\Attribute\DateTimeAttr"
+    'datetime'        => [
+      "class" => "\PHuby\Attribute\DateTimeAttr"
+    ],
+    'email'        => [
+      "class" => "\PHuby\Attribute\EmailAttr"
+    ],
+    'uuid' => [
+      "class" => "\PHuby\Attribute\UUIDAttr"
+    ],
+    'string' => [
+      "class" => "\PHuby\Attribute\StringAttr"
+    ],
+    'password' => [
+      "class" => "\PHuby\Attribute\PasswordAttr"
+    ],
+    'token' => [
+      "class" => "\PHuby\Attribute\TokenAttr"
+    ],
+    'boolean' => [
+      "class" => "\PHuby\Attribute\BooleanAttr"
+    ],
+    'text' => [
+      "class" => "\PHuby\Attribute\TextAttr"
     ]
   ];
 
   const CHILD_CLASS_MAP = [
     "collection" => "\Model\TestModelCollection"
   ];
+
 }

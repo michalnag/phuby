@@ -33,15 +33,15 @@ class ObjectUtils extends AbstractUtils {
         } else {
           // Attribute is a standard attribute class
           // Get a class name that is configured for this attribute
-          $attribute_class = $object::ATTRIBUTE_MAP[$key]["attribute_class"];        
+          $attribute_class = $object::ATTRIBUTE_MAP[$key]["class"];        
           Logger::debug("Attribute $key is configured on the class " . get_class($object) . " as $attribute_class");
 
           // Create an instance of the attribute
           $object->$key = new $attribute_class();
 
           // Check if there are custom options set on the object
-          if(array_key_exists("attribute_options", $object::ATTRIBUTE_MAP[$key])) {
-            $object->$key->set_attribute_options($object::ATTRIBUTE_MAP[$key]["attribute_options"]);
+          if(array_key_exists("options", $object::ATTRIBUTE_MAP[$key])) {
+            $object->$key->set_attribute_options($object::ATTRIBUTE_MAP[$key]["options"]);
           }    
 
           // Assign the value to the attribute
