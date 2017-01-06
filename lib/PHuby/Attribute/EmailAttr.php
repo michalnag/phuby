@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ * 
+ * Email attribute
+ */
 
 namespace PHuby\Attribute;
 
@@ -8,6 +14,13 @@ use PHuby\Helpers\Validator\EmailValidator;
 
 class EmailAttr extends AbstractAttribute implements AttributeInterface {
 
+  /**
+   * Sets the email value as the attribute value
+   * 
+   * @param string $value containing email address
+   * @return boolean true if attribute value is set correctly
+   * @throws \PHuby\Error\InvalidAttributeError if invalid value is passed
+   */
   public function set($value) {
     if(is_object($value) && $value instanceof EmailAttr) {
       $this->attr_value = $value->get();
@@ -24,11 +37,25 @@ class EmailAttr extends AbstractAttribute implements AttributeInterface {
 
   }
 
+  /**
+   * Gets the attribute value
+   * 
+   * @return string|null representing value of the attribute
+   */
   public function get() {
     return $this->attr_value;
   }
 
+  /**
+   * Returns DB friendly format
+   * 
+   * @return string|null representing attribute value in db friendly format
+   */
   public function to_db_format() {
-    return (string) $this->attr_value;
+    if(is_null($this->attr_value)) {
+      return $this->attr_value;
+    } else {
+      return (string) $this->attr_value;      
+    }
   }
 }

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ * 
+ * Class represents string attribute
+ */
 
 namespace PHuby\Attribute;
 
@@ -42,11 +48,25 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
     }
   }
 
+  /**
+   * Method returns the attribute value
+   *
+   * @return mixed attribute value
+   */
   public function get() {
     return $this->attr_value;
   }
 
+  /**
+   * Method returns the attribute value that is db friendly
+   *
+   * @return mixed attribute value as string or null
+   */
   public function to_db_format() {
-    return (string) $this->attr_value;
+    if(is_string($this->attr_value)) {
+      return (string) $this->attr_value;
+    } elseif(is_null($this->attr_value)) {
+      return $this->attr_value;
+    }
   }
 }

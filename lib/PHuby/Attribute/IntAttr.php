@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ * 
+ * Integer attribute
+ */
 
 namespace PHuby\Attribute;
 
@@ -8,11 +14,26 @@ use PHuby\Error;
 
 class IntAttr extends AbstractAttribute implements AttributeInterface {
 
+  /** @var mixed[] $attr_options representing default attribute options */
+  protected $attr_options = [
+    "allow_negative" => true,
+    "allow_zero" => true,
+    "allow_positive" => true,
+    "allow_null" => true
+  ];
+
+  /**
+   * Method sets the attribute value
+   * 
+   * @param integer|null|\PHuby\Attribute\IntAttr $value representing desired attribute value
+   * @return boolean true when succesfully set
+   * @throws \PHuby\Error\InvalidAttributeError when invalid value type is passed
+   */
   public function set($value) {
     // Check if this is an attribute object
     if(is_object($value) && $value instanceof IntAttr) {
       $this->attr_value = $value->get();
-      return true;       
+      return true;
 
     // Check if we are deling with an integer
     } elseif(is_int($value) && IntegerValidator::is_valid($value)) {
@@ -31,18 +52,33 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
 
   /**
    * Method gets the attribute value as stored inside protced $id attribute
+   * 
    * @return int|null representing value of the protected $id attribute
    */
   public function get() {
     return $this->attr_value;
   }
   
+  /**
+   * Method returns db firendly format attribute value
+   * 
+   * @return null|integer representing attribute value
+   */
   public function to_db_format() {
     return $this->to_int();
   }
 
+  /**
+   * Method attempts to return integer representing attribute value
+   * 
+   * @return null|integer representing attribute value
+   */ 
   public function to_int() {
-    return (int) $this->attr_value;
+    if(is_null($this->attr_value)) {
+      return $this->attr_value;
+    } else {
+      return (int) $this->attr_value;      
+    }
   }
 
 }

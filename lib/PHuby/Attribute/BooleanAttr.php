@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ * 
+ * Boolean Attribute Class
+ */
 
 namespace PHuby\Attribute;
 
