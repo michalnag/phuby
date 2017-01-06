@@ -9,15 +9,15 @@ class RequestParam {
   const ATTRIBUTE_MAP = [
     "name" => [
       "type" => "attribute",
-      "attribute_class" => "StringAttr"
+      "attribute_class" => "\PHuby\Attribute\StringAttr"
     ],
     "source" => [
       "type" => "attribute",
-      "attribute_class" => "StringAttr" 
+      "attribute_class" => "\PHuby\Attribute\StringAttr" 
     ],
     "type" => [
       "type" => "attribute",
-      "attribute_class" => "StringAttr"      
+      "attribute_class" => "\PHuby\Attribute\StringAttr"      
     ]
   ];
 
