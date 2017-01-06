@@ -10,7 +10,8 @@ class StringValidator extends AbstractValidator implements ValidatorInterface {
   const ALLOWED_VALIDATION_OPTIONS = [
     'length'        => 'array',
     'allow_spaces'  => 'boolean',
-    'regex'         => 'string'
+    'regex'         => 'string',
+    'allow_null'    => 'boolean'
   ];
 
   public static function is_valid($value, $options = []) {

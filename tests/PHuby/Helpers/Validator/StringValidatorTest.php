@@ -25,6 +25,26 @@ class StringValidatorTest extends TestCase {
       $this->assertTrue(SV::is_valid($string, 
          ['length' => ['exact' => 10]]
       ));
+
+      $this->assertTrue(SV::is_valid($string, 
+         ['length' => ['min' => 10]]
+      ));
+
+      $this->assertTrue(SV::is_valid($string, 
+         ['length' => ['max' => 10]]
+      ));
+
+      $this->assertTrue(SV::is_valid($string, 
+         ['length' => ['min' => 9, "max" => 11]]
+      ));
+
+      $this->assertTrue(SV::is_valid($string, 
+         ['allow_null' => true]
+      ));
+
+
    }
+
+
 
 }

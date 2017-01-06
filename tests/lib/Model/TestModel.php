@@ -10,7 +10,6 @@ class TestModel extends AbstractModel {
     $int,
     $datetime,
     $email,
-    $uuid,
     $string,
     $password,
     $token,
@@ -28,17 +27,26 @@ class TestModel extends AbstractModel {
     'email'        => [
       "class" => "\PHuby\Attribute\EmailAttr"
     ],
-    'uuid' => [
-      "class" => "\PHuby\Attribute\UUIDAttr"
-    ],
     'string' => [
       "class" => "\PHuby\Attribute\StringAttr"
+    ],
+    'string_with_options' => [
+      "class" => "\PHuby\Attribute\StringAttr",
+      "options" => [
+        "length" => [
+          "min" => 8,
+          "max" => 12
+        ]
+      ]
     ],
     'password' => [
       "class" => "\PHuby\Attribute\PasswordAttr"
     ],
     'token' => [
-      "class" => "\PHuby\Attribute\TokenAttr"
+      "class" => "\PHuby\Attribute\TokenAttr",
+      "options" => [
+        "length" => 12
+      ]
     ],
     'boolean' => [
       "class" => "\PHuby\Attribute\BooleanAttr"
