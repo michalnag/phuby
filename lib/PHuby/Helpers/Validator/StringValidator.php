@@ -34,7 +34,9 @@ class StringValidator extends AbstractValidator implements ValidatorInterface {
 
               // Correct type has been passed. Perform validation
               $method_name = "validate_{$option}";
-              self::$method_name($value, $data);
+              if(method_exists(get_class(), $method_name)) {
+                self::$method_name($value, $data);                
+              }
 
             } else {
 
