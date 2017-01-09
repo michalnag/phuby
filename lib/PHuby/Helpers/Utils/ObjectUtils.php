@@ -5,6 +5,7 @@ namespace PHuby\Helpers\Utils;
 use PHuby\Helpers\AbstractUtils;
 use PHuby\Error;
 use PHuby\Logger;
+use PHuby\Config;
 
 class ObjectUtils extends AbstractUtils {
  
@@ -110,5 +111,16 @@ class ObjectUtils extends AbstractUtils {
 
   }
 
+  public static function get_class_name_from_filepath($filepath) {
+    // Check if this is inside lib folder
+    $parts = explode("lib".Config::DS, $filepath);
+    if(count($parts) > 1) {
+      // We have a part after lib. Remove extensions and convert it to the class string
+      return str_replace("/", "\\", explode('.', end($parts))[0]);
+    } else {
+      // It looks like this is not a class name that is defined inside lib folder
+      return null;
+    }
+  }
 
 }

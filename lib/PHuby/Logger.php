@@ -4,22 +4,13 @@ namespace PHuby;
 
 use \Monolog\Logger as MonologLogger;
 use \Monolog\Handler\StreamHandler as MonologStreamHandler;
+use PHuby\Helpers\Utils\ObjectUtils;
 
 class Logger {
 
   private static $logger;
 
-  private static function get_class_name_from_filepath($filepath) {
-    // Check if this is inside lib folder
-    $parts = explode("lib".Config::DS, $filepath);
-    if(count($parts) > 1) {
-      // We have a part after lib. Remove extensions and convert it to the class string
-      return str_replace("/", "\\", explode('.', end($parts))[0]);
-    } else {
-      // It looks like this is not a class name that is defined inside lib folder
-      return null;
-    }
-  }
+
 
   public static function array_to_string(Array $data) {
     $string_parts = [];
@@ -47,7 +38,7 @@ class Logger {
           // Check if the file key exists
           if(array_key_exists("file", $trace) && !empty($trace["file"])) {
             // We can check the filename. Check if it is type of controller
-            $caller_class = self::get_class_name_from_filepath($trace['file']);
+            $caller_class = ObjectUtils::get_class_name_from_filepath($trace['file']);
             if($caller_class && preg_match("/Controller/", $caller_class)) {
               // This is a controller. Check if it has LOGGER_NAME defined
               if(defined("$caller_class::LOGGER_NAME")) {

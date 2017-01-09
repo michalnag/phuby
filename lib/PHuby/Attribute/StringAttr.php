@@ -69,4 +69,24 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
       return $this->attr_value;
     }
   }
+
+  /**
+   * Method generates a random string, that can be used for naming a file
+   * 
+   * array['length']    Containing int length of the string
+   * 
+   * @param array $arr_params containing options for the method
+   * @return string with a random value
+   */
+  public static function generate_random_string(Array $arr_params = []) {
+    $length = 10;
+    if(!empty($arr_params)) {
+      if(isset($arr_params['length'])) {
+        $length = $arr_params['length'];
+      }
+    }
+
+    return substr(md5(uniqid(rand(),true)), 0, $length);
+  }
+  
 }

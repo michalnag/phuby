@@ -10,7 +10,7 @@ class JSONUtils extends AbstractUtils implements FileTypeInterface {
   const ALLOWED_EXTENSIONS = ['json'];
 
   static function check_extension($filename) {
-    return FilesUtils::check_file_extension($filename, self::ALLOWED_EXTENSIONS);
+    return FileUtils::check_file_extension($filename, self::ALLOWED_EXTENSIONS);
   }
 
   /**
@@ -21,7 +21,7 @@ class JSONUtils extends AbstractUtils implements FileTypeInterface {
    */
   static function read($filepath) {
     // Check if we are dealing with the JSON file first
-    if(self::check_extension(FilesUtils::get_filename_from_full_path($filepath))) {
+    if(self::check_extension(FileUtils::get_filename_from_full_path($filepath))) {
       
       // Get the data out from the file
       $data = json_decode(file_get_contents($filepath));

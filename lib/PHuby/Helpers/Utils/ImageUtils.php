@@ -24,7 +24,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   }
 
   static function check_extension($filename) {
-    return FilesUtils::check_file_extension($filename, self::ALLOWED_EXTENSIONS);
+    return FileUtils::check_file_extension($filename, self::ALLOWED_EXTENSIONS);
   }
 
   /**
