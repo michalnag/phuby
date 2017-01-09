@@ -90,4 +90,60 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
     return self::DPI_OPTIONS[0];
   }
 
+  public static function resize($str_img_path, $int_max_width, $int_max_height) {
+    
+    $picture = $str_img_path;
+    $picture_details    = getimagesize($picture);
+
+        $width  = $picture_details[0];
+        $height = $picture_details[1];
+        
+        // E.G. 200 / 100 = 2
+        $ratio = $width/$height;
+
+
+        // Check width
+        if($max_w >= $width) {
+            // Width is ok. Check height
+            if($max_h >= $height) {
+                // Height is ok too
+                $dimensions = array($width, $height);
+            } else {
+                // Picture too high. Adjust based on ratio
+                // e.g. New height = 50, width = height * ratio
+                $dimensions = array(round($max_h*$ratio), $max_h);
+            }
+        } else {
+            // Picture too wide
+            if($max_h >= $height) {
+                // Height is ok. adjust based on width.
+                // e.g. width = 100, height = width / ratio
+                $dimensions = array($max_w, round($max_w/$ratio));
+            } else {
+                // Both height and width are too big
+                // Get new dimensions ratio
+                $max_ratio = $max_w / $max_h;
+            
+                if($max_ratio < $ratio) {
+                    // We need to adjust dimensions based on width
+                    $dimensions = array($max_w, $max_w/$ratio);
+                } elseif($max_ratio == $ratio) {
+                    // Assign max values
+                    $dimensions = array($max_w, $max_h);
+                } else {
+                    // Adjust based on height
+                    $dimensions = array($max_h*$ratio, $max_h);
+                }
+            }
+        }
+
+        list($new_width, $new_height) = $dimensions;
+
+        if($this->resize_and_save($new_width, $new_height, $width, $height, $picture)) {
+            return true;
+        } else {
+            return false;
+        } 
+  }
+
 }

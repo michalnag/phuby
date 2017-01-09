@@ -18,5 +18,21 @@ abstract class AbstractFile extends AbstractModel {
     $filename,
     $location;
 
+  const ATTRIBUTE_MAP = [
+    'filename'        => [
+      "class" => "\PHuby\Attribute\StringAttr"
+    ],
+    'location'        => [
+      "class" => "\PHuby\Attribute\StringAttr"
+    ]
+  ];
+
+  public function upload($str_location, $str_filename) {
+    
+  }
+
+  public function copy($str_location, $str_filename) {
+    
+  }
 
 }
