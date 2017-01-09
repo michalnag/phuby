@@ -17,8 +17,7 @@ class TestModelTest extends TestCase {
     "string" => "asdfghjk",
     "password" => '$2y$10$2CFEq2lryIaYkd7M1X0o7ebFxrdpU1H5rPElBifCxPEX/NWb35MVG',
     "token" => "aaaaaabbbbbb",
-    "boolean" => 1,
-    "text" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam maximus egestas tellus id tempor. Cras mollis varius tempor. Maecenas id ante justo. Morbi aliquet elit vel accumsan feugiat. Aliquam hendrerit rhoncus metus a faucibus. Nam a malesuada purus. Donec convallis sapien vel nibh placerat, id porttitor lorem placerat."
+    "boolean" => 1
   ];
 
   public function __construct() {

@@ -53,6 +53,9 @@ class RequestParam {
       case "GET":
         $this->value = isset($_GET[$this->name->__toString()]) ? $_GET[$this->name->__toString()] : null;
         break;
+      case "FILES":
+        $this->value = isset($_FILES[$this->name->__toString()]) ? $_FILES[$this->name->__toString()] : null;
+        break;
     }
   }
 

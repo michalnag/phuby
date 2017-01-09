@@ -50,9 +50,6 @@ class TestModel extends AbstractModel {
     ],
     'boolean' => [
       "class" => "\PHuby\Attribute\BooleanAttr"
-    ],
-    'text' => [
-      "class" => "\PHuby\Attribute\TextAttr"
     ]
   ];
 

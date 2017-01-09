@@ -84,6 +84,9 @@ class Request extends AbstractNetwork {
       case "POST":
         return isset($_POST[$param_name]);
         break;
+      case "FILES":
+        return isset($_FILES[$param_name]);
+        break;
       default:
         /** @todo Unsupported source - throw exception */
         break;
