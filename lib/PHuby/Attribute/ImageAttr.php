@@ -4,7 +4,7 @@
  * @package PHuby
  * 
  * Class representing File Attribute
- * It's main value refers to the file location as an absolute path
+ * It's main value is set as \PHuby\Model\File\Image
  */
 
 namespace PHuby\Attribute;
@@ -13,7 +13,7 @@ use PHuby\AbstractAttribute;
 use PHuby\Attribute\AttributeInterface;
 use PHuby\Error\InvalidAttributeError;
 
-class FileAttr extends AbstractAttribute implements AttributeInterface {
+class ImageAttr extends AbstractAttribute implements AttributeInterface {
 
 
   /**

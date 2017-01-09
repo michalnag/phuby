@@ -18,12 +18,12 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   // 1 pixel/cm = 2.54 dpi
   const ONE_PX_BY_CM_DPI_RATIO = 2.54;
 
-  static function get_file_dimensions($filepath) {
+  public static function get_file_dimensions($filepath) {
     // Check if file exists and is readable
     // @todo
   }
 
-  static function check_extension($filename) {
+  public static function check_extension($filename) {
     return FileUtils::check_file_extension($filename, self::ALLOWED_EXTENSIONS);
   }
 
@@ -37,7 +37,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @param mixed[] Array $args (see above)
    * @return float representin cm value for the given dpi
    */
-  static function px_to_cm(Array $args) {
+  public static function px_to_cm(Array $args) {
     
     // Set minimum DPI as a default
     $dpi = self::get_min_dpi();
@@ -57,7 +57,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @param integer $px amount of pixels
    * @return mixed[] array where key is a dpi and value is cm in that dpi
    */
-  static function px_to_cm_by_dpi($px) {
+  public static function px_to_cm_by_dpi($px) {
     // Create temporary array to hold the data
     $cm_by_dpi = [];
 
@@ -82,7 +82,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @param mixed[] array $args (see above)
    * @return integer maxiumum dpi possible for given parameters
    */
-  static function dpi_from_px_and_cm(Array $args) {    
+  public static function dpi_from_px_and_cm(Array $args) {    
     return ($args['px']/$args['cm']) * self::ONE_PX_BY_CM_DPI_RATIO;
   }
 
