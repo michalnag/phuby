@@ -6,8 +6,7 @@ use PHuby\Helpers\AbstractUtils;
 use PHuby\Error;
 use PHuby\Logger;
 
-class ArrayUtils extends AbstractUtils {
-   
+class ArrayUtils extends AbstractUtils {   
 
   public static function check_multiple_keys(Array $arr_keys, Array $arr_haystack) {
     $bol_all_keys_exist = true;

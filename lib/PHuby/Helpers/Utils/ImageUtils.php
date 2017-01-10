@@ -36,8 +36,8 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * This method converts pixel value to cm based on the provided dpi.
    * If dpi is not provided, it uses minimum dpi allowed.
    * 
-   * array['px'] integer with number of pixels
-   * array['dpi'] integer requested dpi to be used to calculate cm value
+   * * array['px'] integer with number of pixels
+   * * array['dpi'] integer requested dpi to be used to calculate cm value
    * 
    * @param mixed[] Array $args (see above)
    * @return float representin cm value for the given dpi
@@ -81,8 +81,8 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * Method aims to find the maximum DPI for the artwork with certain amount of pixels
    * that is desired to be x cm long
    * 
-   * array['px'] integer with number of pixels
-   * array['cm'] float with the lenght of the artwork
+   * * array['px'] integer with number of pixels
+   * * array['cm'] float with the lenght of the artwork
    * 
    * @param mixed[] array $args (see above)
    * @return integer maxiumum dpi possible for given parameters
@@ -99,10 +99,10 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * Method calculates new size of the image based on given parameters.
    * It keeps the ratio of the old parameters, and uses new dimensions as thresholds
    * 
-   * array['current_width']     int containing current width in px
-   * array['current_height']    int containing current height in px
-   * array['max_width']         int containing new max width in px
-   * array['max_height']        int containing new max height in px
+   * * array['current_width']     int containing current width in px
+   * * array['current_height']    int containing current height in px
+   * * array['max_width']         int containing new max width in px
+   * * array['max_height']        int containing new max height in px
    * 
    * @param mixed[] array $arr_params (see above)
    * @return mixed[] containing new dimensions, with keys height and width
@@ -171,10 +171,10 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   /**
    * Method resizes the image and makes a permanent change to it
    * 
-   * array['image_path']        string containing absolute path to the image
-   * array['max_width']         int containing new max width in px
-   * array['max_height']        int containing new max height in px
-   * array['quality']           int (optional) containing quality of the image (1 to 100)
+   * * array['image_path']        string containing absolute path to the image
+   * * array['max_width']         int containing new max width in px
+   * * array['max_height']        int containing new max height in px
+   * * array['quality']           int (optional) containing quality of the image (1 to 100)
    * 
    * @param mixed[] array $arr_params (see above)
    * @return boolean true if image has been resized
@@ -229,14 +229,14 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   /**
    * Method crops the picture using different source locations.
    * 
-   * array['image_path']        string containing absolute path to the image
-   * array['source_x']          int containing x px location to crop from
-   * array['source_y']          int containing y px location to crop from
-   * array['target_width']      int containing target width in px
-   * array['target_height']     int containing target height in px
-   * array['source_width']      int containing width in px of the source image
-   * array['source_height']     int containing height in px of the source image
-   * array['quality']           int (optional) containing quality of the image (1 to 100)
+   * * array['image_path']        string containing absolute path to the image
+   * * array['source_x']          int containing x px location to crop from
+   * * array['source_y']          int containing y px location to crop from
+   * * array['target_width']      int containing target width in px
+   * * array['target_height']     int containing target height in px
+   * * array['source_width']      int containing width in px of the source image
+   * * array['source_height']     int containing height in px of the source image
+   * * array['quality']           int (optional) containing quality of the image (1 to 100)
    * 
    * @param mixed[] array $arr_params (see above)
    * @return boolean true if picture has been cropped properly

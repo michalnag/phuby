@@ -110,4 +110,29 @@ class FileUtils extends AbstractUtils {
     return end($filepath_parts);
   }
 
+  /**
+   * Method simply copies the file to the destination path
+   * 
+   * @param string $str_source representing source filepath
+   * @param string $str_destination representing destination filepath
+   */
+  public static function copy($str_source, $str_destination) {
+    // Before we attempt to sopy the file, we need to check if the source file exists
+    if(self::is_readable($str_source)) {
+      // Now check if the destination file exists
+      if(!self::exists($str_destination)) {
+
+      } else {
+        // File exists. See if we want to overwrite it
+        
+      }
+    } else {
+      throw new FileError("Unable to copy $str_source - file is not readable.");
+    }
+  }
+  /**
+   * @todo
+   */
+  public static function move() {}
+
 }

@@ -6,10 +6,9 @@ require_once __DIR__ . "/../../../../vendor/autoload.php";
 use PHuby\Helpers\Utils\ImageUtils as IU;
 use PHPUnit\Framework\TestCase;
 
-
 class ImageUtilsTest extends TestCase {
 
-  function test_px_to_cm() {
+  public function test_px_to_cm() {
     $args = [
       'px' => 1200,
       'dpi' => 100
@@ -19,7 +18,7 @@ class ImageUtilsTest extends TestCase {
       
   }
 
-  function test_px_to_cm_by_dpi() {
+  public function test_px_to_cm_by_dpi() {
     $result = IU::px_to_cm_by_dpi(1200);
 
     $expected_result = [
@@ -36,13 +35,18 @@ class ImageUtilsTest extends TestCase {
     $this->assertEquals($result, $expected_result);
   }
 
-  function test_dpi_from_px_and_cm() {
+  public function test_dpi_from_px_and_cm() {
     $result = IU::dpi_from_px_and_cm([
         'px'  => 1200,
         'cm'  => 30.48
       ]);
 
     $this->assertEquals(100, $result);
+  }
+
+  public function test_resize() {
+    // First let's copy the image
+    
   }
 
 }
