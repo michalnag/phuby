@@ -254,6 +254,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @return boolean true if picture has been cropped properly
    * @throws \PHuby\Error\MissingParameterError if any of the required parameter is misisng
    * @throws \PHuby\Error\FileError if image cannot be cropped
+   * @throws \PHuby\Error\FileError if image cannot be resampled
    * @throws \PHuby\Error\FileError if image is not readable
    */
   public static function crop(Array $arr_params) {
@@ -273,23 +274,26 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
           $quality = self::DEFAULT_IMG_QUALITY;
         }
 
-        imagecopyresampled(
-          $destination_image,
-          $source_image,
-          0,
-          0,
-          $arr_params["source_x"],
-          $arr_params["source_y"],
-          $arr_params["target_width"],
-          $arr_params["target_height"],
-          $arr_params["source_width"],
-          $arr_params["source_height"]
-        );
+        if(imagecopyresampled(
+            $destination_image,
+            $source_image,
+            0,
+            0,
+            $arr_params["source_x"],
+            $arr_params["source_y"],
+            $arr_params["target_width"],
+            $arr_params["target_height"],
+            $arr_params["source_width"],
+            $arr_params["source_height"]
+          )) {        
 
-        if(imagejpeg($destination_image, $source_image ,$quality)) {
-          return true;
+          if(imagejpeg($destination_image, $arr_params["image_path"], $quality)) {
+            return true;
+          } else {
+            throw new FileError("Unable to crop the file.");
+          }
         } else {
-          throw new FileError("Unable to crop the file.");
+          throw new FileError("Unable to resample image.");
         }
 
       } else {

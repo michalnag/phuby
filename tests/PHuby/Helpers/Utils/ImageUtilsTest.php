@@ -70,4 +70,34 @@ class ImageUtilsTest extends TestCase {
     FileUtils::remove($str_destination);
   }
 
+  public function test_crop() {
+    // First let's copy the image
+    $str_source = __DIR__ . "/../../../assets/image_01.jpg";
+    $str_destination = __DIR__ . "/../../../assets/image_01_crop.jpg";
+    FileUtils::copy($str_source, $str_destination, ["overwrite" => true]);
+
+    // Resize copied image
+    try {
+      ImageUtils::crop([
+          "image_path" => $str_destination,
+          "source_x" => 100,
+          "source_y" => 100,
+          "target_width" => 200,
+          "target_height" => 200,
+          "source_width" => 240,
+          "source_height" => 240
+        ]);
+
+      $arr_image_size = ImageUtils::get_image_size($str_destination);
+      $this->assertEquals($arr_image_size[0], 200);
+      $this->assertEquals($arr_image_size[1], 200);
+
+      FileUtils::remove($str_destination);
+
+    } catch(\PHuby\Error $e) {
+      Logger::error($e);
+    }
+    
+  }
+
 }
