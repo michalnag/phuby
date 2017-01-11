@@ -6,6 +6,7 @@ use PHuby\Helpers\AbstractUtils;
 use PHuby\Error\FileError;
 use PHuby\Error\MissingParameterError;
 use PHuby\Helpers\Utils\ArrayUtils;
+use PHuby\Logger;
 
 class ImageUtils extends AbstractUtils implements FileTypeInterface {
 
@@ -23,9 +24,15 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   // 1 pixel/cm = 2.54 dpi
   const ONE_PX_BY_CM_DPI_RATIO = 2.54;
 
-  public static function get_file_dimensions($filepath) {
-    // Check if file exists and is readable
-    // @todo
+  /**
+   * Method gets the size of an image
+   * 
+   * @param string $str_image_path representing an absolute path to the file
+   * @return mixed[] Array containing image width and height
+   * @todo check if the file is an image and is readable
+   */
+  public static function get_image_size($str_image_path) {
+    return getimagesize($str_image_path);
   }
 
   public static function check_extension($filename) {
@@ -112,9 +119,10 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
     $arr_required_params = ['current_width', 'current_height', 'max_width', 'max_height'];
     if(ArrayUtils::check_multiple_keys($arr_required_params, $arr_params)) {
 
+      Logger::debug("Calulating new size of an image with following parameters: " . json_encode($arr_params));      
       // Assign passed parameters to variables
-      foreach($arr_required_params as $param => $value) {
-        $$param = $value;
+      foreach($arr_required_params as $param_name) {
+        $$param_name = $arr_params[$param_name];
       }
 
       // Calculate ratio
@@ -126,18 +134,18 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
         // Width is ok. Check height
         if($max_height >= $current_height) {
           // Height is ok too
-          $dimensions = array($current_width, $current_height);
+          $dimensions = [$current_width, $current_height];
         } else {
           // Picture too high. Adjust based on ratio
           // e.g. New height = 50, width = height * ratio
-          $dimensions = array(round($max_height*$ratio), $max_height);
+          $dimensions = [round($max_height*$ratio), $max_height];
         }
       } else {
         // Picture too wide
         if($max_height >= $current_height) {
           // Height is ok. adjust based on width.
           // e.g. width = 100, height = width / ratio
-          $dimensions = array($max_width, round($max_width/$ratio));
+          $dimensions = [$max_width, round($max_width/$ratio)];
         } else {
           // Both height and width are too big
           // Get new dimensions ratio
@@ -145,22 +153,26 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
       
           if($max_ratio < $ratio) {
             // We need to adjust dimensions based on width
-            $dimensions = array($max_width, $max_width/$ratio);
+            $dimensions = [$max_width, $max_width/$ratio];
           } elseif($max_ratio == $ratio) {
             // Assign max values
-            $dimensions = array($max_width, $max_height);
+            $dimensions = [$max_width, $max_height];
           } else {
             // Adjust based on height
-            $dimensions = array($max_height*$ratio, $max_height);
+            $dimensions = [$max_height*$ratio, $max_height];
           }
         }
       }
 
       // Once calculated, return new values as an array
-      return [
-        "width" => $dimensions[0],
-        "height" => $dimensions[1]
+      $arr_new_dimensions = [
+        $dimensions[0],
+        $dimensions[1]
       ];
+
+      Logger::debug("Finished calculation with following dimesnions: " . json_encode($arr_new_dimensions));
+
+      return $arr_new_dimensions;
 
     } else {
       throw new MissingParameterError("Unable to calculate new image size, as some parameters are missing. Got " . json_encode($arr_params));
@@ -190,13 +202,13 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
       if(FileUtils::is_readable($arr_params["image_path"])) {
 
         // Get current height and width of the picture
-        list($current_width, $current_height)    = getimagesize($arr_params["image_path"]);
+        list($current_width, $current_height) = self::get_image_size($arr_params["image_path"]);
         
         list($new_width, $new_height) = self::calculate_new_size([
             "current_width" => $current_width,
             "current_height" => $current_height,
-            "max_width" => $int_max_width,
-            "max_height" => $int_max_height
+            "max_width" => $arr_params["max_width"],
+            "max_height" => $arr_params["max_height"]
           ]);
 
         if(array_key_exists("quality", $arr_params)) {

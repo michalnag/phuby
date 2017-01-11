@@ -9,6 +9,8 @@
 namespace PHuby\Helpers\Utils;
 
 use PHuby\Helpers\AbstractUtils;
+use PHuby\Error\FileError;
+use PHuby\Error\DuplicatedFileError;
 
 class FileUtils extends AbstractUtils {
 
@@ -113,18 +115,36 @@ class FileUtils extends AbstractUtils {
   /**
    * Method simply copies the file to the destination path
    * 
+   * * options["overwrite"]   boolean will overwrite the file if exists
+   * 
    * @param string $str_source representing source filepath
    * @param string $str_destination representing destination filepath
+   * @param options[] $arr_options optional array with options
+   * @throws \PHuby\Error\FileError if file cannot be copied
+   * @throws \PHuby\Error\DuplicatedFileError if file already exists and overwrite flag is not set to true
+   * @return boolean true if file is copied succesfully
    */
-  public static function copy($str_source, $str_destination) {
+  public static function copy($str_source, $str_destination, $arr_options = null) {
     // Before we attempt to sopy the file, we need to check if the source file exists
     if(self::is_readable($str_source)) {
       // Now check if the destination file exists
       if(!self::exists($str_destination)) {
-
+        if(copy($str_source, $str_destination)) {
+          return true;
+        } else {
+          throw new FileError("Unable to copy file from $str_source to $str_destination");
+        }
       } else {
-        // File exists. See if we want to overwrite it
-        
+        // File exists. See if we want to overwrite item
+        if($arr_options && array_key_exists("overwrite", $arr_options) && $arr_options["overwrite"]) {
+          if(copy($str_source, $str_destination)) {
+            return true;
+          } else {
+            throw new FileError("Unable to copy file from $str_source to $str_destination");
+          }    
+        } else {
+          throw new DuplicatedFileError("File $str_destination already exists");
+        }
       }
     } else {
       throw new FileError("Unable to copy $str_source - file is not readable.");
@@ -134,5 +154,28 @@ class FileUtils extends AbstractUtils {
    * @todo
    */
   public static function move() {}
+
+
+  /**
+   * Method simply removes the file
+   * 
+   * @param string $str_source representing an abosulte path to the file
+   * @throws \PHuby\Error\FileError is file cannot be removed
+   * @throws \PHuby\Error\FileNotFoundError is file is not found
+   * @return boolean true if file is succesfully deleted
+   */
+  public static function remove($str_source) {
+    // Check if the file exists
+    if(self::exists($str_source)) {
+      if(unlink($str_source)) {
+        return true;
+      } else {
+        throw new FileError("Unable to remove file $str_source.");
+      }
+
+    } else {
+      throw new FileNotFoundError("File $str_source does not exist. Unable to remove.");
+    }
+  }
 
 }
