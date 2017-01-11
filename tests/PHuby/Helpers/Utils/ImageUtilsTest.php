@@ -4,6 +4,7 @@ require_once __DIR__ . "/../../../../lib/autoload.php";
 require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use PHuby\Helpers\Utils\ImageUtils;
+use PHuby\Helpers\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
 use PHuby\Helpers\Utils;
 use PHuby\Config;
@@ -53,7 +54,7 @@ class ImageUtilsTest extends TestCase {
     // First let's copy the image
     $str_source = __DIR__ . "/../../../assets/image_01.jpg";
     $str_destination = __DIR__ . "/../../../assets/image_01_copy.jpg";
-    Utils\FileUtils::copy($str_source, $str_destination, ["overwrite" => true]);
+    FileUtils::copy($str_source, $str_destination, ["overwrite" => true]);
 
     // Resize copied image
     ImageUtils::resize([
@@ -64,10 +65,9 @@ class ImageUtilsTest extends TestCase {
 
     $arr_image_size = ImageUtils::get_image_size($str_destination);
     $this->assertEquals($arr_image_size[0], 500);
-    $this->assertEquals($arr_image_size[1], 350);
+    $this->assertEquals($arr_image_size[1], 235);
 
-
-    Utils\FileUtils::remove($str_destination);
+    FileUtils::remove($str_destination);
   }
 
 }
