@@ -97,7 +97,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
   public static function dpi_from_px_and_cm(Array $args) {    
     return ($args['px']/$args['cm']) * self::ONE_PX_BY_CM_DPI_RATIO;
   }
-
+  
   protected static function get_min_dpi() {
     return self::DPI_OPTIONS[0];
   }

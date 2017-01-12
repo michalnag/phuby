@@ -15,7 +15,9 @@ class TestModel extends AbstractModel {
     $token,
     $boolean,
     $text,
-    $collection;
+    $collection,
+    $image,
+    $file;
 
   const ATTRIBUTE_MAP = [
     'int'        => [
@@ -50,7 +52,13 @@ class TestModel extends AbstractModel {
     ],
     'boolean' => [
       "class" => "\PHuby\Attribute\BooleanAttr"
+    ],
+
+    // Child classes
+    'collection' => [
+      "child_class" => "\Model\TestModelCollection"
     ]
+
   ];
 
   const CHILD_CLASS_MAP = [

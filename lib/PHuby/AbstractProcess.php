@@ -7,11 +7,11 @@ use PHuby\Error;
 abstract class AbstractProcess extends AbstractCore {
 
   const
-    PS_NOT_STARTED = 0,
-    PS_COMPLETE_NO_ERRORS = 1,
-    PS_COMPLETE_WITH_ERRORS = 2,
-    PS_FAILED = 3,
-    PS_PENDING = 4;
+    STATUS_NOT_STARTED = 0,
+    STATUS_COMPLETE_NO_ERRORS = 1,
+    STATUS_COMPLETE_WITH_ERRORS = 2,
+    STATUS_FAILED = 3,
+    STATUS_PENDING = 4;
 
   private
     $int_status = self::PS_NOT_STARTED,
