@@ -85,9 +85,6 @@ class ObjectUtils extends AbstractUtils {
           if(array_key_exists("class", $data)) {
             $str_attr_class = $data["class"];
             $object->$attr_name = new $str_attr_class;
-          } elseif(self::is_attribute_a_child_class($object, $attr_name)) {
-            $str_child_class = $data["child_class"];
-            $object->$attr_name = new $str_child_class;
           }
         }
       } else {

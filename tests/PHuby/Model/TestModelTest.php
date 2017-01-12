@@ -35,7 +35,6 @@ class TestModelTest extends TestCase {
         $this->assertEquals(null, $this->obj_tm->$key->to_db_format());     
       }
     }
-    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->collection);
   }
 
 
