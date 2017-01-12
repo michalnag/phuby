@@ -7,6 +7,10 @@ use PHuby\Logger;
 
 abstract class AbstractModel implements BaseModelInterface {
 
+  public function __construct() {
+    ObjectUtils::create_attributes($this);
+  }
+
   public function populate_attributes($attributes) {
     return ObjectUtils::populate_attributes($this, $attributes);
   }

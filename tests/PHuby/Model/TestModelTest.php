@@ -21,12 +21,21 @@ class TestModelTest extends TestCase {
   ];
 
   public function __construct() {
-    $this->obj_tm = new TestModel();
     Config::set_config_root(__DIR__."/../../config.d");
+    $this->obj_tm = new TestModel();
   }
 
   public function test_instantiation() {
-    
+    foreach($this->example_test_model_data as $key => $value) {
+      if($key == 'datetime') {
+        $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
+        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
+      } else {
+        $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
+        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());     
+      }
+    }
+    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->collection);
   }
 
 

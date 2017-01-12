@@ -65,6 +65,37 @@ class ObjectUtils extends AbstractUtils {
     return $object;
   }
 
+  /**
+   * Method creates attributes based on the ATTRIBUTE_MAP constant
+   * 
+   * @param Object $object representing a model to build attributes for
+   * @return Object instance of the passed object with assigned attributes
+   * @throws \PHuby\Error\MissingAttributeError 
+   */
+  public static function create_attributes(&$object) {
+    $str_caller_class = get_class($object);
+    Logger::debug("Creating attributes for $str_caller_class");
+
+    // Check if the attribute is settable
+    if(!self::is_collection_class(get_class($object))) {
+      // Collection class. We only want to instantiate it
+      if(defined("$str_caller_class::ATTRIBUTE_MAP") && is_array($str_caller_class::ATTRIBUTE_MAP)) {
+        foreach($str_caller_class::ATTRIBUTE_MAP as $attr_name => $data) {
+          // Check if this is a sandard attribute
+          if(array_key_exists("class", $data)) {
+            $str_attr_class = $data["class"];
+            $object->$attr_name = new $str_attr_class;
+          } elseif(self::is_attribute_a_child_class($object, $attr_name)) {
+            $str_child_class = $data["child_class"];
+            $object->$attr_name = new $str_child_class;
+          }
+        }
+      } else {
+        throw new Error\MissingAttributeError("ATTRIBUTE_MAP cannot be found insisde $str_caller_class");
+      }
+    }
+  }
+
   public static function is_collection_class($class_name) {
     return preg_match("/Collection/", $class_name) == 1;
   }
