@@ -26,7 +26,7 @@ class ObjectUtils extends AbstractUtils {
         if(self::is_attribute_a_child_class($object, $key) && !self::is_collection_class(get_class($object))) {
 
           // Get class name and build the child from the array
-          $child_class_name = $object::CHILD_CLASS_MAP[$key];
+          $child_class_name = $object::ATTRIBUTE_MAP[$key]['child_class'];
           Logger::debug("Setting an instance of $child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
           $object->$key = new $child_class_name();
           $object->$key->populate_attributes($value);
@@ -90,7 +90,7 @@ class ObjectUtils extends AbstractUtils {
 
   public function is_attribute_a_child_class($object, $attr_name) {
     $caller_class = get_class($object);
-    return defined("$caller_class::CHILD_CLASS_MAP") && array_key_exists($attr_name, $object::CHILD_CLASS_MAP);
+    return defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($attr_name, $object::ATTRIBUTE_MAP) && array_key_exists("child_class", $object::ATTRIBUTE_MAP[$attr_name]);
   }
 
 

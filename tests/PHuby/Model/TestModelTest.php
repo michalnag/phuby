@@ -25,6 +25,11 @@ class TestModelTest extends TestCase {
     Config::set_config_root(__DIR__."/../../config.d");
   }
 
+  public function test_instantiation() {
+    
+  }
+
+
   public function test_populate_attributes() {
 
     $this->obj_tm->populate_attributes($this->example_test_model_data);
@@ -52,10 +57,29 @@ class TestModelTest extends TestCase {
     } catch(\PHuby\Error\InvalidAttributeError $e) {
       $this->assertTrue(true);
     }
+  }
 
 
-    
+  public function test_populate_attributes_with_collection() {
+    $arr_data_with_collection = $this->example_test_model_data;
+    $arr_data_with_collection["collection"] = [
+      $arr_data_with_collection
+    ];
 
+    $this->obj_tm->populate_attributes($arr_data_with_collection);
+
+    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->collection);
+    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->collection->collection[0]);
+
+    foreach($this->example_test_model_data as $key => $value) {
+      if($key == 'datetime') {
+        $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->collection->collection[0]->$key);
+        $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());
+      } else {
+        $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->collection->collection[0]->$key);
+        $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());     
+      }
+    }
   }
 
 }

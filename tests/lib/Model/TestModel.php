@@ -15,10 +15,10 @@ class TestModel extends AbstractModel {
     $token,
     $boolean,
     $text,
-    $collection,
     $image,
-    $file;
-
+    $file,
+    $collection;
+    
   const ATTRIBUTE_MAP = [
     'int'        => [
       "class" => "\PHuby\Attribute\IntAttr"
@@ -59,10 +59,6 @@ class TestModel extends AbstractModel {
       "child_class" => "\Model\TestModelCollection"
     ]
 
-  ];
-
-  const CHILD_CLASS_MAP = [
-    "collection" => "\Model\TestModelCollection"
   ];
 
 }
