@@ -105,7 +105,7 @@ class Request extends AbstractNetwork {
    * 
    */
   public function get_param_value($param_name) {
-    return $this->get_value($this->parameters[$param_name]);
+    return $this->get_param($param_name)->get_value();
   }
 
 }

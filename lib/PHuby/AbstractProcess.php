@@ -14,7 +14,7 @@ abstract class AbstractProcess extends AbstractCore {
     STATUS_PENDING = 4;
 
   private
-    $int_status = self::PS_NOT_STARTED,
+    $int_status = self::STATUS_NOT_STARTED,
     $arr_errors = array(),
     $arr_public_msg = array();
 
@@ -28,7 +28,7 @@ abstract class AbstractProcess extends AbstractCore {
       $this->status = $int_process_status;
       return true;
     } else {
-      throw new ProcessError("Unable to set unsupported status $int_process_status");
+      throw new Error\ProcessError("Unable to set unsupported status $int_process_status");
     }
   }
 
