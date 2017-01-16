@@ -11,6 +11,7 @@ namespace PHuby\Helpers\Utils;
 use PHuby\Helpers\AbstractUtils;
 use PHuby\Error\FileError;
 use PHuby\Error\DuplicatedFileError;
+use PHuby\Logger;
 
 class FileUtils extends AbstractUtils {
 
@@ -113,6 +114,16 @@ class FileUtils extends AbstractUtils {
   }
 
   /**
+   * Method retrieves the location from the absolute filepath
+   * 
+   * @param string $str_filepath holding an absolute path with an extension
+   * @return string representing the location
+   */
+  public static function get_location_from_full_path($str_filepath) {
+    return substr($str_filepath, 0, strrpos($str_filepath, DIRECTORY_SEPARATOR));
+  }
+
+  /**
    * Method simply copies the file to the destination path
    * 
    * * options["overwrite"]   boolean will overwrite the file if exists
@@ -125,6 +136,7 @@ class FileUtils extends AbstractUtils {
    * @return boolean true if file is copied succesfully
    */
   public static function copy($str_source, $str_destination, $arr_options = null) {
+    Logger::debug("Attempting to copy $str_source to $str_destination");
     // Before we attempt to sopy the file, we need to check if the source file exists
     if(self::is_readable($str_source)) {
       // Now check if the destination file exists
@@ -164,7 +176,7 @@ class FileUtils extends AbstractUtils {
    * @throws \PHuby\Error\FileNotFoundError is file is not found
    * @return boolean true if file is succesfully deleted
    */
-  public static function remove($str_source) {
+  public static function delete($str_source) {
     // Check if the file exists
     if(self::exists($str_source)) {
       if(unlink($str_source)) {

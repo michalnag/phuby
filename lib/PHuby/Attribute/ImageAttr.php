@@ -9,33 +9,14 @@
 
 namespace PHuby\Attribute;
 
-use PHuby\AbstractAttribute;
-use PHuby\Attribute\AttributeInterface;
+use PHuby\Attribute\BaseFileAttr;
 use PHuby\Error\InvalidAttributeError;
+use PHuby\Helpers\Utils\FileUtils;
 
-class ImageAttr extends AbstractAttribute implements AttributeInterface {
+class ImageAttr extends BaseFileAttr {
 
+  public function resize() {}
 
-  /**
-   * Sets the absolute filepath as an attribute value
-   * 
-   * @param string $str_filepath containing an absolute path to the file
-   */
-  public function set($str_filepath) {
-
-  }
-
-  public function get() {
-
-  }
-
-  public function to_db_format() {
-
-  }
-
-  public function __toString() {
-
-  }
-
+  public function crop() {}
 
 }

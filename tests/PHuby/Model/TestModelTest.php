@@ -7,6 +7,7 @@ require_once __DIR__ . "/../../../tests/lib/autoload.php";
 use PHPUnit\Framework\TestCase;
 use Model\TestModel;
 use PHuby\Config;
+use PHuby\Helpers\Utils\FileUtils;
 
 class TestModelTest extends TestCase {
   
@@ -17,7 +18,9 @@ class TestModelTest extends TestCase {
     "string" => "asdfghjk",
     "password" => '$2y$10$2CFEq2lryIaYkd7M1X0o7ebFxrdpU1H5rPElBifCxPEX/NWb35MVG',
     "token" => "aaaaaabbbbbb",
-    "boolean" => 1
+    "boolean" => 1,
+    "image" => "image_01.jpg",
+    "file" => "file_01.txt"
   ];
 
   public function __construct() {
@@ -32,9 +35,10 @@ class TestModelTest extends TestCase {
         $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
       } else {
         $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
-        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());     
+        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
       }
     }
+
   }
 
 
@@ -65,6 +69,28 @@ class TestModelTest extends TestCase {
     } catch(\PHuby\Error\InvalidAttributeError $e) {
       $this->assertTrue(true);
     }
+
+    // We also want to make sure we set location
+    $str_assets_location = __DIR__."/../../assets";
+    $this->obj_tm->image->set_location($str_assets_location);
+    $this->assertEquals("image_01.jpg", $this->obj_tm->image->get());
+    $this->assertTrue($this->obj_tm->image->exists());
+    $this->obj_tm->file->set_location($str_assets_location);
+    $this->assertTrue($this->obj_tm->file->exists());
+
+    // Test if we can copy an image
+    $str_copy_image_filepath = $str_assets_location . DIRECTORY_SEPARATOR . "image_01_copy.jpg";
+    $obj_copied_image = $this->obj_tm->image->copy($str_copy_image_filepath);
+
+    $this->assertEquals("image_01_copy.jpg", $obj_copied_image->to_db_format());
+    $this->assertEquals($str_assets_location, $obj_copied_image->get_location());
+    $this->assertTrue(FileUtils::exists($str_copy_image_filepath));
+
+    // If everything is ok, delete the file
+    $this->assertTrue($obj_copied_image->exists());
+    $this->assertTrue($obj_copied_image->delete());
+    $this->assertFalse(FileUtils::exists($str_copy_image_filepath));
+
   }
 
 

@@ -67,7 +67,7 @@ class ImageUtilsTest extends TestCase {
     $this->assertEquals($arr_image_size[0], 500);
     $this->assertEquals($arr_image_size[1], 235);
 
-    FileUtils::remove($str_destination);
+    FileUtils::delete($str_destination);
   }
 
   public function test_crop() {
@@ -92,7 +92,7 @@ class ImageUtilsTest extends TestCase {
       $this->assertEquals($arr_image_size[0], 200);
       $this->assertEquals($arr_image_size[1], 200);
 
-      FileUtils::remove($str_destination);
+      FileUtils::delete($str_destination);
 
     } catch(\PHuby\Error $e) {
       Logger::error($e);

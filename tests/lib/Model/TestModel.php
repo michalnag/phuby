@@ -53,6 +53,12 @@ class TestModel extends AbstractModel {
     'boolean' => [
       "class" => "\PHuby\Attribute\BooleanAttr"
     ],
+    'image' => [
+      "class" => "\PHuby\Attribute\ImageAttr"
+    ],
+    'file' => [
+      "class" => "\PHuby\Attribute\FileAttr"
+    ],
 
     // Child classes
     'collection' => [
