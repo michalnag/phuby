@@ -37,7 +37,7 @@ abstract class AbstractProcess extends AbstractCore {
     $arr_constances = $reflection_class->getConstants();
     $arr_statuses = [];
     foreach($arr_constances as $key => $value) {
-      if(preg_match("/^PS_/", $key)) {
+      if(preg_match("/^STATUS_/", $key)) {
         $arr_statuses[] = $value;
       }
     }
