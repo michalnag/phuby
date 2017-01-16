@@ -26,6 +26,13 @@ abstract class AbstractModel implements BaseModelInterface {
     return ObjectUtils::is_attribute_allowed($this, $attribute);
   }
 
+  /**
+   * @todo improve this method
+   */
+  public function has_attribute($attribute) {
+    return ObjectUtils::is_attribute_allowed($this, $attribute);
+  }
+
   public function is_attribute_a_child_class($attribute) {
     return ObjectUtils::is_attribute_a_child_class($this, $attribute);
   }

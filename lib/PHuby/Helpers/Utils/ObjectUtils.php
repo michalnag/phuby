@@ -141,7 +141,7 @@ class ObjectUtils extends AbstractUtils {
 
   public static function is_standard_attribute(&$object, $str_attr_name) {
     if(self::is_attribute_allowed($object, $str_attr_name)) {
-      return array_key_exists('class', $this::ATTRIBUTE_MAP[$str_attr_name]);
+      return array_key_exists('class', $object::ATTRIBUTE_MAP[$str_attr_name]);
     }
   }
 
