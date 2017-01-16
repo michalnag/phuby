@@ -14,12 +14,10 @@ class StringUtilsTest extends TestCase {
   }
 
   public function test_options_string_to_array() {
-    $options_string = "test:{key:{this will be a test}}";
+    $options_string = "test:[key:this will be a test]";
     $arr_expected_options = [
       "test" => [
-        "key" => [
-          "this will be a test"
-        ]
+        "key" => "this will be a test"
       ]
     ];
 

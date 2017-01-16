@@ -22,10 +22,13 @@ class StringUtils extends AbstractUtils {
           $arr_options[] = $str_option;
         } else {
           // Option with parameter. Check if we will be creating an array
-          if(substr($arr_single_option[1], 0, 1) == "{") {
+          if(substr($arr_single_option[1], 0, 1) == "[") {
             // This is an array. Create one
             // TODO - accomodate nested arrays
-            $arr_options[$arr_single_option[0]] = explode(",", substr($arr_single_option[1], 1, strlen($arr_single_option[1]) - 2));
+            $arr_nested_option = explode(":", substr($arr_single_option[1], 1, strlen($arr_single_option[1]) - 2));
+            $arr_options[$arr_single_option[0]] = [
+              $arr_nested_option[0] => $arr_nested_option[1]
+            ];
           } else {
             // Standard value
             $arr_options[$str_option] = $arr_single_option[1];
