@@ -19,4 +19,34 @@ class ArrayUtils extends AbstractUtils {
     return $bol_all_keys_exist;
   }
 
+  /**
+   * 
+   */
+  public static function add_to_array($str_keymap, Array &$arr_source, $data) {
+
+    $arr_keys = explode(":", $str_keymap, 2);
+
+    if(count($arr_keys) == 1) {
+      // This is the last key
+      if($str_keymap == "[]") {
+        $arr_source[] = $data;
+      } else {
+        if(!array_key_exists($str_keymap, $arr_source)) {
+          $arr_source[$str_keymap] = $data;          
+        } else {
+          // Duplicated key. Should we overwrite?
+        }
+      }
+    } else {
+      if(!array_key_exists($arr_keys[0], $arr_source)) {
+        $arr_source = [$arr_keys[0] => []];
+      }
+      self::add_to_array($arr_keys[1], $arr_source[$arr_keys[0]], $data);
+    }
+
+    return $arr_source;
+
+  }
+
+
 }
