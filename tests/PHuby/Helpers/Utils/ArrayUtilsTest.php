@@ -30,7 +30,7 @@ class ArrayUtilsTest extends TestCase {
     $arr_empty = [];
 
     $this->assertEquals(
-      $arr1,
+      ["msg" => ["error" => [["content" => "Error 1"]]]],
       ArrayUtils::add_to_array("msg:error:[]", $arr_empty, ["content" => "Error 1"])
     ); 
 
