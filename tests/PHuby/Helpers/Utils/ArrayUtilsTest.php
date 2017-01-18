@@ -27,12 +27,22 @@ class ArrayUtilsTest extends TestCase {
       ArrayUtils::add_to_array("msg:error:[]", $arr1, ["content" => "Error 2"])
     );
 
-    $arr_empty = [];
+    $arr1 = [];
 
     $this->assertEquals(
       ["msg" => ["error" => [["content" => "Error 1"]]]],
-      ArrayUtils::add_to_array("msg:error:[]", $arr_empty, ["content" => "Error 1"])
+      ArrayUtils::add_to_array("msg:error:[]", $arr1, ["content" => "Error 1"])
     ); 
+
+    $this->assertEquals(
+      ["msg" => [
+        "error" => [["content" => "Error 1"]],
+        "success" => [["content" => "Success 1"]]
+        ]
+      ],
+      ArrayUtils::add_to_array("msg:success:[]", $arr1, ["content" => "Success 1"])
+    ); 
+
 
   }
 

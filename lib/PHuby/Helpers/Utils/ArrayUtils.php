@@ -39,8 +39,13 @@ class ArrayUtils extends AbstractUtils {
       }
     } else {
       if(!array_key_exists($arr_keys[0], $arr_source)) {
-        $arr_source = [$arr_keys[0] => []];
-      }
+        if($arr_keys[0] == "[]") {
+          $arr_source = [];
+          self::add_to_array($arr_keys[1], $arr_source, $data);
+        } else {
+          $arr_source[$arr_keys[0]] = [];  
+        }
+      } 
       self::add_to_array($arr_keys[1], $arr_source[$arr_keys[0]], $data);
     }
 
