@@ -27,8 +27,15 @@ class ObjectUtils extends AbstractUtils {
 
           // Get class name and build the child from the array
           $child_class_name = $object::ATTRIBUTE_MAP[$key]['child_class'];
-          Logger::debug("Setting an instance of $child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
-          $object->$key = new $child_class_name();
+
+          // We need to check if the attribute is set already
+          if(!$object->$key instanceof $child_class_name) {
+            // Attribute not set yet. Create new instance
+            Logger::debug("Setting an instance of $child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
+            $object->$key = new $child_class_name();         
+          }
+
+          // Finally populate attributes
           $object->$key->populate_attributes($value);
 
         } else {

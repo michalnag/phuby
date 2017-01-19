@@ -17,7 +17,8 @@ class TestModel extends AbstractModel {
     $text,
     $image,
     $file,
-    $collection;
+    $collection,
+    $nested_model;
     
   const ATTRIBUTE_MAP = [
     'int'        => [
@@ -63,6 +64,9 @@ class TestModel extends AbstractModel {
     // Child classes
     'collection' => [
       "child_class" => "\Model\TestModelCollection"
+    ],
+    'nested_model' => [
+      "child_class" => "\Model\TestModel"
     ]
 
   ];

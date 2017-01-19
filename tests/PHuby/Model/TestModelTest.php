@@ -144,5 +144,32 @@ class TestModelTest extends TestCase {
   }
 
 
+  public function test_multiple_population() {
+    $this->obj_tm = new TestModel();
+
+    // Add nested model
+    $arr_nested_data = $this->example_test_model_data;
+    $arr_nested_data['nested_model'] = $this->example_test_model_data;
+
+    $this->obj_tm->populate_attributes($arr_nested_data);
+
+    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->nested_model);
+
+    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->nested_model->email->get());
+    $this->assertEquals($arr_nested_data['nested_model']['boolean'], $this->obj_tm->nested_model->boolean->to_db_format());
+
+    // Repopulate data
+    $this->obj_tm->populate_attributes([
+        "nested_model" => [
+          "boolean" => 0
+        ]
+      ]);
+
+    // Check if we can still validate email
+    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->nested_model->email->get());
+
+  }
+
+
 
 }
