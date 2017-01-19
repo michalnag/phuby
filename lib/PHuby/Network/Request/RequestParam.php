@@ -72,7 +72,6 @@ class RequestParam {
   }
 
   public function get_value() {
-    Logger::debug("Returning value $this->value");
     return $this->value;
   }
 

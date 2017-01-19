@@ -57,6 +57,18 @@ abstract class AbstractProcess extends AbstractCore {
   }
 
   /**
+   * Adds multiple errors to the $arr_errors array
+   * 
+   * @param mixed[] Array containing error messages
+   */
+  public function add_errors(Array $arr_errors) {
+    foreach($arr_errors as $str_error_msg) {
+      $this->add_error($str_error_msg);
+    }
+    return true;
+  }
+
+  /**
    * Method removes all warnings from the process by setting $arr_warnings to 
    * an empty array
    * 
