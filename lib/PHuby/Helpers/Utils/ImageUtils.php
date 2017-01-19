@@ -117,7 +117,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    */
   public static function calculate_new_size(Array $arr_params) {
     $arr_required_params = ['current_width', 'current_height', 'max_width', 'max_height'];
-    if(ArrayUtils::check_multiple_keys($arr_required_params, $arr_params)) {
+    if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 
       Logger::debug("Calulating new size of an image with following parameters: " . json_encode($arr_params));      
       // Assign passed parameters to variables
@@ -196,7 +196,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    */
   public static function resize(Array $arr_params) {
     $arr_required_params = ["image_path", "max_width", "max_height"];
-    if(ArrayUtils::check_multiple_keys($arr_required_params, $arr_params)) {
+    if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 
       // Now check if the file exists and is readable
       if(FileUtils::is_readable($arr_params["image_path"])) {
@@ -259,7 +259,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    */
   public static function crop(Array $arr_params) {
     $arr_required_params = ["image_path", "source_x", "source_y", "target_width", "target_height"];
-    if(ArrayUtils::check_multiple_keys($arr_required_params, $arr_params)) {
+    if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 
       // Check if the image is readeable
       if(FileUtils::is_readable($arr_params["image_path"])) {

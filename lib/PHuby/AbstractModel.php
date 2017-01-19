@@ -39,15 +39,13 @@ abstract class AbstractModel implements BaseModelInterface {
 
   /**
    * Method returns an array with raw data that is configured on the model
+   * 
+   * @todo - implement options string if required
    */
-  public function get_raw_data($str_options = null) {
+  public function get_raw_data() {
     
     $arr_raw_data = [];
     $arr_options = $this->arr_default_raw_data_options;
-
-    if($str_options) {
-      $arr_options = array_merge($arr_options, StringUtils::options_string_to_array($str_options));
-    }
 
     Logger::debug("Getting raw data from ".get_class($this)." with following options: " . json_encode($arr_options));
 
