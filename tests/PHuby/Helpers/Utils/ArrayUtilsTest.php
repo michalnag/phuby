@@ -51,7 +51,22 @@ class ArrayUtilsTest extends TestCase {
         ]
       ],
       ArrayUtils::add_data("msg:success:[]", $arr1, ["content" => "Success 2"])
-    );   
+    );
+
+    $arr = [];
+    $this->assertEquals(
+      ["msg" => ["success" => [["content" => "success msg"]]]],
+      ArrayUtils::add_data("msg:success:[]", $arr, ["content" => "success msg"])
+    );  
+
+
+    $this->assertEquals(
+      ["msg" => [
+        "success" => [["content" => "success msg"]],
+        "error" => [["content" => "error msg"]]
+      ]],
+      ArrayUtils::add_data("msg:error:[]", $arr, ["content" => "error msg"])
+    );  
   }
 
   public function test_get_data() {

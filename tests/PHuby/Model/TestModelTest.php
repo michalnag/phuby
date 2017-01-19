@@ -20,7 +20,8 @@ class TestModelTest extends TestCase {
     "token" => "aaaaaabbbbbb",
     "boolean" => 1,
     "image" => "image_01.jpg",
-    "file" => "file_01.txt"
+    "file" => "file_01.txt",
+    'string_with_options' => "asadasdasd"
   ];
 
   public function __construct() {
@@ -30,15 +31,21 @@ class TestModelTest extends TestCase {
 
   public function test_instantiation() {
     foreach($this->example_test_model_data as $key => $value) {
-      if($key == 'datetime') {
-        $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
-        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
-      } else {
-        $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
-        $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
+      switch($key) {
+        case 'datetime':
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());          
+          break;
+        case 'string_with_options':
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());          
+          break;
+        default:
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
+          break;
       }
     }
-
   }
 
 
@@ -47,12 +54,19 @@ class TestModelTest extends TestCase {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
 
     foreach($this->example_test_model_data as $key => $value) {
-      if($key == 'datetime') {
-        $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
-        $this->assertEquals($value, $this->obj_tm->$key->to_db_format());
-      } else {
-        $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
-        $this->assertEquals($value, $this->obj_tm->$key->to_db_format());     
+      switch($key) {
+        case 'datetime':
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
+          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());
+          break;
+        case 'string_with_options':
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->$key);
+          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());          
+          break;
+        default:
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
+          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());
+          break;
       }
     }
   
@@ -90,9 +104,15 @@ class TestModelTest extends TestCase {
     $this->assertTrue($obj_copied_image->exists());
     $this->assertTrue($obj_copied_image->delete());
     $this->assertFalse(FileUtils::exists($str_copy_image_filepath));
-
   }
 
+  public function test_get_raw_data() {
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $this->assertEquals(
+        $this->example_test_model_data,
+        $this->obj_tm->get_raw_data()
+      );
+  }
 
   public function test_populate_attributes_with_collection() {
     $arr_data_with_collection = $this->example_test_model_data;
@@ -106,14 +126,23 @@ class TestModelTest extends TestCase {
     $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->collection->collection[0]);
 
     foreach($this->example_test_model_data as $key => $value) {
-      if($key == 'datetime') {
-        $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->collection->collection[0]->$key);
-        $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());
-      } else {
-        $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->collection->collection[0]->$key);
-        $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());     
+      switch($key) {
+        case 'datetime':
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->collection->collection[0]->$key);
+          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());        
+          break;
+        case 'string_with_options':
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->collection->collection[0]->$key);
+          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());        
+          break;
+        default:
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->collection->collection[0]->$key);
+          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format()); 
+          break;
       }
     }
   }
+
+
 
 }

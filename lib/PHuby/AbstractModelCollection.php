@@ -43,9 +43,21 @@ abstract class AbstractModelCollection extends AbstractModel implements BaseMode
    * 
    * @return boolean true once collection is cleared
    */
-  public function empty_collection() {
+  public function clear_collection() {
     $this->collection = [];
     return true;
+  }
+
+  public function get_raw_data() {
+    if($this->is_collection_populated()) {
+      $arr_raw_data = [];
+      foreach($this->collection as $obj_collectable) {
+        $arr_raw_data[] = $obj_collectable->get_raw_data();
+      }
+      return $arr_raw_data;
+    } else {
+      return null;
+    }
   }
 
   /**

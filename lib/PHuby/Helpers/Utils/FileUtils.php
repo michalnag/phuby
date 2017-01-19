@@ -25,6 +25,9 @@ class FileUtils extends AbstractUtils {
     UPLOAD_ERR_CANNOT_WRITE_TO_DISC = 7,
     UPLOAD_ERR_STOPPED_BY_EXTENSION = 8;
 
+  const 
+    DS = DIRECTORY_SEPARATOR;
+
   /**
    * Method fetches all files from given directory
    * 
