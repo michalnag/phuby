@@ -33,7 +33,7 @@ class Request extends AbstractNetwork {
       if(array_key_exists("required", $param_options)) {
         // This parameter is required. Check if the value exists
         if(!$this->is_parameter_passed($param_details_parts[0], $param_details_parts[1])) {
-          throw new Error\NetworkError("Required parameter $param_details_parts[0] is missing from the request", Error\NetworkError::EC_MISSING_PARAMETER);
+          throw new Error\NetworkRequestError("Required parameter $param_details_parts[0] is missing from the request", Error\NetworkRequestError::EC_MISSING_PARAMETER);
         }
       }
 
