@@ -12,10 +12,22 @@ namespace PHuby\Attribute;
 use PHuby\Attribute\BaseFileAttr;
 use PHuby\Error\InvalidAttributeError;
 use PHuby\Helpers\Utils\FileUtils;
+use PHuby\Helpers\Utils\ImageUtils;
 
 class ImageAttr extends BaseFileAttr {
 
-  public function resize() {}
+  public function resize($int_max_width, $int_max_height, $int_quality = 100) {
+    if($this->exists()) {
+      return ImageUtils::resize([
+          "image_path" => $this->get_filepath(),
+          "max_width" => $int_max_width,
+          "max_height" => $int_max_height,
+          "quality" => $int_quality
+        ]);
+    } else {
+      return false;
+    }
+  }
 
   public function crop() {}
 
