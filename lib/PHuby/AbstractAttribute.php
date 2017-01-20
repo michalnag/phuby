@@ -31,7 +31,7 @@ abstract class AbstractAttribute {
    */
   protected function get_option($str_option) {
     // First, let's check is value passed is a string
-    if(is_string($str_options)) {
+    if(is_string($str_option)) {
       // Now create parts from the string
       $arr_option_parts = explode(':', $str_option);
       

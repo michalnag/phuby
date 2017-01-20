@@ -86,7 +86,7 @@ class Config {
 
       // Check if this is a json file and if so, add it to the config as an array
       if(JSONUtils::check_extension($config_file)) {
-        $config_name = FileUtils::get_file_name_without_extension($config_file);
+        $config_name = FileUtils::get_filename_without_extension($config_file);
         if(!is_object(self::$data)) {
           // $data attribute needs to be converted to the object
           self::$data = new \stdClass(); 
@@ -94,7 +94,7 @@ class Config {
         self::$data->$config_name = JSONUtils::read(self::$config_root.self::DS.$config_file);
       } elseif(YAMLUtils::check_extension($config_file)) {
         // @todo This is YAML file
-        $config_name = FileUtils::get_file_name_without_extension($config_file);
+        $config_name = FileUtils::get_filename_without_extension($config_file);
 
       } else {
 

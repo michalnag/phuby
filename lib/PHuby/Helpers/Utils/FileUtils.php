@@ -101,7 +101,7 @@ class FileUtils extends AbstractUtils {
    * @param string $str_filename containing the filename
    * @return string filename without the extension (or whatever comes before last dot)
    */
-  public static function get_file_name_without_extension($str_filename) {
+  public static function get_filename_without_extension($str_filename) {
     return substr($str_filename, 0, strrpos($str_filename, '.'));
   }
 
@@ -191,6 +191,19 @@ class FileUtils extends AbstractUtils {
     } else {
       throw new FileNotFoundError("File $str_source does not exist. Unable to remove.");
     }
+  }
+
+  /**
+   * Adds suffix to the filename
+   * 
+   * @param string $str_filename representing the file name with extension
+   * @param strin $str_suffix representing suffix to be added
+   */
+  public static function add_suffix($str_filename, $str_suffix) {
+    return
+      self::get_filename_without_extension($str_filename)
+      . $str_suffix . "."
+      . self::get_file_extension($str_filename);
   }
 
 }
