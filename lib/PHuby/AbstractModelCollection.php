@@ -34,6 +34,16 @@ abstract class AbstractModelCollection extends AbstractModel implements BaseMode
     }
   }
 
+  public function populate_attribute_to_collection($arr_attributes) {
+    if($this->is_collection_populated()) {
+      foreach($this->collection as $obj_collectable) {
+        $obj_collectable->populate_attributes($arr_attributes);
+      }
+    } else {
+       return false;
+    }
+  }
+
   public function is_collection_populated() {
     return !empty($this->collection);
   }
