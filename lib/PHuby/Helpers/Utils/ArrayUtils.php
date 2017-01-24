@@ -137,49 +137,70 @@ class ArrayUtils extends AbstractUtils {
    * 
    * @param mixed[] $arr_data Array containing array of arrays to be grouped
    * @param mixed[] $arr_map containing map of how the array supposed to be grouped 
-   * @param string $str_group_key representing main key that is used for core grouping
+   * @param string $str_group_key representing main key that is used for core grouping (optional)
    * @return mixed[] representing grouped array
    */
-  public static function group_by_map(Array $arr_data, Array $arr_map, $str_group_key) {
+  public static function group_by_map(Array $arr_data, Array $arr_map, $str_group_key = null) {
+    // Create grouped array
     $arr_grouped = [];
     
     // Iterate over arr_data which is an array of arrays
     foreach($arr_data as $arr_record) {
 
-      // First, check if grouped data has groupping key already
-      if(!array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
+      // First, check if group key is specified
+      if($str_group_key) {
+        // And now check if the key already exists
+        if(array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
+          // Grouping key already exists
+          // TODO
+        } else {
+          // Grouping key does not exist. Create a new one in grouped array
+          $arr_grouped[$arr_record[$str_group_key]] = [];
 
-        // Use the map to get details common for all groups
-        $arr_grouped[$arr_record[$str_group_key]] = [];
-
-        foreach($arr_map as $key =>$value) {
-          if(!is_array($value)) {
-            // Add the singular key to the array.
-            $arr_grouped[$arr_record[$str_group_key]][$value] = $arr_record[$value];
-          } else {
-            // If the value is an array, we simply create an array with the corresponding key
-            $arr_grouped[$arr_record[$str_group_key]][$key] = [];
-          }
-        }
-
+          // Once created, ne need to add first level data
+          self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
+        } 
       }
 
-      // We already have our grouping key so let's add data to it
-      foreach($arr_map as $key =>$value) {
-        if(is_array($value)) {
-          $arr_subgroup = [];
-          foreach($value as $sub_key) {
-            $arr_subgroup[$sub_key] = $arr_record[$sub_key];
-          }
-          $arr_grouped[$arr_record[$str_group_key]][$key][] = $arr_subgroup;
-        }
-      }     
+      // Run nesting logic
+      self::group_by_map_nesting($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
 
     }
 
     return $arr_grouped;
   
   }
+
+  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group) {
+    foreach($arr_map as $key =>$value) {
+      if(!is_array($value)) {
+        // Add the singular key to the array.
+        $arr_current_group[$value] = $arr_record[$value];
+      } else {
+        // If the value is an array, we simply create an array with the corresponding key
+        $arr_current_group[$key] = [];
+      }
+    }
+  }
+
+  private static function group_by_map_nesting($arr_map, &$arr_record, &$arr_current_group) {
+    foreach($arr_map as $key => $value) {
+      if(is_array($value)) {
+        $arr_subgroup = [];
+        foreach($value as $sub_key => $sub_value) {
+          if(!is_array($sub_value)) {
+            // Standard key
+            $arr_subgroup[$sub_value] = $arr_record[$sub_value];            
+          } else {
+            // We are nesting array
+            self::group_by_map_first_level_data($arr_map[$key], $arr_record, $arr_current_group[$key]);
+          }
+        }
+        $arr_current_group[$key][] = $arr_subgroup;
+      } 
+    }
+  }
+
 
 
 }
