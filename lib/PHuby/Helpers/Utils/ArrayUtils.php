@@ -147,17 +147,8 @@ class ArrayUtils extends AbstractUtils {
     // Iterate over arr_data which is an array of arrays
     foreach($arr_data as $arr_record) {
 
-      // And now check if the key already exists
-      if(array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
-        // Grouping key already exists
-        // TODO
-      } else {
-        // Grouping key does not exist. Create a new one in grouped array
-        $arr_grouped[$arr_record[$str_group_key]] = [];
-
-        // Once created, ne need to add first level data
-        self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
-      } 
+      // Get the first level data
+      self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped, $str_group_key);
 
       // Run nesting logic
       self::group_by_map_nesting($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
@@ -169,7 +160,17 @@ class ArrayUtils extends AbstractUtils {
   
   }
 
-  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group) {
+  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group, $str_group_key = null) {
+
+    // Check if the key already exists
+    if(array_key_exists($arr_record[$str_group_key], $arr_current_group)) {
+      // Grouping key already exists
+      // TODO
+    } else {
+      // Grouping key does not exist. Create a new one in grouped array
+      $arr_current_group[$arr_record[$str_group_key]] = [];
+    } 
+
     foreach($arr_map as $key =>$value) {
       if(!is_array($value)) {
         // Add the singular key to the array.
