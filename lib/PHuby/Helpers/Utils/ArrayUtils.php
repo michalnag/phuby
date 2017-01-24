@@ -140,30 +140,28 @@ class ArrayUtils extends AbstractUtils {
    * @param string $str_group_key representing main key that is used for core grouping (optional)
    * @return mixed[] representing grouped array
    */
-  public static function group_by_map(Array $arr_data, Array $arr_map, $str_group_key = null) {
+  public static function group_by_map(Array $arr_data, Array $arr_map, $str_group_key) {
     // Create grouped array
     $arr_grouped = [];
     
     // Iterate over arr_data which is an array of arrays
     foreach($arr_data as $arr_record) {
 
-      // First, check if group key is specified
-      if($str_group_key) {
-        // And now check if the key already exists
-        if(array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
-          // Grouping key already exists
-          // TODO
-        } else {
-          // Grouping key does not exist. Create a new one in grouped array
-          $arr_grouped[$arr_record[$str_group_key]] = [];
+      // And now check if the key already exists
+      if(array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
+        // Grouping key already exists
+        // TODO
+      } else {
+        // Grouping key does not exist. Create a new one in grouped array
+        $arr_grouped[$arr_record[$str_group_key]] = [];
 
-          // Once created, ne need to add first level data
-          self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
-        } 
-      }
+        // Once created, ne need to add first level data
+        self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
+      } 
 
       // Run nesting logic
       self::group_by_map_nesting($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
+
 
     }
 
