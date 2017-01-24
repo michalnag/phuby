@@ -147,8 +147,11 @@ class ArrayUtils extends AbstractUtils {
     // Iterate over arr_data which is an array of arrays
     foreach($arr_data as $arr_record) {
 
-      // Get the first level data
-      self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped, $str_group_key);
+      // Each $arr_record is representing single record with key => value structure.
+      // This is what will be grouped. First thing we need to do is to
+      // create an array which key is a value of the main group key
+      // This is what is called a first level data
+      self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped, $arr_record[$str_group_key]);
 
       // Run nesting logic
       self::group_by_map_nesting($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
@@ -160,10 +163,13 @@ class ArrayUtils extends AbstractUtils {
   
   }
 
-  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group, $str_group_key = null) {
+  /**
+   * @todo - description once method is completed
+   */
+  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group, $key) {
 
     // Check if the key already exists
-    if(array_key_exists($arr_record[$str_group_key], $arr_current_group)) {
+    if(array_key_exists($key, $arr_current_group)) {
       // Grouping key already exists
       // TODO
     } else {
