@@ -99,7 +99,7 @@ abstract class AbstractProcess extends AbstractCore {
    */
   public function set_status($int_process_status) {
     if($this->is_status_allowed($int_process_status)) {
-      $this->status = $int_process_status;
+      $this->int_status = $int_process_status;
       return true;
     } else {
       throw new Error\ProcessError("Unable to set unsupported status $int_process_status");
@@ -148,7 +148,7 @@ abstract class AbstractProcess extends AbstractCore {
    * @return boolean true if the process has completed, false otherwise
    */
   public function has_completed() {
-    if(in_array($this->get_status(), [$this::COMPLETE, $this::COMPLETE_WITH_WARNINGS])) {
+    if(in_array($this->get_status(), [self::COMPLETE, self::COMPLETE_WITH_WARNINGS])) {
       return true;
     } else {
       return false;

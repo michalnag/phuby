@@ -206,4 +206,17 @@ class FileUtils extends AbstractUtils {
       . self::get_file_extension($str_filename);
   }
 
+  /**
+   * Method deals with file upload of a file
+   * 
+   * @param string $str_tmp_name representing temporary name of the file
+   * @param string $str_destination representing an absolute path for the upload including
+   *  filename
+   * @return boolean true if file has been uploaded sucessfully, false otherwise
+   * @todo - improve logic of this method
+   */
+  public static function upload($str_tmp_name, $str_destination) {
+    return move_uploaded_file($str_tmp_name, $str_destination);
+  }
+
 }

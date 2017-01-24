@@ -90,4 +90,18 @@ abstract class BaseFileAttr extends AbstractAttribute implements AttributeInterf
     }
   }
 
+  /**
+   * Uploads the file to the location specified on the class
+   * 
+   * @param string $str_tmp_name 
+   * @return boolean true if upload is succesfull, false otherwise
+   */
+  public function upload($str_tmp_name) {
+    if($this->get()) {
+      return FileUtils::upload($str_tmp_name, $this->get_filepath());      
+    } else {
+      return false;
+    }
+  }
+
 }

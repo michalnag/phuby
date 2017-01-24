@@ -92,9 +92,7 @@ class ArrayUtils extends AbstractUtils {
     }
 
     return $return_data;
-
   }
-
 
   /**
    * Method removes the relevant key from the array based on the keymap
@@ -132,6 +130,55 @@ class ArrayUtils extends AbstractUtils {
     $return_data = self::get_data($str_keymap, $arr_source);
     self::remove_data($str_keymap, $arr_source);
     return $return_data;
+  }
+
+  /**
+   * Method groups multiple arrays by an array map
+   * 
+   * @param mixed[] $arr_data Array containing array of arrays to be grouped
+   * @param mixed[] $arr_map containing map of how the array supposed to be grouped 
+   * @param string $str_group_key representing main key that is used for core grouping
+   * @return mixed[] representing grouped array
+   */
+  public static function group_by_map(Array $arr_data, Array $arr_map, $str_group_key) {
+    $arr_grouped = [];
+    
+    // Iterate over arr_data which is an array of arrays
+    foreach($arr_data as $arr_record) {
+
+      // First, check if grouped data has groupping key already
+      if(!array_key_exists($arr_record[$str_group_key], $arr_grouped)) {
+
+        // Use the map to get details common for all groups
+        $arr_grouped[$arr_record[$str_group_key]] = [];
+
+        foreach($arr_map as $key =>$value) {
+          if(!is_array($value)) {
+            // Add the singular key to the array.
+            $arr_grouped[$arr_record[$str_group_key]][$value] = $arr_record[$value];
+          } else {
+            // If the value is an array, we simply create an array with the corresponding key
+            $arr_grouped[$arr_record[$str_group_key]][$key] = [];
+          }
+        }
+
+      }
+
+      // We already have our grouping key so let's add data to it
+      foreach($arr_map as $key =>$value) {
+        if(is_array($value)) {
+          $arr_subgroup = [];
+          foreach($value as $sub_key) {
+            $arr_subgroup[$sub_key] = $arr_record[$sub_key];
+          }
+          $arr_grouped[$arr_record[$str_group_key]][$key][] = $arr_subgroup;
+        }
+      }     
+
+    }
+
+    return $arr_grouped;
+  
   }
 
 

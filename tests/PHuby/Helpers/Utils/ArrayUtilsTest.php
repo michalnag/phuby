@@ -114,4 +114,213 @@ class ArrayUtilsTest extends TestCase {
     $this->assertEquals([], $arr_data);
   }
 
+  public function test_group_by_map() {
+    $arr_ungrouped = [
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 1",
+        "description_type" => 1
+      ],
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 2",
+        "description_type" => 2
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 1",
+        "description_type" => 1
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 2",
+        "description_type" => 2
+      ]
+    ];
+
+    $arr_grouped = [
+      1 => [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "descriptions" => [
+          [
+            "description" => "description 1",
+            "description_type" => 1
+          ],
+          [
+            "description" => "description 2",
+            "description_type" => 2
+          ]
+        ]
+      ],
+      2 => [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "descriptions" => [
+          [
+            "description" => "description 1",
+            "description_type" => 1
+          ],
+          [
+            "description" => "description 2",
+            "description_type" => 2
+          ]
+        ]
+      ]
+    ];
+
+    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, 
+        [ 
+          "user_id",
+          "email",
+          "descriptions" => [
+            "description", 
+            "description_type"
+          ]
+        ],
+        "user_id"
+      );
+
+    $this->assertEquals(
+      $arr_grouped,
+      $arr_result
+    );
+
+    // NESTING
+    $arr_ungrouped = [
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 1",
+        "description_type" => 1,
+        "description_source" => 1
+      ],
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 2",
+        "description_type" => 2,
+        "description_source" => 2
+      ],
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 1",
+        "description_type" => 1,
+        "description_source" => 1
+      ],
+      [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "description" => "description 2",
+        "description_type" => 2,
+        "description_source" => 2
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 1",
+        "description_type" => 1,
+        "description_source" => 1
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 2",
+        "description_type" => 2,
+        "description_source" => 2
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 1",
+        "description_type" => 1,
+        "description_source" => 1
+      ],
+      [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "description" => "description 2",
+        "description_type" => 2,
+        "description_source" => 2
+      ]
+    ];
+
+
+    $arr_grouped = [
+      1 => [
+        "user_id" => 1,
+        "email" => "test@test.com",
+        "descriptions" => [
+          [
+            "description" => "description 1",
+            "description_type" => 1,
+            "sources" => [
+              [ "description_source" => 1 ],
+              [ "description_source" => 2 ]
+            ]
+
+          ],
+          [
+            "description" => "description 2",
+            "description_type" => 2,
+            "sources" => [
+              [ "description_source" => 1 ],
+              [ "description_source" => 2 ]
+            ]
+          ]
+        ]
+      ],
+      2 => [
+        "user_id" => 2,
+        "email" => "test2@test.com",
+        "descriptions" => [
+          [
+            "description" => "description 1",
+            "description_type" => 1,
+            "sources" => [
+              [ "description_source" => 1 ],
+              [ "description_source" => 2 ]
+            ]
+          ],
+          [
+            "description" => "description 2",
+            "description_type" => 2,
+            "sources" => [
+              [ "description_source" => 1 ],
+              [ "description_source" => 2 ]
+            ]
+          ]
+        ]
+      ]
+    ];
+
+    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, 
+        [ 
+          "user_id",
+          "email",
+          "descriptions" => [
+            "description", 
+            "description_type"
+            "sources" => [
+              "description_source"
+            ]
+          ]
+        ],
+        "user_id"
+      );
+
+    $this->assertEquals(
+      $arr_grouped,
+      $arr_result
+    );
+
+
+
+  }
+
 }
