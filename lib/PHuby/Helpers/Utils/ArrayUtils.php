@@ -137,10 +137,9 @@ class ArrayUtils extends AbstractUtils {
    * 
    * @param mixed[] $arr_source Array containing array of arrays to be grouped
    * @param mixed[] $arr_map containing map of how the array supposed to be grouped 
-   * @param string $str_group_key representing main key that is used for core grouping (optional)
    * @return mixed[] representing grouped array
    */
-  public static function group_by_map(Array $arr_source, Array $arr_map, $str_group_key) {
+  public static function group_by_map(Array $arr_source, Array $arr_map) {
     // Create grouped array
     $arr_grouped = [];
     
@@ -171,8 +170,8 @@ class ArrayUtils extends AbstractUtils {
   }
 
   private static function group_by_map_add_data(Array $arr_source, Array &$arr_grouped, Array $arr_map) {
-    error_log("GROUPED".json_encode($arr_grouped));
-    error_log("MAP". json_encode($arr_map));
+    //error_log("GROUPED".json_encode($arr_grouped));
+    //error_log("MAP". json_encode($arr_map));
     
     // Loop through the map to see values
     foreach($arr_map as $map_key => $map_value) {
@@ -184,26 +183,62 @@ class ArrayUtils extends AbstractUtils {
       
       } elseif(is_array($map_value)) {
         // This is an array so we perform nesting
-        error_log("MAP KEY $map_key");
 
         // Before this though, we want to check if the nesting is for subarrays or grouped arrays
         // with specified key
 
         if(is_int($map_key)) {
-          // It looks like we just want to add another array of data
+
+          // If we have an integer value, it is possible that we have a subgroup
+          // In order to check it, we need to compare at least one value from subarrays
+          // Check if any subarrays have already been created
+          if($map_key == 0) {
+            $arr_grouped[] = [];
+            $arr_subgroup =& $arr_grouped[count($arr_grouped)-1];
+          } else {
+            if(!array_key_exists($map_key, $arr_grouped)) {
+              $arr_grouped[$map_key] = [];            
+            }
+            $arr_subgroup =& $arr_grouped[$map_key];
+          }
+
+
           // Reference the last element of the array
           // Push an array to grouped
-          $arr_grouped[] = [];
-          error_log("INSIDE INT KEY    " . json_encode($arr_grouped) . " | " . json_encode($arr_map[$map_key]));
-
-          $arr_subgroup = &$arr_grouped[count($arr_grouped)-1];
+          
+          error_log("MAP KEY $map_key and MAP: " . json_encode($arr_map[$map_key]));
+          error_log("SUBGROUP: " . json_encode($arr_subgroup));
           self::group_by_map_add_data($arr_source, $arr_subgroup, $arr_map[$map_key]);
         } else {
-          // This is grouped array so create respective key
-          if(!array_key_exists($map_key, $arr_grouped)) {
-            $arr_grouped[$map_key] = [];            
+
+          // The key is not an integer, so we want to check if we want to just push the array
+          // or group it.
+          $arr_key_parts = explode(':', $map_key);
+          if(count($arr_key_parts) == 2) {
+            // We have grouping by, so we will search for the relevant key to reference it
+            // Make sure that the correct key exists and create a subarray if needed
+            if(!array_key_exists($arr_key_parts[0], $arr_grouped)) {
+              $arr_grouped[$arr_key_parts[0]] = [];            
+            }
+
+            // Once we are sure it is there, we want to access it
+            if(!array_key_exists($arr_source[$arr_key_parts[1]], $arr_grouped[$arr_key_parts[0]])) {
+              $arr_grouped[$arr_key_parts[0]][$arr_source[$arr_key_parts[1]]] = [];
+            }
+
+            // Re run grouping
+            self::group_by_map_add_data($arr_source, $arr_grouped[$arr_key_parts[0]][$arr_source[$arr_key_parts[1]]], $arr_map[$map_key]);
+
+          } else {
+
+            // Simply create another array and push the data into it
+            // This is grouped array so create respective key
+            if(!array_key_exists($map_key, $arr_grouped)) {
+              $arr_grouped[$map_key] = [];            
+            }
+            self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $arr_map[$map_key]);            
           }
-          self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $arr_map[$map_key]);          
+
         }
       
       } else {
