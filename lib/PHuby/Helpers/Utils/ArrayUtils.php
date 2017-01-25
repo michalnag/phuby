@@ -133,122 +133,82 @@ class ArrayUtils extends AbstractUtils {
   }
 
   /**
-   * Method groups multiple arrays by an array map
+   * Method groups multiple arrays by an array map.
    * 
    * @param mixed[] $arr_source Array containing array of arrays to be grouped
    * @param mixed[] $arr_map containing map of how the array supposed to be grouped 
    * @return mixed[] representing grouped array
+   * @todo describe map structure
    */
   public static function group_by_map(Array $arr_source, Array $arr_map) {
+
     // Create grouped array
     $arr_grouped = [];
     
     // Iterate over arr_source which is an array of arrays
     foreach($arr_source as $arr_record) {
 
-      // Each $arr_record is representing single record with key => value structure.
-      // This is what will be grouped. First thing we need to do is to
-      // create an array which key is a value of the main group key
-      if(!array_key_exists($arr_record[$str_group_key], $arr_grouped)){
-        $arr_grouped[$arr_record[$str_group_key]] = [];
-      }
-
-      // We have created an array so we can now build a data into it recursively
-      self::group_by_map_add_data($arr_record, $arr_grouped[$arr_record[$str_group_key]], $arr_map); 
-
-      // This is what is called a first level data
-      //self::group_by_map_first_level_data($arr_map, $arr_record, $arr_grouped, $arr_record[$str_group_key]);
-
-      // Run nesting logic
-      //self::group_by_map_nesting($arr_map, $arr_record, $arr_grouped[$arr_record[$str_group_key]]);
-
+      // Run grouping
+      self::group_by_map_add_data($arr_record, $arr_grouped, $arr_map);
 
     }
 
     return $arr_grouped;
-  
   }
 
+  /**
+   * Method is used by group_by_map method to group the data by the array map
+   * 
+   * @param mixed[] $arr_source Array representind source data
+   * @param mixed[] $arr_grouped Array referncing array holding grouped data
+   * @param mixed[] $arr_map Array  representing the grouping map
+   */
   private static function group_by_map_add_data(Array $arr_source, Array &$arr_grouped, Array $arr_map) {
-    //error_log("GROUPED".json_encode($arr_grouped));
-    //error_log("MAP". json_encode($arr_map));
-    
+
     // Loop through the map to see values
     foreach($arr_map as $map_key => $map_value) {
-      // Now for each entry in the map we want to check whether the value is an array or a string
-      if(is_string($map_value)) {
-      
-        // String value - just add to array by creating another key
+
+      // Check the type of the key and values
+      if(is_string($map_key)) {
+        // First, let's check if the $map_key is a grouping key
+        if(preg_match("/^\:.*/", $map_key)) {
+          // We are dealing with a grouping key. Check if it exists inside the grouped array
+          $str_grouping_key = preg_replace("/^\:/", "", $map_key);
+          if(!array_key_exists($arr_source[$str_grouping_key], $arr_grouped)) {
+            $arr_grouped[$arr_source[$str_grouping_key]] = [];
+          }
+
+          // Rerun grouping
+          self::group_by_map_add_data($arr_source, $arr_grouped[$arr_source[$str_grouping_key]], $map_value);
+
+        } else {
+          // Not a grouping key
+          if(!array_key_exists($map_key, $arr_grouped)) {
+            $arr_grouped[$map_key] = [];
+          }
+
+          // Rerun grouping
+          self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $map_value);
+        }
+
+      } elseif(is_string($map_value)) {
+        // Standard value. Add data from the source
         $arr_grouped[$map_value] = $arr_source[$map_value];
       
-      } elseif(is_array($map_value)) {
-        // This is an array so we perform nesting
+      } elseif(is_int($map_key)) {
+        // We just need to push to the array as no specific key has been specified
+        $arr_grouped[] = [];
+        $arr_subgroup =& $arr_grouped[count($arr_grouped)-1];
 
-        // Before this though, we want to check if the nesting is for subarrays or grouped arrays
-        // with specified key
+        // Rerun grouping
+        self::group_by_map_add_data($arr_source, $arr_subgroup, $map_value);
 
-        if(is_int($map_key)) {
-
-          // If we have an integer value, it is possible that we have a subgroup
-          // In order to check it, we need to compare at least one value from subarrays
-          // Check if any subarrays have already been created
-          if($map_key == 0) {
-            $arr_grouped[] = [];
-            $arr_subgroup =& $arr_grouped[count($arr_grouped)-1];
-          } else {
-            if(!array_key_exists($map_key, $arr_grouped)) {
-              $arr_grouped[$map_key] = [];            
-            }
-            $arr_subgroup =& $arr_grouped[$map_key];
-          }
-
-
-          // Reference the last element of the array
-          // Push an array to grouped
-          
-          error_log("MAP KEY $map_key and MAP: " . json_encode($arr_map[$map_key]));
-          error_log("SUBGROUP: " . json_encode($arr_subgroup));
-          self::group_by_map_add_data($arr_source, $arr_subgroup, $arr_map[$map_key]);
-        } else {
-
-          // The key is not an integer, so we want to check if we want to just push the array
-          // or group it.
-          $arr_key_parts = explode(':', $map_key);
-          if(count($arr_key_parts) == 2) {
-            // We have grouping by, so we will search for the relevant key to reference it
-            // Make sure that the correct key exists and create a subarray if needed
-            if(!array_key_exists($arr_key_parts[0], $arr_grouped)) {
-              $arr_grouped[$arr_key_parts[0]] = [];            
-            }
-
-            // Once we are sure it is there, we want to access it
-            if(!array_key_exists($arr_source[$arr_key_parts[1]], $arr_grouped[$arr_key_parts[0]])) {
-              $arr_grouped[$arr_key_parts[0]][$arr_source[$arr_key_parts[1]]] = [];
-            }
-
-            // Re run grouping
-            self::group_by_map_add_data($arr_source, $arr_grouped[$arr_key_parts[0]][$arr_source[$arr_key_parts[1]]], $arr_map[$map_key]);
-
-          } else {
-
-            // Simply create another array and push the data into it
-            // This is grouped array so create respective key
-            if(!array_key_exists($map_key, $arr_grouped)) {
-              $arr_grouped[$map_key] = [];            
-            }
-            self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $arr_map[$map_key]);            
-          }
-
-        }
-      
-      } else {
-        
+      } else {        
         // Unsupported type passed. Raise an exception
         throw new Error\InvalidArgumentError("Map can only contain string or array value. Got " . gettype($map_value));
-        
       }
-    }
-  }
 
+    }  
+  }
 
 }

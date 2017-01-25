@@ -147,11 +147,11 @@ class ArrayUtilsTest extends TestCase {
         "user_id" => 1,
         "email" => "test@test.com",
         "descriptions" => [
-          [
+          1 => [
             "description" => "description 1",
             "description_type" => 1
           ],
-          [
+          2 => [
             "description" => "description 2",
             "description_type" => 2
           ]
@@ -161,11 +161,11 @@ class ArrayUtilsTest extends TestCase {
         "user_id" => 2,
         "email" => "test2@test.com",
         "descriptions" => [
-          [
+          1 => [
             "description" => "description 1",
             "description_type" => 1
           ],
-          [
+          2 => [
             "description" => "description 2",
             "description_type" => 2
           ]
@@ -173,18 +173,18 @@ class ArrayUtilsTest extends TestCase {
       ]
     ];
 
-    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, 
-        [ 
-          "user_id",
-          "email",
-          "descriptions" => [
-            [
-              "description", 
-              "description_type"
+    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, [
+        ":user_id" => [ 
+            "user_id",
+            "email",
+            "descriptions" => [
+              ":description_type" => [
+                "description", 
+                "description_type"
+              ]
             ]
           ]
-        ],
-        "user_id"
+        ]
       );
 
     $this->assertEquals(
@@ -258,7 +258,7 @@ class ArrayUtilsTest extends TestCase {
         "user_id" => 1,
         "email" => "test@test.com",
         "descriptions" => [
-          [
+          1 => [
             "description" => "description 1",
             "description_type" => 1,
             "sources" => [
@@ -267,7 +267,7 @@ class ArrayUtilsTest extends TestCase {
             ]
 
           ],
-          [
+          2 => [
             "description" => "description 2",
             "description_type" => 2,
             "sources" => [
@@ -317,8 +317,6 @@ class ArrayUtilsTest extends TestCase {
           ]
         ]        
       );
-
-    error_log(print_r($arr_result,1));
     
     $this->assertEquals($arr_grouped, $arr_result);
 
