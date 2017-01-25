@@ -195,7 +195,7 @@ class ArrayUtils extends AbstractUtils {
           // Push an array to grouped
           $arr_grouped[] = [];
           error_log("INSIDE INT KEY    " . json_encode($arr_grouped) . " | " . json_encode($arr_map[$map_key]));
-          
+
           $arr_subgroup = &$arr_grouped[count($arr_grouped)-1];
           self::group_by_map_add_data($arr_source, $arr_subgroup, $arr_map[$map_key]);
         } else {
@@ -214,50 +214,6 @@ class ArrayUtils extends AbstractUtils {
       }
     }
   }
-
-  /**
-   * @todo - description once method is completed
-   */
-  private static function group_by_map_first_level_data($arr_map, &$arr_record, &$arr_current_group, $key) {
-
-    // Check if the key already exists
-    if(array_key_exists($key, $arr_current_group)) {
-      // Grouping key already exists
-      // TODO
-    } else {
-      // Grouping key does not exist. Create a new one in grouped array
-      $arr_current_group[$arr_record[$str_group_key]] = [];
-    } 
-
-    foreach($arr_map as $key =>$value) {
-      if(!is_array($value)) {
-        // Add the singular key to the array.
-        $arr_current_group[$value] = $arr_record[$value];
-      } else {
-        // If the value is an array, we simply create an array with the corresponding key
-        $arr_current_group[$key] = [];
-      }
-    }
-  }
-
-  private static function group_by_map_nesting($arr_map, &$arr_record, &$arr_current_group) {
-    foreach($arr_map as $key => $value) {
-      if(is_array($value)) {
-        $arr_subgroup = [];
-        foreach($value as $sub_key => $sub_value) {
-          if(!is_array($sub_value)) {
-            // Standard key
-            $arr_subgroup[$sub_value] = $arr_record[$sub_value];            
-          } else {
-            // We are nesting array
-            self::group_by_map_first_level_data($arr_map[$key], $arr_record, $arr_current_group[$key]);
-          }
-        }
-        $arr_current_group[$key][] = $arr_subgroup;
-      } 
-    }
-  }
-
 
 
 }

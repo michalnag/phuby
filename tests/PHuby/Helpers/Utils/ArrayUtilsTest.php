@@ -187,8 +187,6 @@ class ArrayUtilsTest extends TestCase {
         "user_id"
       );
 
-    error_log(print_r($arr_result,1));
-
     $this->assertEquals(
       $arr_grouped,
       $arr_result
@@ -308,17 +306,21 @@ class ArrayUtilsTest extends TestCase {
           "user_id",
           "email",
           "descriptions" => [
-            "description", 
-            "description_type",
-            "sources" => [
-              "description_source"
+            [
+              "description", 
+              "description_type",
+              "sources" => [
+                  [
+                    "description_source"
+                  ]
+              ]
             ]
           ]
         ],
         "user_id"
       );
 
-    error_log(print_r($arr_result,1));
+    //error_log(print_r($arr_result,1));
     
     $this->assertEquals($arr_grouped, $arr_result);
 
