@@ -303,7 +303,7 @@ class ArrayUtilsTest extends TestCase {
       ]
     ];
 
-/*    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, 
+    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, 
         [ 
           "user_id",
           "email",
@@ -318,9 +318,9 @@ class ArrayUtilsTest extends TestCase {
         "user_id"
       );
 
-    error_log(print_r($arr_result,1));*/
+    error_log(print_r($arr_result,1));
     
-    //$this->assertEquals($arr_grouped, $arr_result);
+    $this->assertEquals($arr_grouped, $arr_result);
 
 
 

@@ -191,12 +191,19 @@ class ArrayUtils extends AbstractUtils {
 
         if(is_int($map_key)) {
           // It looks like we just want to add another array of data
+          // Reference the last element of the array
+          // Push an array to grouped
           $arr_grouped[] = [];
-          self::group_by_map_add_data($arr_source, end($arr_grouped), $arr_map[$map_key]);
+          error_log("INSIDE INT KEY    " . json_encode($arr_grouped) . " | " . json_encode($arr_map[$map_key]));
+          
+          $arr_subgroup = &$arr_grouped[count($arr_grouped)-1];
+          self::group_by_map_add_data($arr_source, $arr_subgroup, $arr_map[$map_key]);
         } else {
           // This is grouped array so create respective key
-          $arr_grouped[$map_key] = [];
-          self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $arr_map[$map_key][0]);          
+          if(!array_key_exists($map_key, $arr_grouped)) {
+            $arr_grouped[$map_key] = [];            
+          }
+          self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $arr_map[$map_key]);          
         }
       
       } else {
