@@ -192,8 +192,17 @@ class ArrayUtils extends AbstractUtils {
         }
 
       } elseif(is_string($map_value)) {
-        // Standard value. Add data from the source
-        $arr_grouped[$map_value] = $arr_source[$map_value];
+
+        // Standard value. We also need to check if the translation is set
+        $arr_key_parts = explode("|", $map_value);
+        if(count($arr_key_parts) == 2) {
+          // We need to translate the key
+          $str_new_key = $arr_key_parts[1];
+        } else {
+          $str_new_key = $map_value;
+        }
+
+        $arr_grouped[$str_new_key] = $arr_source[$arr_key_parts[0]];
       
       } elseif(is_int($map_key)) {
         // We just need to push to the array as no specific key has been specified
