@@ -45,9 +45,14 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
       $this->attr_value = intval($value);
       return true;
  
-    } else {
-      throw new Error\InvalidAttributeError("Invalid argument of type " . gettype($value) . " passed.");
+    } elseif(is_null($value) && $this->get_option("allow_null")) {
+      $this->attr_value = $value;
+      return true; 
     }
+
+    // No condition have been met
+    throw new Error\InvalidAttributeError("Invalid argument of type " . gettype($value) . " passed.");
+    
   }
 
   /**
