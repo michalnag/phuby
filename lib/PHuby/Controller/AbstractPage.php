@@ -1,4 +1,11 @@
 <?php
+/**
+ * Base Abstract class to sit in the bottom of each controller representing
+ * a viewable page.
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Controller
+ */
 
 namespace PHuby\Controller;
 

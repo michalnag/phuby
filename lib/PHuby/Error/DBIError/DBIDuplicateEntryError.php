@@ -1,4 +1,10 @@
 <?php 
+/**
+ * DBIDuplicateEntryError
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Error\DBIError
+ */
 
 namespace PHuby\Error\DBIError;
 

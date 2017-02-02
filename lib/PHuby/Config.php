@@ -1,4 +1,10 @@
 <?php
+/**
+ * Config
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ */
 
 namespace PHuby;
 

@@ -1,4 +1,10 @@
 <?php
+/**
+ * RequestParam
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Network\Request
+ */
 
 namespace PHuby\Network\Request;
 use PHuby\Helpers\Utils\ObjectUtils;

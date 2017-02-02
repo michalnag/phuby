@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Michal Nagielski <michal.nagielski@gmail.com>
- * @package PHuby
+ * FileUtils
  * 
- * Class holding helper methods related to files
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Helpers\Utils
  */
 
 namespace PHuby\Helpers\Utils;

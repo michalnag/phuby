@@ -1,4 +1,11 @@
 <?php
+/**
+ * UUID attribute
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Attribute
+ * @todo Integrate 3rd party UUID generator to handle this type of attribute
+ */
 
 namespace PHuby\Attribute;
 

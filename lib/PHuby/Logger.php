@@ -1,4 +1,10 @@
 <?php
+/**
+ * Logger
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ */
 
 namespace PHuby;
 
@@ -9,8 +15,6 @@ use PHuby\Helpers\Utils\ObjectUtils;
 class Logger {
 
   private static $logger;
-
-
 
   public static function array_to_string(Array $data) {
     $string_parts = [];

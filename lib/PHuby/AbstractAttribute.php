@@ -1,4 +1,10 @@
 <?php
+/**
+ * AbstractAttribute sits as a base in every attribute
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ */
 
 namespace PHuby;
 

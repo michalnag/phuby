@@ -1,4 +1,10 @@
 <?php
+/**
+ * Request
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Network
+ */
 
 namespace PHuby\Network;
 

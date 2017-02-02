@@ -1,4 +1,10 @@
 <?php
+/**
+ * ObjectUtils
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Helpers\Utils
+ */
 
 namespace PHuby\Helpers\Utils;
 

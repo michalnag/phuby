@@ -1,10 +1,10 @@
 <?php
 /**
- * @author Michal Nagielski <michal.nagielski@gmail.com>
- * @package PHuby
- * 
  * Class representing File Attribute
  * It's main value refers to the file location as an absolute path
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Attribute
  */
 
 namespace PHuby\Attribute;

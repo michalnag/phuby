@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Michal Nagielski <michal.nagielski@gmail.com>
- * @package PHuby
- * 
  * DateTime attribute
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Attribute
  */
 
 namespace PHuby\Attribute;

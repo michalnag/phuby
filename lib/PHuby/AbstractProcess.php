@@ -1,9 +1,9 @@
 <?php
 /**
+ * AbstractProcess class sits in the bottom of Processs and provides groud work for them
+ * 
  * @author Michal Nagielski <michal.nagielski@gmail.com>
  * @package PHuby
- * 
- * AbstractProcess class sits in the bottom of Processs and provides groud work for them
  */
 
 namespace PHuby;

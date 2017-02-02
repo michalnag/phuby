@@ -1,4 +1,10 @@
 <?php
+/**
+ * AbstractValidator class to sit in the base of each validator
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby\Helpers
+ */
 
 namespace PHuby\Helpers;
 
