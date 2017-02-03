@@ -117,9 +117,9 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * * array['max_width']         int containing new max width in px
    * * array['max_height']        int containing new max height in px
    * 
-   * @param mixed[] array $arr_params (see above)
-   * @return mixed[] containing new dimensions, with keys height and width
-   * @throws \PHuby\Error\MissingParameterError if any of the required parameter is misisng
+   * @param   mixed[] $arr_params (see above)
+   * @return  mixed[] containing new dimensions, with keys height and width
+   * @throws  \PHuby\Error\MissingParameterError if any of the required parameter is misisng
    */
   public static function calculate_new_size(Array $arr_params) {
     $arr_required_params = ['current_width', 'current_height', 'max_width', 'max_height'];
