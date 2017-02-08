@@ -19,15 +19,18 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
               'length'        => 32
             ];
 
-  public function set($string) {
-    if(is_null($string)) {
-      $this->attr_value = $string;
+  public function set($value) {
+    if(is_object($value) && $value instanceof $this) {
+      $this->attr_value = $value;
+      return true;
+    } elseif(is_null($value)) {
+      $this->attr_value = $value;
       return true;     
-    } elseif(StringValidator::is_valid($string, [
+    } elseif(StringValidator::is_valid($value, [
         "allow_spaces" => $this->attr_options["allow_spaces"],
         "length" => ["exact" => $this->attr_options["length"]]
       ])) {
-      $this->attr_value = $string;
+      $this->attr_value = $value;
       return true;      
     } else {
       throw new Error\InvalidAttributeError(StringValidator::get_first_validation_error()->getMessage());

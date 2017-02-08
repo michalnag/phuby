@@ -48,10 +48,9 @@ class TestModelTest extends TestCase {
     }
   }
 
+  public function test_populate_attributes() {
 
-  public function test_set_attributes() {
-
-    $this->obj_tm->set_attributes($this->example_test_model_data);
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
 
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
@@ -71,13 +70,13 @@ class TestModelTest extends TestCase {
     }
   
     // We also need to test custom values
-    $this->obj_tm->set_attributes([
+    $this->obj_tm->populate_attributes([
         "string_with_options" => "asdqweasdqwe"
       ]);
 
     // And test failures
     try {
-      $this->obj_tm->set_attributes([
+      $this->obj_tm->populate_attributes([
           "string_with_options" => "asaqwe"
         ]);      
     } catch(\PHuby\Error\InvalidAttributeError $e) {
@@ -104,23 +103,31 @@ class TestModelTest extends TestCase {
     $this->assertTrue($obj_copied_image->exists());
     $this->assertTrue($obj_copied_image->delete());
     $this->assertFalse(FileUtils::exists($str_copy_image_filepath));
+
+    // Check if we can change the value
+    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->string->to_db_format());
+    $this->obj_tm->set_attr('string', 'test');
+    $this->assertEquals('test', $this->obj_tm->string->to_db_format());
+    $this->obj_tm->set_attr('string', $this->example_test_model_data['string']);
+    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->string->to_db_format());
   }
 
+
   public function test_get_raw_data() {
-    $this->obj_tm->set_attributes($this->example_test_model_data);
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals(
         $this->example_test_model_data,
         $this->obj_tm->get_raw_data()
       );
   }
 
-  public function test_set_attributes_with_collection() {
+  public function test_populate_attributes_with_collection() {
     $arr_data_with_collection = $this->example_test_model_data;
     $arr_data_with_collection["collection"] = [
       $arr_data_with_collection
     ];
 
-    $this->obj_tm->set_attributes($arr_data_with_collection);
+    $this->obj_tm->populate_attributes($arr_data_with_collection);
 
     $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->collection);
     $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->collection->collection[0]);
@@ -151,7 +158,7 @@ class TestModelTest extends TestCase {
     $arr_nested_data = $this->example_test_model_data;
     $arr_nested_data['nested_model'] = $this->example_test_model_data;
 
-    $this->obj_tm->set_attributes($arr_nested_data);
+    $this->obj_tm->populate_attributes($arr_nested_data);
 
     $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->nested_model);
 
@@ -159,7 +166,7 @@ class TestModelTest extends TestCase {
     $this->assertEquals($arr_nested_data['nested_model']['boolean'], $this->obj_tm->nested_model->boolean->to_db_format());
 
     // Repopulate data
-    $this->obj_tm->set_attributes([
+    $this->obj_tm->populate_attributes([
         "nested_model" => [
           "boolean" => 0
         ]
@@ -167,7 +174,6 @@ class TestModelTest extends TestCase {
 
     // Check if we can still validate email
     $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->nested_model->email->get());
-
   }
 
 

@@ -27,7 +27,7 @@ abstract class AbstractModelCollection extends AbstractModel implements BaseMode
   protected function array_to_collactable_object(Array $arr_data) {
     $class_name = $this::COLLECT_CLASS['name'];
     $obj_collectable = new $class_name();
-    $obj_collectable->set_attributes($arr_data);
+    $obj_collectable->populate_attributes($arr_data);
     return $obj_collectable;
   }
 
@@ -43,7 +43,7 @@ abstract class AbstractModelCollection extends AbstractModel implements BaseMode
   public function populate_attribute_to_collection($arr_attributes) {
     if($this->is_collection_populated()) {
       foreach($this->collection as $obj_collectable) {
-        $obj_collectable->set_attributes($arr_attributes);
+        $obj_collectable->populate_attributes($arr_attributes);
       }
     } else {
        return false;

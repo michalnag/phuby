@@ -26,23 +26,23 @@ class ObjectUtils extends AbstractUtils {
     Logger::debug(get_class($object) . " will be built from the array.");
     // Loop through the array and assign correct attributes
     foreach($data as $key => $value) {
-      if(!self::is_collection_class(get_class($object)) && self::is_attribute_allowed($object, $key)) {
+      if(!self::is_collection_class($object) && self::is_attribute_allowed($object, $key)) {
 
         // Check if the passed attribute is a child class or standard attribute
-        if(self::is_attribute_a_child_class($object, $key) && !self::is_collection_class(get_class($object))) {
+        if(self::is_attribute_a_child_class($object, $key)) {
 
           // Get class name and build the child from the array
-          $child_class_name = $object::ATTRIBUTE_MAP[$key]['child_class'];
+          $str_child_class_name = $object::ATTRIBUTE_MAP[$key]['child_class'];
 
           // We need to check if the attribute is set already
-          if(!$object->$key instanceof $child_class_name) {
+          if(!$object->$key instanceof $str_child_class_name) {
             // Attribute not set yet. Create new instance
-            Logger::debug("Setting an instance of $child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
-            $object->set_attr($key, new $child_class_name());         
+            Logger::debug("Setting an instance of $str_child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
+            $object->set_attr($key, new $str_child_class_name());         
           }
 
           // Finally populate attributes
-          $object->get_attr($key)->set_attributes($value);
+          $object->$key->set_attributes($value);
 
         } else {
           // Attribute is a standard attribute class
@@ -55,16 +55,16 @@ class ObjectUtils extends AbstractUtils {
 
           // Check if there are custom options set on the object
           if(array_key_exists("options", $object::ATTRIBUTE_MAP[$key])) {
-            $object->get_attr($key)->set_attribute_options($object::ATTRIBUTE_MAP[$key]["options"]);
+            $object->$key->set_attribute_options($object::ATTRIBUTE_MAP[$key]["options"]);
           }    
 
           // Assign the value to the attribute
-          $object->get_attr($key)->set($value);
+          $object->$key->set($value);
 
         }
 
       // We need to check if we are dealing with a value being an array inside collection class
-      } elseif(is_array($value) && self::is_collection_class(get_class($object))) {
+      } elseif(is_array($value) && self::is_collection_class($object)) {
         // This is a collection class
         Logger::debug(get_class($object) . " is a collection class. Populate data: " . json_encode($data));
         $object->populate_collection($data);
@@ -90,7 +90,7 @@ class ObjectUtils extends AbstractUtils {
     Logger::debug("Creating attributes for $str_caller_class");
 
     // Check if the attribute is settable
-    if(!self::is_collection_class(get_class($object))) {
+    if(!self::is_collection_class($object)) {
       // Collection class. We only want to instantiate it
       if(defined("$str_caller_class::ATTRIBUTE_MAP") && is_array($str_caller_class::ATTRIBUTE_MAP)) {
         foreach($str_caller_class::ATTRIBUTE_MAP as $attr_name => $data) {
@@ -106,8 +106,8 @@ class ObjectUtils extends AbstractUtils {
     }
   }
 
-  public static function is_collection_class($class_name) {
-    return preg_match("/Collection/", $class_name) == 1;
+  public static function is_collection_class($object) {
+    return preg_match("/Collection/", get_class($object)) == 1;
   }
 
   /**
