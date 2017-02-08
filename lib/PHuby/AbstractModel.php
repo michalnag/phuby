@@ -12,8 +12,9 @@ use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\StringUtils;
 use PHuby\Error;
+use PHuby\AbstractCore;
 
-abstract class AbstractModel implements BaseModelInterface {
+abstract class AbstractModel extends AbstractCore implements BaseModelInterface {
 
   protected $arr_default_raw_data_options = [
     "exclude" => ["id"],
@@ -21,17 +22,13 @@ abstract class AbstractModel implements BaseModelInterface {
     "include_childs" => false
   ];
 
-  public function &__get($str_attr_name) {
-    if(ObjectUtils::is_attribute_allowed($this, $str_attr_name)) {
-      return $this->$str_attr_name;
-    } else {
-      throw new Error\InvalidAttributeError("Non allowed attribute $str_attr_name cannot be retrieved on " . get_class($this));
-    }
+  /**
+   * Method initiates attributes
+   */
+  public function __construct() {
+    $this->initiate_attributes();
   }
 
-  public function __construct() {
-    ObjectUtils::create_attributes($this);
-  }
 
   public function is_attribute_allowed($attribute) {
     return ObjectUtils::is_attribute_allowed($this, $attribute);
@@ -103,7 +100,7 @@ abstract class AbstractModel implements BaseModelInterface {
    * @return boolean true if attribute is set correctly
    * @throws \PHuby\Error\InvalidAttributeError when invalid argument value is passed
    */
-  public function set_attr($str_attr_name, $value) {
+  public function set_attr_bak($str_attr_name, $value) {
 
     // Check if the attribute is allowed
     if (ObjectUtils::is_attribute_allowed($this, $str_attr_name)) {
@@ -177,7 +174,7 @@ abstract class AbstractModel implements BaseModelInterface {
   /**
    * This method populate attributes from raw data and converts it to attribute classes
    */
-  public function populate_attributes(Array $arr_attributes) {
+  public function populate_attributes_bak(Array $arr_attributes) {
     foreach($arr_attributes as $key => $value) {
       $this->set_attr($key, $value);
     }

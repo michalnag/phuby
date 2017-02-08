@@ -12,7 +12,7 @@ use PHuby\Logger;
 use PHuby\Error;
 use PHuby\Helpers\Utils\ObjectUtils;
 
-abstract class AbstractModelCollection extends AbstractModel implements BaseModelInterface {
+abstract class AbstractModelCollection extends AbstractCore {
 
   public $collection = [];
 

@@ -33,22 +33,22 @@ class TestModelTest extends TestCase {
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
         case 'datetime':
-          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->get_attr($key));
-          $this->assertEquals(null, $this->obj_tm->get_attr($key)->to_db_format());          
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());          
           break;
         case 'string_with_options':
-          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->get_attr($key));
-          $this->assertEquals(null, $this->obj_tm->get_attr($key)->to_db_format());          
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());          
           break;
         default:
-          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->get_attr($key));
-          $this->assertEquals(null, $this->obj_tm->get_attr($key)->to_db_format());
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
+          $this->assertEquals(null, $this->obj_tm->$key->to_db_format());
           break;
       }
     }
   }
 
-  public function populate_attributes() {
+  public function test_populate_attributes() {
 
     $this->obj_tm->populate_attributes($this->example_test_model_data);
 
@@ -113,7 +113,7 @@ class TestModelTest extends TestCase {
   }
 
 
-  public function get_raw_data() {
+  public function test_get_raw_data() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals(
         $this->example_test_model_data,
@@ -121,7 +121,7 @@ class TestModelTest extends TestCase {
       );
   }
 
-  public function populate_attributes_with_collection() {
+  public function test_populate_attributes_with_collection() {
     $arr_data_with_collection = $this->example_test_model_data;
     $arr_data_with_collection["collection"] = [
       $arr_data_with_collection
@@ -151,7 +151,7 @@ class TestModelTest extends TestCase {
   }
 
 
-  public function multiple_population() {
+  public function test_multiple_population() {
     $this->obj_tm = new TestModel();
 
     // Add nested model
