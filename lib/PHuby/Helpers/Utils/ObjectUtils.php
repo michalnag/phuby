@@ -22,7 +22,7 @@ class ObjectUtils extends AbstractUtils {
   * @param mixed[] Array containind data to be assigned to attributes
   * @return TODO
   */
-  public static function populate_attributes(&$object, $data) {
+  public static function set_attributes(&$object, $data) {
     Logger::debug(get_class($object) . " will be built from the array.");
     // Loop through the array and assign correct attributes
     foreach($data as $key => $value) {
@@ -38,11 +38,11 @@ class ObjectUtils extends AbstractUtils {
           if(!$object->$key instanceof $child_class_name) {
             // Attribute not set yet. Create new instance
             Logger::debug("Setting an instance of $child_class_name as $key attribute on ".get_class($object)." with values ".json_encode($value));
-            $object->$key = new $child_class_name();         
+            $object->set_attr($key, new $child_class_name());         
           }
 
           // Finally populate attributes
-          $object->$key->populate_attributes($value);
+          $object->get_attr($key)->set_attributes($value);
 
         } else {
           // Attribute is a standard attribute class
@@ -51,15 +51,15 @@ class ObjectUtils extends AbstractUtils {
           Logger::debug("Attribute $key is configured on the class " . get_class($object) . " as $attribute_class");
 
           // Create an instance of the attribute
-          $object->$key = new $attribute_class();
+          $object->set_attr($key, new $attribute_class());
 
           // Check if there are custom options set on the object
           if(array_key_exists("options", $object::ATTRIBUTE_MAP[$key])) {
-            $object->$key->set_attribute_options($object::ATTRIBUTE_MAP[$key]["options"]);
+            $object->get_attr($key)->set_attribute_options($object::ATTRIBUTE_MAP[$key]["options"]);
           }    
 
           // Assign the value to the attribute
-          $object->$key->set($value);
+          $object->get_attr($key)->set($value);
 
         }
 
@@ -97,7 +97,7 @@ class ObjectUtils extends AbstractUtils {
           // Check if this is a sandard attribute
           if(array_key_exists("class", $data)) {
             $str_attr_class = $data["class"];
-            $object->$attr_name = new $str_attr_class;
+            $object->set_attr($attr_name, new $str_attr_class);
           }
         }
       } else {

@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Class representing Base File Attribute

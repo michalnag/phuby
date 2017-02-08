@@ -46,7 +46,7 @@ class Request extends AbstractNetwork {
       // Assign core details and extract options
       $request_param = new RequestParam();
 
-      $request_param->populate_attributes([
+      $request_param->set_attributes([
           'name'    => $param_details_parts[0],
           'source'  => $param_details_parts[1],
           'type'    => $param_details_parts[2]

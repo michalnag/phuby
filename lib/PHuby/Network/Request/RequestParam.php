@@ -9,8 +9,14 @@
 namespace PHuby\Network\Request;
 use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
+use PHuby\AbstractModel;
 
-class RequestParam {  
+class RequestParam extends AbstractModel {  
+
+  private
+    $name,
+    $source,
+    $type;
 
   const ATTRIBUTE_MAP = [
     "name" => [
@@ -38,10 +44,6 @@ class RequestParam {
 
   public function get_options() {
     return $this->options;
-  }
-
-  public function populate_attributes(Array $attributes) {
-    return ObjectUtils::populate_attributes($this, $attributes);
   }
 
   public function __toString() {

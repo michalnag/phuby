@@ -11,6 +11,7 @@ namespace PHuby;
 use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\StringUtils;
+use PHuby\Error;
 
 abstract class AbstractModel implements BaseModelInterface {
 
@@ -20,12 +21,20 @@ abstract class AbstractModel implements BaseModelInterface {
     "include_childs" => false
   ];
 
+  public function __get($str_attr_name) {
+    if(ObjectUtils::is_attribute_allowed($this, $str_attr_name)) {
+      return $this->$str_attr_name;
+    } else {
+      throw new Error\InvalidAttributeError("Non allowed attribute $str_attr_name cannot be retrieved on " . get_class($this));
+    }
+  }
+
   public function __construct() {
     ObjectUtils::create_attributes($this);
   }
 
-  public function populate_attributes($attributes) {
-    return ObjectUtils::populate_attributes($this, $attributes);
+  public function set_attributes($attributes) {
+    return ObjectUtils::set_attributes($this, $attributes);
   }
 
   public function is_attribute_allowed($attribute) {
@@ -76,4 +85,21 @@ abstract class AbstractModel implements BaseModelInterface {
     return empty($arr_raw_data) ? null : $arr_raw_data;
     
   }
+
+  /**
+   * Method is designed to retrieve attributes set on the object
+   */
+  public function &get_attr($str_attr_name) {
+    return $this->$str_attr_name;
+  }
+
+  /**
+   * Method is designed to set the attribute on the object
+   */
+  public function set_attr($str_attr_name, $value) {
+    $this->$str_attr_name = $value;
+    return true;
+  }
+
+
 }

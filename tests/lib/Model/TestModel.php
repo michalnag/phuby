@@ -6,7 +6,7 @@ use PHuby\AbstractModel;
 
 class TestModel extends AbstractModel {
 
-  public 
+  protected 
     $int,
     $datetime,
     $email,
