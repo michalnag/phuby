@@ -31,8 +31,8 @@ abstract class AbstractModel extends AbstractCore implements BaseModelInterface 
 
   /**
    * Method returns an array with raw data that is configured on the model
-   * 
-   * @todo - implement options string if required
+   * @return 
+   * @todo - Support collection model
    */
   public function get_raw_data() {
     
@@ -44,7 +44,13 @@ abstract class AbstractModel extends AbstractCore implements BaseModelInterface 
     foreach($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
       // Check if the attribute is excluded
       if(!in_array($str_attr_name, $arr_options["exclude"])) {
-        // Not excluded. Check if it is a child class
+        
+        // Start checking whether this is a standard attribute or not
+        if($this->is_attribute_standard($str_attr_name)) {
+          $arr_raw_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
+        }
+
+        // Check if this is a child class
         if($this->is_attribute_child_class($str_attr_name)) {
           // Attribute is a child class. Check if it is supposed to be included
           if($arr_options["include_childs"]) {
@@ -52,10 +58,14 @@ abstract class AbstractModel extends AbstractCore implements BaseModelInterface 
           } else {
             // Do not include child class
           }
-        } else {
-          // Not a child class. Add the attribute
-          $arr_raw_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
+        } 
+
+        // Check if this is a collection class
+        if($this->is_attribute_collection_class($str_attr_name)) {
+          // TODO
         }
+
+
       }
     }
 

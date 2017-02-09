@@ -113,7 +113,7 @@ class TestModelTest extends TestCase {
   }
 
 
-  public function get_raw_data() {
+  public function test_get_raw_data() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals(
         $this->example_test_model_data,
@@ -121,7 +121,7 @@ class TestModelTest extends TestCase {
       );
   }
 
-  public function populate_attributes_with_collection() {
+  public function test_populate_attributes_with_collection() {
     $arr_data_with_collection = $this->example_test_model_data;
     $arr_data_with_collection["collection"] = [
       $arr_data_with_collection
@@ -129,29 +129,29 @@ class TestModelTest extends TestCase {
 
     $this->obj_tm->populate_attributes($arr_data_with_collection);
 
-    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->collection);
-    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->collection->collection[0]);
+    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->get_attr('collection'));
+    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->get_attr('collection')->get_collection()[0]);
 
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
         case 'datetime':
-          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->collection->collection[0]->$key);
-          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());        
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key)->to_db_format());        
           break;
         case 'string_with_options':
-          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->collection->collection[0]->$key);
-          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format());        
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key)->to_db_format());        
           break;
         default:
-          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->collection->collection[0]->$key);
-          $this->assertEquals($value, $this->obj_tm->collection->collection[0]->$key->to_db_format()); 
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr('collection')->get_collection()[0]->get_attr($key)->to_db_format()); 
           break;
       }
     }
   }
 
 
-  public function multiple_population() {
+  public function test_multiple_population() {
     $this->obj_tm = new TestModel();
 
     // Add nested model
@@ -160,10 +160,10 @@ class TestModelTest extends TestCase {
 
     $this->obj_tm->populate_attributes($arr_nested_data);
 
-    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->nested_model);
+    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->get_attr('nested_model'));
 
-    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->nested_model->email->get());
-    $this->assertEquals($arr_nested_data['nested_model']['boolean'], $this->obj_tm->nested_model->boolean->to_db_format());
+    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->get_attr('nested_model')->get_attr('email')->get());
+    $this->assertEquals($arr_nested_data['nested_model']['boolean'], $this->obj_tm->get_attr('nested_model')->get_attr('boolean')->to_db_format());
 
     // Repopulate data
     $this->obj_tm->populate_attributes([
@@ -173,9 +173,8 @@ class TestModelTest extends TestCase {
       ]);
 
     // Check if we can still validate email
-    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->nested_model->email->get());
+    $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->get_attr('nested_model')->get_attr('email')->get());
   }
-
 
 
 }

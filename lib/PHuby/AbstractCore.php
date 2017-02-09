@@ -53,11 +53,11 @@ abstract class AbstractCore {
       if($this->is_attribute_child_class($str_attr_name)) {
         if (!$this->$str_attr_name) {
           // Create an instance of the child class
-          $this->str_attr_name = new $str_attr_class;
+          $this->$str_attr_name = new $str_attr_class;
         }
 
         // And now populate attributes
-        $this->str_attr_name->populate_attributes($value);
+        $this->$str_attr_name->populate_attributes($value);
         
       }
 
@@ -65,11 +65,11 @@ abstract class AbstractCore {
       if($this->is_attribute_collection_class($str_attr_name)) {
         if (!$this->$str_attr_name) {
           // Create an instance of the child class
-          $this->str_attr_name = new $str_attr_class;
+          $this->$str_attr_name = new $str_attr_class;
         }
 
         // And now populate attributes
-        $this->str_attr_name->populate_collection($value);
+        $this->$str_attr_name->populate_collection($value);
 
       }
 
@@ -202,7 +202,7 @@ abstract class AbstractCore {
     if(defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)) {
       return true;
     } else {
-      return false;      
+      return false;
     }
   }
 
@@ -235,8 +235,8 @@ abstract class AbstractCore {
    * @return boolean true if attribute is a collection_class, false otherwise
    */
   public function is_attribute_collection_class($str_attr_name) {
-    $caller_class = get_class($this);
-    return defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    $str_caller_class = get_class($this);
+    return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
 }

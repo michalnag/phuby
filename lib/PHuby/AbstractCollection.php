@@ -18,7 +18,7 @@ abstract class AbstractCollection extends AbstractCore {
   public function populate_collection(Array $arr_collection) {
   
     // Iterate over the collection and try to add all elements ti the collection
-    foreach ($array as $data) {
+    foreach ($arr_collection as $data) {
 
       // Simply add to the collection
       $this->add_to_collection($data);
@@ -38,7 +38,7 @@ abstract class AbstractCollection extends AbstractCore {
   public function add_to_collection($value) {
 
     // Get the collect class
-    $str_collect_class = $this::COLLECT_CLASS;
+    $str_collect_class = $this::COLLECT_CLASS['name'];
 
     // Check if the data is an array or collectable object
     if (is_object($value) && $value instanceof $str_collect_class) {
