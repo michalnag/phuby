@@ -46,7 +46,7 @@ class TestModelCollectionTest extends TestCase {
 
   public function test_instantiation() {
     $this->obj_tmc->populate_collection($this->example_data);
-    foreach ($this->obj_tmc->collection as $obj_test_model) {
+    foreach ($this->obj_tmc->get_collection() as $obj_test_model) {
       $this->assertInstanceOf("\Model\TestModel", $obj_test_model);
     }
   }
@@ -55,7 +55,7 @@ class TestModelCollectionTest extends TestCase {
     $this->obj_tmc->populate_collection($this->example_data);
     $this->assertEquals(
         $this->example_data,
-        $this->obj_tmc->get_raw_data()
+        $this->obj_tmc->get_raw_collection_data()
       );
   }
 
