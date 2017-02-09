@@ -2,9 +2,9 @@
 
 namespace Model;
 
-use PHuby\AbstractModelCollection;
+use PHuby\AbstractCollection;
 
-class TestModelCollection extends AbstractModelCollection {
+class TestModelCollection extends AbstractCollection {
 
   const COLLECT_CLASS = [
     "name"        => "\Model\TestModel"

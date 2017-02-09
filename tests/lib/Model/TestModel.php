@@ -63,7 +63,7 @@ class TestModel extends AbstractModel {
 
     // Child classes
     'collection' => [
-      "child_class" => "\Model\TestModelCollection"
+      "collection_class" => "\Model\TestModelCollection"
     ],
     'nested_model' => [
       "child_class" => "\Model\TestModel"

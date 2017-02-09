@@ -48,23 +48,23 @@ class TestModelTest extends TestCase {
     }
   }
 
-  public function populate_attributes() {
+  public function test_populate_attributes() {
 
     $this->obj_tm->populate_attributes($this->example_test_model_data);
 
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
         case 'datetime':
-          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->$key);
-          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());
+          $this->assertInstanceOf("\PHuby\Attribute\DateTimeAttr", $this->obj_tm->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr($key)->to_db_format());
           break;
         case 'string_with_options':
-          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->$key);
-          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());          
+          $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr($key)->to_db_format());          
           break;
         default:
-          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->$key);
-          $this->assertEquals($value, $this->obj_tm->$key->to_db_format());
+          $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->get_attr($key));
+          $this->assertEquals($value, $this->obj_tm->get_attr($key)->to_db_format());
           break;
       }
     }
@@ -85,15 +85,15 @@ class TestModelTest extends TestCase {
 
     // We also want to make sure we set location
     $str_assets_location = __DIR__."/../../assets";
-    $this->obj_tm->image->set_location($str_assets_location);
-    $this->assertEquals("image_01.jpg", $this->obj_tm->image->get());
-    $this->assertTrue($this->obj_tm->image->exists());
-    $this->obj_tm->file->set_location($str_assets_location);
-    $this->assertTrue($this->obj_tm->file->exists());
+    $this->obj_tm->get_attr('image')->set_location($str_assets_location);
+    $this->assertEquals("image_01.jpg", $this->obj_tm->get_attr('image')->get());
+    $this->assertTrue($this->obj_tm->get_attr('image')->exists());
+    $this->obj_tm->get_attr('file')->set_location($str_assets_location);
+    $this->assertTrue($this->obj_tm->get_attr('file')->exists());
 
     // Test if we can copy an image
     $str_copy_image_filepath = $str_assets_location . DIRECTORY_SEPARATOR . "image_01_copy.jpg";
-    $obj_copied_image = $this->obj_tm->image->copy($str_copy_image_filepath);
+    $obj_copied_image = $this->obj_tm->get_attr('image')->copy($str_copy_image_filepath);
 
     $this->assertEquals("image_01_copy.jpg", $obj_copied_image->to_db_format());
     $this->assertEquals($str_assets_location, $obj_copied_image->get_location());
@@ -105,11 +105,11 @@ class TestModelTest extends TestCase {
     $this->assertFalse(FileUtils::exists($str_copy_image_filepath));
 
     // Check if we can change the value
-    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->string->to_db_format());
+    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->get_attr('string')->to_db_format());
     $this->obj_tm->set_attr('string', 'test');
-    $this->assertEquals('test', $this->obj_tm->string->to_db_format());
+    $this->assertEquals('test', $this->obj_tm->get_attr('string')->to_db_format());
     $this->obj_tm->set_attr('string', $this->example_test_model_data['string']);
-    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->string->to_db_format());
+    $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->get_attr('string')->to_db_format());
   }
 
 
