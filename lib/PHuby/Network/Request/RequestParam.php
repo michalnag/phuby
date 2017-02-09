@@ -54,7 +54,7 @@ class RequestParam extends AbstractModel {
    * Method retrieves the value from the superglobal
    */
   public function retrive_value() {
-    switch($this->source->__toString()) {
+    switch(strtoupper($this->source->__toString())) {
       case "POST":
         $this->value = isset($_POST[$this->name->__toString()]) ? $_POST[$this->name->__toString()] : null;
         break;
