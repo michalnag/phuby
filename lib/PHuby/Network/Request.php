@@ -15,19 +15,19 @@ use PHuby\Network\Request\RequestParam;
 
 class Request extends AbstractNetwork {
 
-  private 
-    $raw_request_data,
-    $parameters = [];
+  private
+    $arr_parameters = [];
    
   /**
-   * Method 
-   * example value
-   *
-   * @param string[] $params_details Array with strings 
-   * @throws PHuby\Error\MissingParameterError if parameter is required and not found
+   * Method retrieves parameters from GET, POST, FILES superglobals
+   * example value: [["id:POST:integer", [, "required" => true ]], [...]]
+   * @param mixed[] $params_details Array of Arrays with parameters details 
+   * @return boolean true once process is completed
+   * @throws \PHuby\Error\MissingParameterError if parameter is required and not found
    */
   public function get_params_from_request(Array $params_details) {
     
+    // Iterate over parameters details passed to the method
     foreach($params_details as $param_details) {
       Logger::debug("Processing param details: $param_details[0]");
       $param_details_parts = explode(':', $param_details[0]);
@@ -46,7 +46,7 @@ class Request extends AbstractNetwork {
       // Assign core details and extract options
       $request_param = new RequestParam();
 
-      $request_param->set_attributes([
+      $request_param->populate_attributes([
           'name'    => $param_details_parts[0],
           'source'  => $param_details_parts[1],
           'type'    => $param_details_parts[2]
@@ -64,86 +64,82 @@ class Request extends AbstractNetwork {
       $this->add_to_params($request_param);
 
     }
-    
+
+    // Process completed
+    return true;
   }
 
+
   /**
-   *
+   * Adds the RequestParam object to the collection of parameters sent in the request
+   * @param object RequestParam $obj_param representing an instance of the parameter
+   * @return boolean true once paramter is added to parameters array
+   * @throws \PHuby\Error\DuplicatedParameterError when parameter is duplicated
    */
-  public function add_to_params(RequestParam $param) {
-    if(!array_key_exists($param->get_name(), $this->parameters)) {
-      $this->parameters[$param->get_name()] = $param;      
+  public function add_to_params(RequestParam $obj_param) {
+    // Check if the parameter has already been set
+    if(!array_key_exists($obj_param->get_name(), $this->parameters)) {
+      // Add parameter to parameters collection
+      $this->arr_parameters[$obj_param->get_name()] = $obj_param;      
     } else {
-      // Duplicated parameter
-      throw new Error\InvalidParameterError("Parameter is ");
+      // Duplicated parameter. Throw an exception
+      throw new Error\DuplicatedParameterError("Parameter {$obj_param->get_name()} is duplicated.");
     }
   }
 
+
   /**
-   *
+   * Method checks if the parameter is passed in the given superglobal source
+   * @param string $str_param_name representing a name of the parameter
+   * @param string $str_source representing superglobal source, e.g. GET, POST, FILES
+   * @return boolean true if parameter is available in the source, false otherwise
+   * @throws \PHuby\Error\InvalidParameterError if unsupported source is passed
    */
-  public function is_parameter_passed($param_name, $source) {    
-    switch($source) {
+  public function is_parameter_passed($str_param_name, $str_source) {
+    // Based on the source
+    switch(strtoupper($str_source)) {
       case "GET":
-        return isset($_GET[$param_name]);
+        return isset($_GET[$str_param_name]);
         break;
       case "POST":
-        return isset($_POST[$param_name]);
+        return isset($_POST[$str_param_name]);
         break;
       case "FILES":
-        return isset($_FILES[$param_name]);
+        return isset($_FILES[$str_param_name]);
         break;
       default:
-        /** @todo Unsupported source - throw exception */
+        throw new Error\InvalidParameterError("Invalid source parameter passed: $str_source");
         break;
     }
   }
 
-  /**
-   *
-   */
-  public function get_param($param_name) {
-    Logger::debug("Retrieving parameter $param_name");
-    return $this->parameters[$param_name];
-  }
 
   /**
-   * 
+   * Retrieves the parameter object based on the parameter name
+   * @param string $str_param_name representing parameter name
+   * @return object RequestParam representing requested parameter, null otherwise
    */
-  public function get_param_value($param_name) {
-    return $this->get_param($param_name)->get_value();
+  public function get_param($str_param_name) {
+    Logger::debug("Retrieving parameter $str_param_name");
+    if (array_key_exists($str_param_name, $this->arr_parameters)) {
+      return $this->arr_parameters[$str_param_name];      
+    } else {
+      return null;
+    }
+  }
+
+
+  /**
+   * Retrieves parameter value based on the parameter name
+   * @param string $str_param_name representing requested parameter name
+   * @return mixed representing parameter value, null if not found
+   */
+  public function get_param_value($str_param_name) {
+    if ($this->get_param($str_param_name)) {
+      return $this->get_param($str_param_name)->get_value();      
+    } else {
+      return null;
+    }
   }
 
 }
-
-/**
- EXAMPLE SERVER REQUEST
-
-     [HTTP_HOST] => dev.digitflow.com
-    [HTTP_USER_AGENT] => curl/7.47.0
-    [HTTP_ACCEPT] => * /*
-    [PATH] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    [SERVER_SIGNATURE] => <address>Apache/2.4.18 (Ubuntu) Server at dev.digitflow.com Port 80</address>
-
-    [SERVER_SOFTWARE] => Apache/2.4.18 (Ubuntu)
-    [SERVER_NAME] => dev.digitflow.com
-    [SERVER_ADDR] => 127.0.0.1
-    [SERVER_PORT] => 80
-    [REMOTE_ADDR] => 127.0.0.1
-    [DOCUMENT_ROOT] => /var/www/digitflow/public
-    [REQUEST_SCHEME] => http
-    [CONTEXT_PREFIX] => 
-    [CONTEXT_DOCUMENT_ROOT] => /var/www/digitflow/public
-    [SERVER_ADMIN] => [no address given]
-    [SCRIPT_FILENAME] => /var/www/digitflow/public/index.php
-    [REMOTE_PORT] => 55278
-    [GATEWAY_INTERFACE] => CGI/1.1
-    [SERVER_PROTOCOL] => HTTP/1.1
-    [REQUEST_METHOD] => GET
-    [QUERY_STRING] => 
-    [REQUEST_URI] => /
-    [SCRIPT_NAME] => /index.php
-    [PHP_SELF] => /index.php
-    [REQUEST_TIME_FLOAT] => 1478258972.255
-    [REQUEST_TIME] => 1478258972
-*/

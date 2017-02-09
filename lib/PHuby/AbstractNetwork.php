@@ -8,8 +8,4 @@
 
 namespace PHuby;
 
-use PHuby\AbstractCore;
-
-abstract class AbstractNetwork extends AbstractCore {
-   
-}
+abstract class AbstractNetwork extends AbstractCore {}

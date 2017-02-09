@@ -12,7 +12,6 @@ use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\StringUtils;
 use PHuby\Error;
-use PHuby\AbstractCore;
 
 abstract class AbstractModel extends AbstractCore {
 
