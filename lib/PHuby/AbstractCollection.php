@@ -1,8 +1,12 @@
 <?php
+/**
+ * AbstractCollection sits as a base in every collection object
+ * 
+ * @author Michal Nagielski <michal.nagielski@gmail.com>
+ * @package PHuby
+ */
 
 namespace PHuby;
-
-use PHuby\AbstractCore;
 
 abstract class AbstractCollection extends AbstractCore {
 

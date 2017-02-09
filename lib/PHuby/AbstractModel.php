@@ -14,7 +14,7 @@ use PHuby\Helpers\Utils\StringUtils;
 use PHuby\Error;
 use PHuby\AbstractCore;
 
-abstract class AbstractModel extends AbstractCore implements BaseModelInterface {
+abstract class AbstractModel extends AbstractCore {
 
   protected $arr_default_raw_data_options = [
     "exclude" => ["id"],
@@ -64,7 +64,6 @@ abstract class AbstractModel extends AbstractCore implements BaseModelInterface 
         if($this->is_attribute_collection_class($str_attr_name)) {
           // TODO
         }
-
 
       }
     }
