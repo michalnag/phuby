@@ -135,17 +135,11 @@ class ObjectUtils extends AbstractUtils {
   }
 
 
-  public static function check_required_attributes($object, Array $attributes, $attribute_type = "dynamic") {
-    
-    switch($attribute_type) {
-      case "dynamic":
-        foreach($attributes as $attribute) {
-          if(!isset($object->$attribute)) {
-            throw new Error\MissingAttributeError("Attribute $attribute is not set on the object " . get_class($object));
-          }
-        }
-        break;
-        
+  public static function check_required_attributes($object, Array $arr_attributes) {
+    foreach($arr_attributes as $str_attr_name) {
+      if(!$object->get_attr($str_attr_name)) {
+        throw new Error\MissingAttributeError("Attribute $str_attr_name is not set on the object " . get_class($object));
+      }
     }
 
     return true;

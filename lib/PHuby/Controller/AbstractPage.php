@@ -36,7 +36,7 @@ abstract class AbstractPage extends AbstractController {
     // Assign vars
     ArrayUtils::add_data($str_keymap, $this->template_vars, $data);
     Logger::debug("Added following data to template_vars in keymap $str_keymap" . json_encode($data));
-    return true;
+    return $this;
   }
 
   protected function render(Array $params = null) {

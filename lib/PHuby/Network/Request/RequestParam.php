@@ -13,7 +13,7 @@ use PHuby\AbstractModel;
 
 class RequestParam extends AbstractModel {  
 
-  private
+  protected
     $name,
     $source,
     $type;
@@ -30,7 +30,7 @@ class RequestParam extends AbstractModel {
     ]
   ];
 
-  private 
+  protected 
     $value,       // Native value passed to the class
     $options = [
       "required" => false,

@@ -78,7 +78,7 @@ class Request extends AbstractNetwork {
    */
   public function add_to_params(RequestParam $obj_param) {
     // Check if the parameter has already been set
-    if(!array_key_exists($obj_param->get_name(), $this->parameters)) {
+    if(!array_key_exists($obj_param->get_name(), $this->arr_parameters)) {
       // Add parameter to parameters collection
       $this->arr_parameters[$obj_param->get_name()] = $obj_param;      
     } else {
