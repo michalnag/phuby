@@ -14,6 +14,11 @@ use PHuby\Logger;
 
 abstract class AbstractCore {
 
+  const 
+    CLASS_TYPE_MODEL = 1,
+    CLASS_TYPE_COLLECTION = 1;
+
+
   /**
    * Method sets the attribute based on the configuration inside ATTRIBUTE_MAP
    * @param string $str_attr_name representing name of the attribute
@@ -239,4 +244,57 @@ abstract class AbstractCore {
     return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
+
+  /**
+   * Method gets the class type by interpreting CLASS_TYPE constant set on the class
+   * @return integer representing a class type (set on the AbsstractCore)
+   */
+  public function get_class_type() {
+
+  }
+
+
+  /**
+   * Method gets the db format data, which basically returns an array representing current state of the object
+   * where all attributes are formatted according to the db format.
+   * @param boolean $nesting
+   * @return mixed[] Array representing raw data
+   */
+  public function get_db_formatted_data($bol_nesting = false) {
+
+    $arr_result = [];
+
+    // First, check if this is a collection class
+    if ($this->is_co)
+
+    // Iterate over ATTRIBUTE_MAP
+    foreach($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
+        
+      // Start checking whether this is a standard attribute or not
+      if($this->is_attribute_standard($str_attr_name)) {
+        $arr_raw_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
+      }
+
+      // Check if this is a child class
+      if($this->is_attribute_child_class($str_attr_name)) {
+        // Attribute is a child class. Check if it is supposed to be included
+        if($arr_options["include_childs"]) {
+          // Include child class
+        } else {
+          // Do not include child class
+        }
+      } 
+
+      // Check if this is a collection class
+      if($this->is_attribute_collection_class($str_attr_name)) {
+        // TODO
+      }
+
+    }
+
+
+    return empty($arr_raw_data) ? null : $arr_raw_data;
+
+
+  }
 }

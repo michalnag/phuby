@@ -12,6 +12,9 @@ use PHuby\Error;
 
 abstract class AbstractCollection extends AbstractCore {
 
+  const
+    CLASS_TYPE = self::CLASS_TYPE_COLLECTION;
+
   protected $collection = [];
 
   /**

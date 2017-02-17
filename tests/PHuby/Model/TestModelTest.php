@@ -112,8 +112,16 @@ class TestModelTest extends TestCase {
     $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->get_attr('string')->to_db_format());
   }
 
-
   public function test_get_raw_data() {
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $this->assertEquals(
+        $this->example_test_model_data,
+        $this->obj_tm->get_raw_data()
+      );
+  }
+
+
+  public function test_get_db_formatted_data() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals(
         $this->example_test_model_data,
@@ -149,7 +157,6 @@ class TestModelTest extends TestCase {
       }
     }
   }
-
 
   public function test_multiple_population() {
     $this->obj_tm = new TestModel();

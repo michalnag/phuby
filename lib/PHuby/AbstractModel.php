@@ -15,6 +15,9 @@ use PHuby\Error;
 
 abstract class AbstractModel extends AbstractCore {
 
+  const
+    CLASS_TYPE = self::CLASS_TYPE_MODEL;
+
   protected $arr_default_raw_data_options = [
     "exclude" => ["id"],
     "include" => "all",
