@@ -86,6 +86,40 @@ class ArrayUtilsTest extends TestCase {
     $this->assertEquals(null, ArrayUtils::get_data("msg:test", $arr_data));
   }
 
+
+  public function test_keymap_to_array() {
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("id"),
+        [ "id" ]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("id,email"),
+        [ "id", "email" ]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("user:id"),
+        ["user" => [ "id" ]]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("user:id,email"),
+        ["user" => [ "id", "email" ]]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("user:orders[id,status]"),
+        ["user" => [ "orders" => [[ "id", "status" ]]]]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("user:orders[details:id]"),
+        ["user" => [ "orders" => [[ "details" => [ "id" ]]]]]
+      );
+
+  }
+
   public function test_remove_data() {
     $arr_data = ["msg" => ["error" => [
       ["content" => "Error 1"],
@@ -95,6 +129,21 @@ class ArrayUtilsTest extends TestCase {
     $this->assertTrue(ArrayUtils::remove_data("msg:error", $arr_data));
     $this->assertEquals(null, ArrayUtils::get_data("msg:error", $arr_data));
     $this->assertEquals(["msg" => []], $arr_data);
+
+    // Multiple arguments removal and nesting
+    $arr_example = [
+      "user" => [
+        "id" => 1,
+        "email" => "test@test.com",
+        "orders" => [
+          ["id" => 1, "status" => 2, "details" => ["id" => 1, "desc" => "test"]],
+          ["id" => 2, "status" => 2, "details" => ["id" => 2, "desc" => "test2"]]
+        ]
+      ]
+    ];
+
+
+
   }
 
   public function test_splice_data() {

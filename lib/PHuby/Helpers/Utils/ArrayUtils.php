@@ -101,14 +101,18 @@ class ArrayUtils extends AbstractUtils {
   }
 
   /**
-   * Method removes the relevant key from the array based on the keymap
-   * 
-   * @param string $str_keymap representing keymap
+   * Method removes the relevant key from the array based on the keymap.
+   *
+   * @param string $str_keymap representing keymap (see above for examples)
    * @param mixed[] $arr_source 
    * @return boolean true if data has been removed, false otherwise
    */
   public static function remove_data($str_keymap, Array &$arr_source) {
-    // Deal with the keymap
+
+    // First, we want to convert keymap to the array
+    $arr_keymap = self::keymap_to_array($str_keymap, []);
+
+    if (strpos($str_keymap))
     $arr_keys = explode(":", $str_keymap, 2);
 
     $bol_return = false;
@@ -123,6 +127,102 @@ class ArrayUtils extends AbstractUtils {
     }
 
     return $bol_return;
+  }
+
+
+  /**
+   * These are examples of valid keymaps
+   * * "id"               will remove id key from the array
+   * * "id,email"         will remove id and email from the array
+   * * "user:id"          will remove id key from user key
+   * * "user:id,email"    will remove id and email keys from user key
+   * * "user:orders[id,status]" will remove id and status from a order collection under user key
+   * * "user:orders[details:id]" will remove id from details child class which is a part of orders collection under user key 
+   * * "[id,email]" will remove id and email keys from the array of arrays
+   * IMPORTANT: If targeting subarrays, they must be at the last place in the keymap string
+   */
+  public static function keymap_to_array($str_keymap) {
+
+    // Initiate array
+    $arr_keymap = [];
+    $arr_reference =& $arr_keymap;
+
+    // We need to extract subarray from the keymap
+    list($str_before_subarray, $str_subarray) = self::extract_subarray_from_keymap($str_keymap);
+
+    // Once split, we want to check if we have a string before a subarray
+    if ($str_before_subarray) {
+      // Check if we have multiple keys
+      $arr_before_subarray_parts = explode(':', $str_before_subarray);
+
+      // Initiate counter, ta capture last element
+      $cnt = 0;
+
+      foreach ($arr_before_subarray_parts as $str_before_subarray_part) {
+
+        // We only support multiple arguments if they sit as the last argument
+        if ($cnt == count($arr_before_subarray_parts) - 1) {
+
+          // This is the last element. We want to check if we are targeting multiple attributes
+          $arr_attributes = explode(',', $str_before_subarray_part);
+
+          // Check if we have subarray
+          if ($str_subarray) {
+            $arr_reference[$str_before_subarray_part] = [];
+            $arr_reference =& $arr_reference[$str_before_subarray_part];
+          } else {
+            foreach ($arr_attributes as $str_attribute) {
+              $arr_reference[] = $str_attribute;
+            }            
+          }
+
+        } else {
+          // Add sttribute as a key of new array and reassign reference
+          $arr_reference[$str_before_subarray_part] = [];
+          $arr_reference =& $arr_reference[$str_before_subarray_part];
+        }
+
+        $cnt++;
+      }
+    }
+
+    // Handle subarrays if any and add them to the last 
+    if ($str_subarray) {
+      // Repeat the process but pass current reference to the method
+      $arr_reference[] = self::keymap_to_array($str_subarray);
+    }
+
+    return $arr_keymap;
+  }
+
+
+  /**
+   * Checks if the given string contains subarray, which is represented by [...]
+   * @param string $str_keymap representing a keymap
+   * @return boolean true if contains subarray, false otherwise
+   */
+  protected static function does_keymap_contain_subarray($str_keymap) {
+    return preg_match("/\[.*\]/", $str_keymap);
+  }
+
+
+  protected function extract_subarray_from_keymap($str_keymap) {
+
+    // Check if the keymap contains subarray
+    if (self::does_keymap_contain_subarray($str_keymap)) {
+      // We need to extract everything that is before the subarray and after it
+      $str_before_subarray = substr($str_keymap, 0, strpos($str_keymap, "["));
+      $str_subarray = substr($str_keymap, strpos($str_keymap, "[") + 1, strlen($str_keymap) - strpos($str_keymap, "[") - 2);
+    } else {
+      // No subarrays found
+      $str_before_subarray = $str_keymap;
+      $str_subarray = null;
+    }
+
+    return [
+        $str_before_subarray = strlen($str_before_subarray) == 0 ? null : $str_before_subarray,
+        $str_subarray = strlen($str_subarray) == 0 ? null : $str_subarray
+      ];
   }
 
   /**

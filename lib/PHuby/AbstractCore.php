@@ -369,4 +369,14 @@ abstract class AbstractCore {
     }
       return $arr_return_data;
   }
+
+
+  /**
+   * Method gets the flat data using one of the method available in the attribute interface
+   * 
+   */
+  public function get_flat_data($int_) {
+
+  }
+
 }
