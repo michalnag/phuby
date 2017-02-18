@@ -123,9 +123,13 @@ class TestModelTest extends TestCase {
 
   public function test_get_db_formatted_data() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $arr_test_data = $this->example_test_model_data;
+    unset($arr_test_data['int']);
     $this->assertEquals(
-        $this->example_test_model_data,
-        $this->obj_tm->get_raw_data()
+        $arr_test_data,
+        $this->obj_tm->get_db_formatted_data([
+            'exclude' => ['int']
+          ])
       );
   }
 

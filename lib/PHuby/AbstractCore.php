@@ -11,12 +11,19 @@
 namespace PHuby;
 
 use PHuby\Logger;
+use PHuby\Helpers\Utils;
 
 abstract class AbstractCore {
 
   const 
     CLASS_TYPE_MODEL = 1,
-    CLASS_TYPE_COLLECTION = 1;
+    CLASS_TYPE_COLLECTION = 2;
+
+
+  protected $arr_default_get_db_formatted_data_options = [
+    "exclude" => [],
+    "nesting" => false
+  ];
 
 
   /**
@@ -247,54 +254,119 @@ abstract class AbstractCore {
 
   /**
    * Method gets the class type by interpreting CLASS_TYPE constant set on the class
-   * @return integer representing a class type (set on the AbsstractCore)
+   * @return integer representing a class type (set on the AbsstractCore), null if undefined
+   * @todo check if the constant is set on the class
    */
   public function get_class_type() {
+    return $this::CLASS_TYPE;
+  }
 
+
+  /**
+   * Method checks whether the class is a collection class or not
+   * @return boolean true is current class is a collection class, false otherwise
+   */
+  protected function is_collection_class() {
+    return $this->get_class_type() == self::CLASS_TYPE_COLLECTION;
   }
 
 
   /**
    * Method gets the db format data, which basically returns an array representing current state of the object
    * where all attributes are formatted according to the db format.
-   * @param boolean $nesting
+   * 
+   * $arr_custom_options['nesting'] boolean representing whether to include child objects or not
+   * $arr_custom_options['exclude'] mixed array of arguments to be excluded
+   * @param mixed[] $arr_custom_options (see above)
    * @return mixed[] Array representing raw data
    */
-  public function get_db_formatted_data($bol_nesting = false) {
+  public function get_db_formatted_data(Array $arr_custom_options = null) {
 
+    // Initiate the array to hold the data
     $arr_result = [];
 
+    // Check if we have options passed, and if so, process them
+    $arr_options = $this->arr_default_get_db_formatted_data_options;    
+    if ($arr_custom_options) {
+      $arr_options = array_merge($arr_options, $arr_custom_options);      
+    }
+
     // First, check if this is a collection class
-    if ($this->is_co)
+    if ($this->is_collection_class()) {
+
+      if ($this->is_collection_populated()) {
+
+        // Iterate over the collection
+        foreach($this->get_collection() as $obj_collectable) {
+          $arr_result[] = $obj_collectable->get_model_db_formatted_data();
+        }
+
+      }
+    } else {
+
+      // Standard child class
+      $arr_result = $this->get_model_db_formatted_data($arr_options);
+    }
+
+    // Before returning, we want to exclude data (if any)
+    if (!empty($arr_options['exclude'])) {
+      foreach ($arr_options['exclude'] as $str_option) {
+        // Use ArrayUtils to remove the data
+        Utils\ArrayUtils::remove_data($str_option, $arr_result);
+      }
+    }
+
+    // Return
+    return empty($arr_result) ? null : $arr_result;
+  }
+
+
+  /**
+   * 
+   */
+  protected function get_model_db_formatted_data(Array $arr_options) {
+
+    // Initiate return data array
+    $arr_return_data = [];
 
     // Iterate over ATTRIBUTE_MAP
-    foreach($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
+    foreach ($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
         
       // Start checking whether this is a standard attribute or not
-      if($this->is_attribute_standard($str_attr_name)) {
-        $arr_raw_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
+      if ($this->is_attribute_standard($str_attr_name)) {
+        $arr_return_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
       }
 
       // Check if this is a child class
-      if($this->is_attribute_child_class($str_attr_name)) {
+      if ($this->is_attribute_child_class($str_attr_name)) {
+
         // Attribute is a child class. Check if it is supposed to be included
-        if($arr_options["include_childs"]) {
-          // Include child class
+        if ($arr_options["nesting"]) {
+
+          // Initiate the array
+          $arr_return_data[$str_attr_name] = [];
+
+          // Include child class. Check if this is a collection class or not
+          if ($this->$str_attr_name->is_collection_class()) {
+
+            // Iterate over the collection
+            foreach ($this->$str_attr_name->get_collection() as $obj_collectable) {
+              $arr_return_data[$str_attr_name][] = $obj_collectable->get_model_db_formatted_data($arr_options);
+            }
+
+          } else {
+
+            // Include model data
+            $arr_return_data[$str_attr_name] = $this->$str_attr_name->get_model_db_formatted_data($arr_options);
+          }
+
         } else {
           // Do not include child class
         }
       } 
 
-      // Check if this is a collection class
-      if($this->is_attribute_collection_class($str_attr_name)) {
-        // TODO
-      }
 
     }
-
-
-    return empty($arr_raw_data) ? null : $arr_raw_data;
-
-
+      return $arr_return_data;
   }
 }
