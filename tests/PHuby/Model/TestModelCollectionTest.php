@@ -51,11 +51,11 @@ class TestModelCollectionTest extends TestCase {
     }
   }
 
-  public function test_get_raw_data() {
+  public function test_get_flat_data() {
     $this->obj_tmc->populate_collection($this->example_data);
     $this->assertEquals(
         $this->example_data,
-        $this->obj_tmc->get_raw_collection_data()
+        $this->obj_tmc->get_flat_data()
       );
   }
 

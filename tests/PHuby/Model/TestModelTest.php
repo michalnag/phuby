@@ -112,27 +112,6 @@ class TestModelTest extends TestCase {
     $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->get_attr('string')->to_db_format());
   }
 
-  public function test_get_raw_data() {
-    $this->obj_tm->populate_attributes($this->example_test_model_data);
-    $this->assertEquals(
-        $this->example_test_model_data,
-        $this->obj_tm->get_raw_data()
-      );
-  }
-
-
-  public function test_get_db_formatted_data() {
-    $this->obj_tm->populate_attributes($this->example_test_model_data);
-    $arr_test_data = $this->example_test_model_data;
-    unset($arr_test_data['int']);
-    $this->assertEquals(
-        $arr_test_data,
-        $this->obj_tm->get_db_formatted_data([
-            'exclude' => ['int']
-          ])
-      );
-  }
-
   public function test_populate_attributes_with_collection() {
     $arr_data_with_collection = $this->example_test_model_data;
     $arr_data_with_collection["collection"] = [
@@ -185,6 +164,23 @@ class TestModelTest extends TestCase {
 
     // Check if we can still validate email
     $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->get_attr('nested_model')->get_attr('email')->get());
+  }
+
+  public function test_get_flat_data() {
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $this->assertEquals(
+        $this->example_test_model_data,
+        $this->obj_tm->get_flat_data()
+      );
+
+    $arr_example_data = $this->example_test_model_data;
+    unset($arr_example_data['int']);
+    $this->assertEquals(
+        $arr_example_data,
+        $this->obj_tm->get_flat_data([
+            'exclude' => [ 'int' ]
+          ])
+      );
   }
 
 

@@ -17,7 +17,10 @@ abstract class AbstractCore {
 
   const 
     CLASS_TYPE_MODEL = 1,
-    CLASS_TYPE_COLLECTION = 2;
+    CLASS_TYPE_COLLECTION = 2,
+
+    FLAT_DATA_RAW = 1,
+    FLAT_DATA_DB_FORMAT = 2;
 
 
   protected $arr_default_get_db_formatted_data_options = [
@@ -271,16 +274,17 @@ abstract class AbstractCore {
   }
 
 
+
   /**
-   * Method gets the db format data, which basically returns an array representing current state of the object
-   * where all attributes are formatted according to the db format.
-   * 
+   * Method gets the flat data using one of the method available in the attribute interface   * 
    * $arr_custom_options['nesting'] boolean representing whether to include child objects or not
    * $arr_custom_options['exclude'] mixed array of arguments to be excluded
    * @param mixed[] $arr_custom_options (see above)
+   * @param integer $int_data_type representing a flat data type (refer to cosntances starting with FLAT_DATA_*),
+   *    referring to the method avilable in attribute interface
    * @return mixed[] Array representing raw data
    */
-  public function get_db_formatted_data(Array $arr_custom_options = null) {
+  public function get_flat_data(Array $arr_custom_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
 
     // Initiate the array to hold the data
     $arr_result = [];
@@ -298,14 +302,14 @@ abstract class AbstractCore {
 
         // Iterate over the collection
         foreach($this->get_collection() as $obj_collectable) {
-          $arr_result[] = $obj_collectable->get_model_db_formatted_data();
+          $arr_result[] = $obj_collectable->get_model_flat_data($arr_options, $int_data_type);
         }
 
       }
     } else {
 
       // Standard child class
-      $arr_result = $this->get_model_db_formatted_data($arr_options);
+      $arr_result = $this->get_model_flat_data($arr_options, $int_data_type);
     }
 
     // Before returning, we want to exclude data (if any)
@@ -317,14 +321,18 @@ abstract class AbstractCore {
     }
 
     // Return
-    return empty($arr_result) ? null : $arr_result;
+    return empty($arr_result) ? null : $arr_result; 
   }
 
 
   /**
-   * 
+   * Method gets the flat data from the model type of object
+   * @param mixed[] $arr_options representing an array with options (see get_flat_data for more details)
+   * @param integer $int_data_type representing a flat data type (see get_flat_data for more details)
+   * @return mixed[] representing requested flat data
+   * @todo implement method type recognition
    */
-  protected function get_model_db_formatted_data(Array $arr_options) {
+  protected function get_model_flat_data($arr_options, $int_data_type) {
 
     // Initiate return data array
     $arr_return_data = [];
@@ -367,16 +375,8 @@ abstract class AbstractCore {
 
 
     }
-      return $arr_return_data;
-  }
 
-
-  /**
-   * Method gets the flat data using one of the method available in the attribute interface
-   * 
-   */
-  public function get_flat_data($int_) {
-
+    return $arr_return_data;
   }
 
 }
