@@ -115,23 +115,6 @@ abstract class AbstractCollection extends AbstractCore {
 
 
   /**
-   * Method retrieves raw collection data as a set of array of arrays
-   * @return mixed[] Array representing raw collection data, null if not populated
-   */
-  public function get_raw_collection_data() {
-    if($this->is_collection_populated()) {
-      $arr_raw_data = [];
-      foreach($this->collection as $obj_collectable) {
-        $arr_raw_data[] = $obj_collectable->get_raw_data();
-      }
-      return $arr_raw_data;
-    } else {
-      return null;
-    }
-  }
-
-
-  /**
    * Method will populate same attribute to all objects inside the collection
    * @param mixed[] $arr_attributes Array conatining attributes names and values
    * @todo - build and complete this method
