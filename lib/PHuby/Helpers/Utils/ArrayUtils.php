@@ -112,8 +112,11 @@ class ArrayUtils extends AbstractUtils {
     // First, we want to convert keymap to the array
     $arr_keymap = self::keymap_to_array($str_keymap, []);
 
-    if (strpos($str_keymap))
-    $arr_keys = explode(":", $str_keymap, 2);
+    self::remove_data_by_array_keymap(self::keymap_to_array($str_keymap, []), $arr_source);
+
+/*    $arr_keys = explode(":", $str_keymap, 2);
+
+
 
     $bol_return = false;
 
@@ -126,7 +129,40 @@ class ArrayUtils extends AbstractUtils {
       }
     }
 
-    return $bol_return;
+    return $bol_return;*/
+
+    return true;
+  }
+
+
+  protected static function remove_data_by_array_keymap(Array $arr_keymap, Array &$arr_source) {
+
+    foreach($arr_keymap as $key => $value) {
+
+      // Check if the value is an array
+      if (is_array($value)) {
+
+        // Nesting. Check if the value contains an array
+        if (array_key_exists(0, $value) && is_array($value[0])) {
+
+          // We are removing key from array of arrays
+          foreach ($value[0] as $sub_key => $sub_value) {
+
+            // For each key we need to unset the variable from $arr_source
+            foreach ($arr_source[$key] as &$arr_target) {
+              unset($arr_target[$sub_value]);
+            }
+          }
+        } else {
+          // This is just a string so continue removing
+          self::remove_data_by_array_keymap($value, $arr_source[$key]);
+        }
+      } elseif (is_string($value)) {
+        // Value check if the value is a string
+        unset($arr_source[$value]);
+      }
+    }
+
   }
 
 
