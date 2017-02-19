@@ -151,6 +151,13 @@ class ArrayUtilsTest extends TestCase {
 
     $arr_example_a = $arr_example;
     $arr_example_b = $arr_example;
+    unset($arr_example_a["user"]["id"]);
+    unset($arr_example_a["user"]["email"]);
+    ArrayUtils::remove_data("user:id,email", $arr_example_b);
+    $this->assertEquals($arr_example_a, $arr_example_b);
+
+    $arr_example_a = $arr_example;
+    $arr_example_b = $arr_example;
     unset($arr_example_a["user"]["orders"][0]["id"]);
     unset($arr_example_a["user"]["orders"][1]["id"]);
     ArrayUtils::remove_data("user:orders[id]", $arr_example_b);
