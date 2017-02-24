@@ -12,7 +12,7 @@ use PHuby\Helpers\AbstractUtils;
 
 class FormUtils {
  
-  public static function are_fields_submitted(Array $data, Array $fields) {
+  public static function are_fields_submitted(array $data, array $fields) {
     // TODO
     return true;
   }

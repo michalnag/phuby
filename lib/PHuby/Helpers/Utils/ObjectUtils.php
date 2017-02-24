@@ -135,7 +135,7 @@ class ObjectUtils extends AbstractUtils {
   }
 
 
-  public static function check_required_attributes($object, Array $arr_attributes) {
+  public static function check_required_attributes($object, array $arr_attributes) {
     foreach($arr_attributes as $str_attr_name) {
       if(!$object->get_attr($str_attr_name)) {
         throw new Error\MissingAttributeError("Attribute $str_attr_name is not set on the object " . get_class($object));

@@ -25,7 +25,7 @@ class Request extends AbstractNetwork {
    * @return boolean true once process is completed
    * @throws \PHuby\Error\MissingParameterError if parameter is required and not found
    */
-  public function get_params_from_request(Array $params_details) {
+  public function get_params_from_request(array $params_details) {
     
     // Iterate over parameters details passed to the method
     foreach($params_details as $param_details) {

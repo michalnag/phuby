@@ -38,7 +38,7 @@ class RequestParam extends AbstractModel {
     ];
 
   /** @todo */
-  public function set_options(Array $options) {
+  public function set_options(array $options) {
     return array_merge($this->options, $options);
   }
 

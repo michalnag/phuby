@@ -61,7 +61,7 @@ abstract class AbstractProcess extends AbstractCore {
    * 
    * @param mixed[] Array containing error messages
    */
-  public function add_errors(Array $arr_errors) {
+  public function add_errors(array $arr_errors) {
     foreach($arr_errors as $str_error_msg) {
       $this->add_error($str_error_msg);
     }

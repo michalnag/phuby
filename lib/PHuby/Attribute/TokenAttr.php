@@ -37,7 +37,7 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     }
   }
 
-  public function generate(Array $params = null) {
+  public function generate(array $params = null) {
     if($params) {
       if(array_key_exists('length', $params)) {
         $length = $params['length'];

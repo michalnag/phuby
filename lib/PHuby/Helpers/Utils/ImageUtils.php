@@ -55,7 +55,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @param mixed[] Array $args (see above)
    * @return float representin cm value for the given dpi
    */
-  public static function px_to_cm(Array $args) {
+  public static function px_to_cm(array $args) {
     
     // Set minimum DPI as a default
     $dpi = self::get_min_dpi();
@@ -100,7 +100,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @param mixed[] array $args (see above)
    * @return integer maxiumum dpi possible for given parameters
    */
-  public static function dpi_from_px_and_cm(Array $args) {    
+  public static function dpi_from_px_and_cm(array $args) {    
     return ($args['px']/$args['cm']) * self::ONE_PX_BY_CM_DPI_RATIO;
   }
   
@@ -121,7 +121,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @return  mixed[] containing new dimensions, with keys height and width
    * @throws  \PHuby\Error\MissingParameterError if any of the required parameter is misisng
    */
-  public static function calculate_new_size(Array $arr_params) {
+  public static function calculate_new_size(array $arr_params) {
     $arr_required_params = ['current_width', 'current_height', 'max_width', 'max_height'];
     if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 
@@ -200,7 +200,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @throws \PHuby\Error\FileError if unable to resize image
    * @throws \PHuby\Error\MissingParameterError if any of the required parameter is misisng
    */
-  public static function resize(Array $arr_params) {
+  public static function resize(array $arr_params) {
     $arr_required_params = ["image_path", "max_width", "max_height"];
     if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 
@@ -263,7 +263,7 @@ class ImageUtils extends AbstractUtils implements FileTypeInterface {
    * @throws \PHuby\Error\FileError if image cannot be resampled
    * @throws \PHuby\Error\FileError if image is not readable
    */
-  public static function crop(Array $arr_params) {
+  public static function crop(array $arr_params) {
     $arr_required_params = ["image_path", "source_x", "source_y", "target_width", "target_height"];
     if(ArrayUtils::keys_exist($arr_required_params, $arr_params)) {
 

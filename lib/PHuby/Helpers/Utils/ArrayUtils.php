@@ -21,7 +21,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed[] $arr_haystack representing an array to be checked
    * @return boolean treu if all keys are found, false otherwise
    */
-  public static function keys_exist(Array $arr_keys, Array $arr_haystack) {
+  public static function keys_exist(array $arr_keys, array $arr_haystack) {
     $bol_all_keys_exist = true;
     foreach($arr_keys as $key) {
       if(!array_key_exists($key, $arr_haystack)) {
@@ -42,7 +42,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed $data representing data to be added to the particular array
    * @return mixed[] Array with combined data
    */
-  public static function add_data($str_keymap, Array &$arr_source, $data) {
+  public static function add_data($str_keymap, array &$arr_source, $data) {
 
     $arr_keys = explode(":", $str_keymap, 2);
 
@@ -83,7 +83,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed[] $arr_source 
    * @return mixed representing the data inside the given keymap, null otherwise
    */
-  public static function get_data($str_keymap, Array $arr_source) {
+  public static function get_data($str_keymap, array $arr_source) {
     // Deal with the keymap
     $arr_keys = explode(":", $str_keymap, 2);
 
@@ -107,7 +107,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed[] $arr_source 
    * @return boolean true if data has been removed, false otherwise
    */
-  public static function remove_data($str_keymap, Array &$arr_source) {
+  public static function remove_data($str_keymap, array &$arr_source) {
 
     // First, we want to convert keymap to the array
     $arr_keymap = self::keymap_to_array($str_keymap, []);
@@ -135,7 +135,7 @@ class ArrayUtils extends AbstractUtils {
   }
 
 
-  protected static function remove_data_by_array_keymap(Array $arr_keymap, Array &$arr_source) {
+  protected static function remove_data_by_array_keymap(array $arr_keymap, array &$arr_source) {
 
     foreach($arr_keymap as $key => $value) {
 
@@ -268,7 +268,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed[] $arr_source 
    * @return mixed representing the data inside the given keymap, null otherwise
    */
-  public static function splice_data($str_keymap, Array &$arr_source) {
+  public static function splice_data($str_keymap, array &$arr_source) {
     $return_data = self::get_data($str_keymap, $arr_source);
     self::remove_data($str_keymap, $arr_source);
     return $return_data;
@@ -282,7 +282,7 @@ class ArrayUtils extends AbstractUtils {
    * @return mixed[] representing grouped array
    * @todo describe map structure
    */
-  public static function group_by_map(Array $arr_source, Array $arr_map) {
+  public static function group_by_map(array $arr_source, array $arr_map) {
 
     // Create grouped array
     $arr_grouped = [];
@@ -305,7 +305,7 @@ class ArrayUtils extends AbstractUtils {
    * @param mixed[] $arr_grouped Array referncing array holding grouped data
    * @param mixed[] $arr_map Array  representing the grouping map
    */
-  private static function group_by_map_add_data(Array $arr_source, Array &$arr_grouped, Array $arr_map) {
+  private static function group_by_map_add_data(array $arr_source, array &$arr_grouped, array $arr_map) {
 
     // Loop through the map to see values
     foreach($arr_map as $map_key => $map_value) {

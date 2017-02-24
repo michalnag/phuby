@@ -168,7 +168,7 @@ class FileUtils extends AbstractUtils {
   /**
    * @todo
    */
-  public static function move($str_source, $str_destination, Array $arr_options = []) {
+  public static function move($str_source, $str_destination, array $arr_options = []) {
     return rename($str_source, $str_destination);
   }
 

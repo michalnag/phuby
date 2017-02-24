@@ -119,7 +119,7 @@ abstract class AbstractCollection extends AbstractCore {
    * @param mixed[] $arr_attributes Array conatining attributes names and values
    * @todo - build and complete this method
    */
-  public function populate_attributes_to_collection(Array $arr_attributes) {}
+  public function populate_attributes_to_collection(array $arr_attributes) {}
 
 
   /**

@@ -74,7 +74,7 @@ abstract class AbstractDBI {
     return self::$dbh;
   }
 
-  public static function query($sql, Array $vars = null) {
+  public static function query($sql, array $vars = null) {
     self::check_connection();
     if($sql) {
 
@@ -110,7 +110,7 @@ abstract class AbstractDBI {
     }
   }
 
-  public function query_and_fetch($sql, Array $vars = null) {
+  public function query_and_fetch($sql, array $vars = null) {
     if($sql) {
       $sth = self::query($sql, $vars);
       return $sth->fetchAll(PDO::FETCH_ASSOC);

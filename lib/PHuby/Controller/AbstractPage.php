@@ -39,7 +39,7 @@ abstract class AbstractPage extends AbstractController {
     return $this;
   }
 
-  protected function render(Array $params = null) {
+  protected function render(array $params = null) {
     // Check parameters
     if(!$params) {
       $params = [

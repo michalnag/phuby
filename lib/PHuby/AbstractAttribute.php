@@ -24,7 +24,7 @@ abstract class AbstractAttribute {
     return (string) $this->to_db_format();
   }
 
-  public function set_attribute_options(Array $options) {
+  public function set_attribute_options(array $options) {
     $this->attr_options = array_merge($this->attr_options, $options);
   }
 

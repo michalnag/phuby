@@ -16,7 +16,7 @@ class Logger {
 
   private static $logger;
 
-  public static function array_to_string(Array $data) {
+  public static function array_to_string(array $data) {
     $string_parts = [];
     foreach($data as $key => $value) {
       $string_parts[] = "$key: $value";

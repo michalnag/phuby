@@ -84,7 +84,7 @@ class StringValidator extends AbstractValidator implements ValidatorInterface {
     return preg_match($regex, $string, $matches) == 1;
   }
 
-  protected static function validate_length($string, Array $options) {
+  protected static function validate_length($string, array $options) {
     if(array_key_exists('exact', $options)) {
       // We check exact value
       $is_exact_value = (strlen($string) == intval($options['exact']));

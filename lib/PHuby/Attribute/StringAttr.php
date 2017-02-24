@@ -78,7 +78,7 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
    * @param array $arr_params containing options for the method
    * @return string with a random value
    */
-  public static function generate_random_string(Array $arr_params = []) {
+  public static function generate_random_string(array $arr_params = []) {
     $length = 10;
     if(!empty($arr_params)) {
       if(isset($arr_params['length'])) {
