@@ -146,7 +146,12 @@ abstract class AbstractCore {
    * configured on the child class.
    * @param mixed[] $arr_attributes containing data to be populated
    */
-  public function populate_attributes(array $arr_attributes) {
+  public function populate_attributes($arr_attributes) {
+    // Check if this is an array
+    if (!is_array($arr_attributes)) {
+      throw new Error\InvalidAttributeError(__METHOD__ . " must receive an array. Got " . gettype($arr_attributes));
+    }
+
     // Start iterating over passed attributes
     foreach ($arr_attributes as $str_attr_name => $value) {
       // Set the attribute using dedicated setter method
