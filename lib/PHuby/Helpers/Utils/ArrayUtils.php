@@ -114,23 +114,6 @@ class ArrayUtils extends AbstractUtils {
 
     self::remove_data_by_array_keymap(self::keymap_to_array($str_keymap, []), $arr_source);
 
-/*    $arr_keys = explode(":", $str_keymap, 2);
-
-
-
-    $bol_return = false;
-
-    if(array_key_exists($arr_keys[0], $arr_source)) {
-      if(count($arr_keys) == 1) {
-        unset($arr_source[$arr_keys[0]]); 
-        $bol_return = true;
-      } else {
-        $bol_return = self::remove_data($arr_keys[1], $arr_source[$arr_keys[0]]);
-      }
-    }
-
-    return $bol_return;*/
-
     return true;
   }
 
@@ -282,7 +265,7 @@ class ArrayUtils extends AbstractUtils {
    * @return mixed[] representing grouped array
    * @todo describe map structure
    */
-  public static function group_by_map(array $arr_source, array $arr_map) {
+  public static function sort_by_map(array $arr_source, array $arr_map) {
 
     // Create grouped array
     $arr_grouped = [];
@@ -291,7 +274,7 @@ class ArrayUtils extends AbstractUtils {
     foreach($arr_source as $arr_record) {
 
       // Run grouping
-      self::group_by_map_add_data($arr_record, $arr_grouped, $arr_map);
+      self::sort_by_map_add_data($arr_record, $arr_grouped, $arr_map);
 
     }
 
@@ -299,13 +282,13 @@ class ArrayUtils extends AbstractUtils {
   }
 
   /**
-   * Method is used by group_by_map method to group the data by the array map
+   * Method is used by sort_by_map method to group the data by the array map
    * 
    * @param mixed[] $arr_source Array representind source data
    * @param mixed[] $arr_grouped Array referncing array holding grouped data
    * @param mixed[] $arr_map Array  representing the grouping map
    */
-  private static function group_by_map_add_data(array $arr_source, array &$arr_grouped, array $arr_map) {
+  private static function sort_by_map_add_data(array $arr_source, array &$arr_grouped, array $arr_map) {
 
     // Loop through the map to see values
     foreach($arr_map as $map_key => $map_value) {
@@ -321,7 +304,7 @@ class ArrayUtils extends AbstractUtils {
           }
 
           // Rerun grouping
-          self::group_by_map_add_data($arr_source, $arr_grouped[$arr_source[$str_grouping_key]], $map_value);
+          self::sort_by_map_add_data($arr_source, $arr_grouped[$arr_source[$str_grouping_key]], $map_value);
 
         } else {
           // Not a grouping key
@@ -330,7 +313,7 @@ class ArrayUtils extends AbstractUtils {
           }
 
           // Rerun grouping
-          self::group_by_map_add_data($arr_source, $arr_grouped[$map_key], $map_value);
+          self::sort_by_map_add_data($arr_source, $arr_grouped[$map_key], $map_value);
         }
 
       } elseif(is_string($map_value)) {
@@ -352,7 +335,7 @@ class ArrayUtils extends AbstractUtils {
         $arr_subgroup =& $arr_grouped[count($arr_grouped)-1];
 
         // Rerun grouping
-        self::group_by_map_add_data($arr_source, $arr_subgroup, $map_value);
+        self::sort_by_map_add_data($arr_source, $arr_subgroup, $map_value);
 
       } else {        
         // Unsupported type passed. Raise an exception

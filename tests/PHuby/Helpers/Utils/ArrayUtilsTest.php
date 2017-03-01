@@ -182,7 +182,7 @@ class ArrayUtilsTest extends TestCase {
     $this->assertEquals([], $arr_data);
   }
 
-  public function test_group_by_map() {
+  public function test_sort_by_map() {
     $arr_ungrouped = [
       [
         "user_id" => 1,
@@ -241,7 +241,7 @@ class ArrayUtilsTest extends TestCase {
       ]
     ];
 
-    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, [
+    $arr_result = ArrayUtils::sort_by_map($arr_ungrouped, [
         ":user_id" => [ 
             "user_id",
             "email",
@@ -369,7 +369,7 @@ class ArrayUtilsTest extends TestCase {
       ]
     ];
 
-    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, [
+    $arr_result = ArrayUtils::sort_by_map($arr_ungrouped, [
           ":user_id" => [ 
             "user_id",
             "email",
@@ -389,7 +389,7 @@ class ArrayUtilsTest extends TestCase {
     $this->assertEquals($arr_grouped, $arr_result);
   }
 
-  public function test_group_by_map_with_translations() {
+  public function test_sort_by_map_with_translations() {
     // NESTING
     $arr_ungrouped = [
       [
@@ -499,7 +499,7 @@ class ArrayUtilsTest extends TestCase {
       ]
     ];
 
-    $arr_result = ArrayUtils::group_by_map($arr_ungrouped, [
+    $arr_result = ArrayUtils::sort_by_map($arr_ungrouped, [
           ":user_id" => [ 
             "user_id|id",
             "email",
@@ -517,6 +517,49 @@ class ArrayUtilsTest extends TestCase {
       );
     
     $this->assertEquals($arr_grouped, $arr_result);
+  }
+
+
+  public function test_sort_by_map_as_sort() {
+    $arr_unsorted = [
+      [
+        "attr1" => 1,
+        "attr2" => 2,
+        "attr4" => 4,
+        "attr3" => 3
+      ],
+      [
+        "attr2" => 6,
+        "attr1" => 5,
+        "attr4" => 8,
+        "attr3" => 7
+      ]
+    ];
+
+    $arr_sorted = [
+      [
+        "attr1" => 1,
+        "attr2" => 2,
+        "attr3" => 3,
+        "attr4" => 4
+      ],
+      [
+        "attr1" => 5,
+        "attr2" => 6,
+        "attr3" => 7,
+        "attr4" => 8
+      ]
+    ];
+
+    $arr_after_sorting = ArrayUtils::sort_by_map($arr_unsorted, [['attr1','attr2','attr3','attr4']]);
+
+    $this->assertEquals($arr_after_sorting,$arr_sorted);
+    $this->assertEquals(array_keys($arr_after_sorting[0]), array_keys($arr_sorted[0]));
+    $this->assertEquals(array_keys($arr_after_sorting[1]), array_keys($arr_sorted[1]));
+    $this->assertEquals(array_keys($arr_after_sorting[1]), array_keys($arr_sorted[0]));
+    $this->assertEquals(array_keys($arr_after_sorting[0]), array_keys($arr_sorted[1]));
+
+
   }
 
 }
