@@ -35,7 +35,7 @@ abstract class AbstractAttribute {
    *    e.g. length:min
    * @return Mixed option set on the child attribute, null if nothing is found
    */
-  protected function get_option($str_option) {
+  public function get_option($str_option) {
     // First, let's check is value passed is a string
     if(is_string($str_option)) {
       // Now create parts from the string
