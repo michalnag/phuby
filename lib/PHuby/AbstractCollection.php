@@ -81,7 +81,7 @@ abstract class AbstractCollection extends AbstractCore {
 
     } else {
       // Unsupported value type passed
-      throw new Error\InvaligArgumentError(get_class($this) . " expects to collect array or an instance of $str_collect_class only. Got " . gettype($value));        
+      throw new Error\InvalidArgumentError(get_class($this) . " expects to collect array or an instance of $str_collect_class only. Got " . gettype($value));        
     }
   }
 
