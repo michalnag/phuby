@@ -146,4 +146,32 @@ abstract class AbstractCollection extends AbstractCore {
     }
   }
 
+
+  /**
+   * Method returns an object from the collection based on the certain attribute
+   *
+   * @param string $str_attr_name representing a name of the attribute
+   * @param mixed $mix_value representind value that needs matching
+   * @return Array of elements from the collection, empty array if not found
+   */
+  public function get_by_attr($str_attr_name, $mix_value) {
+
+    if($this->is_collection_populated()) {
+
+      $arr_result = [];
+
+      foreach($this->get_collection() as $obj_collectable) {
+        if ($obj_collectable->get_attr($str_attr_name)->get() == $mix_value) {
+          $arr_result[] = $obj_collectable;
+        }
+      }
+
+      return $arr_result;
+
+    } else {
+      // Collection not populated
+      return [];
+    }
+  }
+
 }
