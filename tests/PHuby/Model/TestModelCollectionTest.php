@@ -39,6 +39,21 @@ class TestModelCollectionTest extends TestCase {
     ]
   ];
 
+  private $example_update_data = [
+    [
+      "int" => 1,
+      "datetime" => "2016-12-12 12:14:14",
+      "email" => "test@test.commm",
+      "string" => "asdfghjkmm"
+    ],
+    [
+      "int" => 2,
+      "datetime" => "2016-12-12 13:15:15",
+      "email" => "test@test2.commm",
+      "string" => "asdfghjkaaaaaaaaamm"
+    ]
+  ];
+
   public function __construct() {
     Config::set_config_root(__DIR__."/../../config.d");
     $this->obj_tmc = new TestModelCollection();
@@ -57,6 +72,22 @@ class TestModelCollectionTest extends TestCase {
         $this->example_data,
         $this->obj_tmc->get_flat_data()
       );
+  }
+
+  public function test_update_collection_by_key() {
+    $this->obj_tmc->populate_collection($this->example_data);
+    // We want to change one attribute value to match the other
+    $this->obj_tmc->update_collection_by_key($this->example_update_data, 'int');
+
+    $this->assertEquals(count($this->obj_tmc->get_collection()), 2);
+
+    foreach ($this->example_update_data as $arr_row) {
+      $obj_collectable = $this->obj_tmc->get_by_attr('int', $arr_row['int'])[0];
+      foreach ($arr_row as $key => $value) {
+        $this->assertEquals($obj_collectable->get_attr($key)->to_db_format(), $value);
+      }
+    }
+
   }
 
 }

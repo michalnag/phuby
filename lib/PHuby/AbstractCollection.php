@@ -146,6 +146,36 @@ abstract class AbstractCollection extends AbstractCore {
     }
   }
 
+  /**
+   * Method updates collection attributes, based on the collactable element key
+   * @param mixed[] $arr_data Array containing collection data
+   * @param string $str_key_attr_name String representing an attribute name that will be used as a key for comaprison
+   */
+  public function update_collection_by_key(array $arr_data, $str_key_attr_name) {
+    // Check if the collection is populated
+    if ($this->is_collection_populated()) {
+
+      // We now want to scan through the $arr_data and get collectable
+      foreach ($arr_data as $arr_details) {
+        // Get by the key
+        $arr_objects = $this->get_by_attr($str_key_attr_name, $arr_details[$str_key_attr_name]);
+
+        if ($arr_objects) {
+          foreach ($arr_objects as &$obj_collectable) {
+            $obj_collectable->populate_attributes($arr_details);
+          }
+        }
+
+      }
+
+      return true;
+
+    } else {
+      /** @todo Collection is not populated */
+
+    }
+  }
+
 
   /**
    * Method returns an object from the collection based on the certain attribute
@@ -160,7 +190,7 @@ abstract class AbstractCollection extends AbstractCore {
 
       $arr_result = [];
 
-      foreach($this->get_collection() as $obj_collectable) {
+      foreach($this->get_collection() as &$obj_collectable) {
         if ($obj_collectable->get_attr($str_attr_name)->get() == $mix_value) {
           $arr_result[] = $obj_collectable;
         }
