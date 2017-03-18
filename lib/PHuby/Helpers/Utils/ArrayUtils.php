@@ -151,13 +151,14 @@ class ArrayUtils extends AbstractUtils {
 
   /**
    * These are examples of valid keymaps
-   * * "id"               will remove id key from the array
-   * * "id,email"         will remove id and email from the array
-   * * "user:id"          will remove id key from user key
-   * * "user:id,email"    will remove id and email keys from user key
-   * * "user:orders[id,status]" will remove id and status from a order collection under user key
-   * * "user:orders[details:id]" will remove id from details child class which is a part of orders collection under user key 
-   * * "[id,email]" will remove id and email keys from the array of arrays
+   * * 'id'                               will create ['id']
+   * * 'id,email'                         will create ['id', 'email']
+   * * 'user:id'                          will create ['user' => ['id']]
+   * * 'user:id,email'                    will create ['user' => ['id', 'email']]
+   * * 'user:orders[id,status]'           will create ['user' => [ 'orders' => [[ 'id', 'status' ]]]]
+   * * 'user:orders[details:id]'          will create ['user' => [ 'orders' => [[ 'details' => [ 'id' ]]]]]
+   * * '[id,email]'                       will create [[ 'id', 'email' ]]
+   * * 'user:id,email|order:number,type   will create ['user' => ['id', 'email'], 'order' => ['number', 'type']]
    * IMPORTANT: If targeting subarrays, they must be at the last place in the keymap string
    */
   public static function keymap_to_array($str_keymap) {
@@ -165,6 +166,17 @@ class ArrayUtils extends AbstractUtils {
     // Initiate array
     $arr_keymap = [];
     $arr_reference =& $arr_keymap;
+
+    // Now let's check if we have multiple maps that will be merged
+    if (strpos($str_keymap, '|')) {
+      // Multiple arrays. Rerun method
+      foreach (explode("|", $str_keymap) as $str_single_keymap) {
+        $arr_keymap = array_merge($arr_keymap, self::keymap_to_array($str_single_keymap));
+      }
+
+      // Early return
+      return $arr_keymap;
+    }
 
     // We need to extract subarray from the keymap
     list($str_before_subarray, $str_subarray) = self::extract_subarray_from_keymap($str_keymap);

@@ -24,6 +24,7 @@ abstract class AbstractCore {
 
 
   protected $arr_default_get_db_formatted_data_options = [
+    "include" => [],
     "exclude" => [],
     "nesting" => false
   ];
@@ -279,25 +280,21 @@ abstract class AbstractCore {
   }
 
 
-
   /**
-   * Method gets the flat data using one of the method available in the attribute interface   * 
-   * $arr_custom_options['nesting'] boolean representing whether to include child objects or not
-   * $arr_custom_options['exclude'] mixed array of arguments to be excluded
-   * @param mixed[] $arr_custom_options (see above)
-   * @param integer $int_data_type representing a flat data type (refer to cosntances starting with FLAT_DATA_*),
-   *    referring to the method avilable in attribute interface
+   * Method gets the flat data using one of the method available in the attribute interface
+   * @param string $str_options representing custom options to get for the method
+   * @param integer $int_data_type representing the type of the data to be retrieved
    * @return mixed[] Array representing raw data
    */
-  public function get_flat_data(Array $arr_custom_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
+  public function get_flat_data($str_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
 
     // Initiate the array to hold the data
     $arr_result = [];
 
     // Check if we have options passed, and if so, process them
     $arr_options = $this->arr_default_get_db_formatted_data_options;    
-    if ($arr_custom_options) {
-      $arr_options = array_merge($arr_options, $arr_custom_options);      
+    if ($str_options) {
+      $arr_options = array_merge($arr_options, Utils\ArrayUtils::keymap_to_array($str_options));
     }
 
     // First, check if this is a collection class
@@ -315,14 +312,6 @@ abstract class AbstractCore {
 
       // Standard child class
       $arr_result = $this->get_model_flat_data($arr_options, $int_data_type);
-    }
-
-    // Before returning, we want to exclude data (if any)
-    if (!empty($arr_options['exclude'])) {
-      foreach ($arr_options['exclude'] as $str_option) {
-        // Use ArrayUtils to remove the data
-        Utils\ArrayUtils::remove_data($str_option, $arr_result);
-      }
     }
 
     // Return
@@ -344,7 +333,16 @@ abstract class AbstractCore {
 
     // Iterate over ATTRIBUTE_MAP
     foreach ($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
-        
+
+      // Check if the attribute is excluded from options or if we have any include set
+      if (
+        (array_key_exists('include', $arr_options) && !empty($arr_options['include']) && !array_key_exists($str_attr_name, array_flip($arr_options['include'])))
+        || (array_key_exists('exclude', $arr_options) && array_key_exists($str_attr_name, array_flip($arr_options['exclude'])))
+      ) {
+        // We want do not want to process this attribute
+        continue;
+      }
+
       // Start checking whether this is a standard attribute or not
       if ($this->is_attribute_standard($str_attr_name)) {
         $arr_return_data[$str_attr_name] = $this->$str_attr_name->to_db_format();

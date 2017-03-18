@@ -9,6 +9,8 @@ use Model\TestModel;
 use Model\TestModelCollection;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
+use PHuby\Helpers\Utils\ArrayUtils;
+
 
 class TestModelCollectionTest extends TestCase {
   
@@ -71,6 +73,23 @@ class TestModelCollectionTest extends TestCase {
     $this->assertEquals(
         $this->example_data,
         $this->obj_tmc->get_flat_data()
+      );
+
+    // Another test is to get flat data bot only for desired parameters
+    $arr_example_data = [];
+
+    foreach ($this->example_data as $arr_data) {
+      $arr_example_data[] = [
+        "int" => $arr_data['int'],
+        "datetime" => $arr_data['datetime'],
+        "email" => $arr_data['email']
+      ];
+    }
+
+    // Once there is an example data array we can run our test
+    $this->assertEquals(
+        $arr_example_data,
+        $this->obj_tmc->get_flat_data("include:int,datetime,email")
       );
   }
 

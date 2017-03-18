@@ -177,9 +177,7 @@ class TestModelTest extends TestCase {
     unset($arr_example_data['int']);
     $this->assertEquals(
         $arr_example_data,
-        $this->obj_tm->get_flat_data([
-            'exclude' => [ 'int' ]
-          ])
+        $this->obj_tm->get_flat_data("exclude:int")
       );
   }
 

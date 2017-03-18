@@ -118,6 +118,19 @@ class ArrayUtilsTest extends TestCase {
         ["user" => [ "orders" => [[ "details" => [ "id" ]]]]]
       );
 
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("[id,email]"),
+        [[ "id", "email" ]]
+      );
+
+    $this->assertEquals(
+        ArrayUtils::keymap_to_array("user:id,email|order:number,type"),
+        [
+          "user" =>  ["id", "email"],
+          "order" => [ "number", "type" ]
+        ]
+      );
+
   }
 
   public function test_remove_data() {
