@@ -64,7 +64,10 @@ abstract class BaseFileAttr extends AbstractAttribute implements AttributeInterf
    * Method checks if the file exists in the given location
    */
   public function exists() {
-    return FileUtils::exists($this->get_filepath());
+    if ($this->get()) {
+      return FileUtils::exists($this->get_filepath());      
+    }
+    return false;
   }
 
   public function move() {}
