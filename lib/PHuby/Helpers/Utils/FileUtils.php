@@ -113,7 +113,8 @@ class FileUtils extends AbstractUtils {
    */
   public static function get_filename_from_full_path($str_filepath) {
     $filepath_parts = explode(DIRECTORY_SEPARATOR, $str_filepath);
-    return end($filepath_parts);
+    // We also want to lowercase the extenstion
+    return self::get_filename_without_extension(end($filepath_parts)) . '.' . self::get_file_extension($str_filepath);
   }
 
   /**
