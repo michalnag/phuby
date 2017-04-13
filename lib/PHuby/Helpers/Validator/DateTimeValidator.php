@@ -22,6 +22,8 @@ class DateTimeValidator extends AbstractValidator implements ValidatorInterface 
     'description' => ['yesterday', 'today', 'now', 'tomorrow'],
     'regex' => [
       "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/",
+      "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}$/",
+      "/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}\s[0-9]{2}\:[0-9]{2}(\:[0-9]{2})?$/",
       "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/"
     ]
   ];
