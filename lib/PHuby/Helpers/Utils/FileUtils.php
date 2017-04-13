@@ -192,7 +192,7 @@ class FileUtils extends AbstractUtils {
       }
 
     } else {
-      throw new FileNotFoundError("File $str_source does not exist. Unable to remove.");
+      throw new FileError\FileNotFoundError("File $str_source does not exist. Unable to remove.");
     }
   }
 

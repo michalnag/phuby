@@ -23,6 +23,9 @@ class IntAttrTest extends TestCase implements AttributeTestInterface {
       $this->assertTrue($this->intAttr->set($value));
     }
 
+    $this->intAttr->set(0);
+    $this->assertEquals(0, $this->intAttr->get());
+
     foreach(["ASD", 12.12, new stdClass()] as $value) {
       $exception_caught = false;
       try {
