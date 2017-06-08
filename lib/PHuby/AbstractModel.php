@@ -21,8 +21,11 @@ abstract class AbstractModel extends AbstractCore {
   /**
    * Method initiates attributes
    */
-  public function __construct() {
+  public function __construct(array $arr_attributes = null) {
     $this->initiate_attributes();
+    if ($arr_attributes) {
+      $this->populate_attributes($arr_attributes);
+    }
   }
 
 }

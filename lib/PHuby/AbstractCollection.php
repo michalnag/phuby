@@ -17,6 +17,12 @@ abstract class AbstractCollection extends AbstractCore {
 
   protected $collection = [];
 
+  public function __construct(array $arr_collection = null) {
+    if ($arr_collection) {
+      $this->populate_collection($arr_collection);
+    }
+  }
+
   /**
    * Method populates the collection on the object, if the object is a collection class.
    * It relies on COLLECT_CLASS constant to be present on caller class, which represents the class to collect.

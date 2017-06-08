@@ -11,6 +11,7 @@ namespace PHuby;
 use PDO;
 use PHuby\Config;
 use PHuby\Logger;
+use PHuby\Error;
 use PHuby\Error\DBIError;
 
 abstract class AbstractDBI {
@@ -134,5 +135,84 @@ abstract class AbstractDBI {
     Logger::debug("Returning affected rows ".self::$affected_rows);
     return self::$affected_rows;
   }
+
+  // DEFAULT ACTIONS AND HELPERS
+  protected static function create_values_placeholders_from_arrays(array $arr_data) {
+    $arr_str_parts = [];
+    foreach ($arr_data as $arr_record) {
+      $str_values = "(";
+      $arr_values = [];
+      foreach($arr_record as $key => $value) {
+        $arr_values[] = "?";
+      }
+      $str_values .= join(', ', $arr_values);
+      $str_values .= ")";
+
+      $arr_str_parts[] = $str_values;
+    }
+
+    return join(', ', $arr_str_parts);
+  }
+
+  protected static function get_values_from_arrays(array $arr_data) {
+    $arr_values = [];
+    foreach($arr_data as $arr_record) {
+      foreach($arr_record as $key => $value) {
+        $arr_values[] = $value;
+      }
+    }
+    return $arr_values;
+  }
+
+  protected static function array_to_query_args(array $arr_data) {
+    $arr_query_args = [];
+    foreach($arr_data as $str_field => $value) {
+      $arr_query_args[$str_field] = $value;
+    }
+    return $arr_query_args;
+  }
+
+  protected static function array_to_query_update_sets(array $arr_field_names, array $arr_exclude_keys) {
+    $arr_pairs = [];
+    foreach ($arr_field_names as $str_field_name) {
+      if (!array_key_exists($str_field_name, array_flip($arr_exclude_keys))) {
+        $arr_pairs[] = "$str_field_name = :$str_field_name";
+      }
+    }
+    return join(', ', $arr_pairs);
+  }
+
+  protected static function array_to_insert_args(array $arr_field_names) {
+    return join(', ', $arr_field_names);
+  }
+
+  protected static function array_to_insert_placeholders(array $arr_field_names) {
+    return ":" . join(', :', $arr_field_names);
+  }
+
+  protected static function default_insert(array $arr_required_fields, array $arr_data, $str_table_name) {
+    if (!ArrayUtils::keys_exist($arr_required_fields, $arr_data)) {
+      throw new Error\MissingAttributeError(__METHOD__ . " is missing required attributes");
+    }
+    $q = "INSERT INTO $str_table_name (".self::array_to_insert_args($arr_required_fields).") VALUES (".self::array_to_insert_placeholders($arr_required_fields).")";
+    self::query($q, self::array_to_query_args($arr_data));
+    return self::get_last_inserted_id();
+  }
+
+  protected static function default_update(array $arr_required_fields, array $arr_data, $str_table_name, $str_key_value) {
+    if (!ArrayUtils::keys_exist($arr_required_fields, $arr_data)) {
+      throw new Error\MissingAttributeError(__METHOD__ . " is missing required attributes. Expecting: " . json_encode($arr_required_fields) . " . Got " . json_encode(array_keys($arr_data)));
+    }
+    $q = "UPDATE $str_table_name SET ".self::array_to_query_update_sets($arr_required_fields, [$str_key_value])." WHERE $str_key_value = :$str_key_value LIMIT 1";
+    self::query($q, self::array_to_query_args($arr_data));
+    return self::get_affected_rows() == 1;
+  }
+
+  protected static function default_delete($str_table_name, $arr_param) {
+    $q = "DELETE FROM $str_table_name WHERE " . array_keys($arr_param)[0] . " = :" . array_keys($arr_param)[0];
+    self::query($q, $arr_param);
+    return self::get_affected_rows();
+  }
+
   
 }
