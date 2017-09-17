@@ -13,6 +13,7 @@ use PHuby\Config;
 use PHuby\Logger;
 use PHuby\Error;
 use PHuby\Error\DBIError;
+use PHuby\Helpers\Utils\ArrayUtils;
 
 abstract class AbstractDBI {
    
