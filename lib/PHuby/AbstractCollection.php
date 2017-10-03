@@ -210,4 +210,36 @@ abstract class AbstractCollection extends AbstractCore {
     }
   }
 
+  /**
+   * Method removes an object from the collection based on the certain attribute
+   *
+   * @param string $str_attr_name representing a name of the attribute
+   * @param mixed $mix_value representind value that needs matching
+   * @return integer representing amount of objects got deleted
+   */
+  public function remove_by_attr($str_attr_name, $mix_value) {
+    // Inner counter used for return value
+    $int_removed = 0;
+
+    if($this->is_collection_populated()) {
+      foreach($this->get_collection() as $key => $obj_collectable) {
+        if ($obj_collectable->get_attr($str_attr_name)->get() == $mix_value) {
+          unset($this->collection[$key]);
+          $int_removed++;
+        }
+      }
+    }
+
+    return $int_removed;
+  }
+
+  /**
+   * This method simply returns the amount of entries in the first level collection
+   * 
+   * @return integer representing amount of entires in the collection
+   */
+  public function get_count() {
+    return count($this->get_collection());
+  }
+
 }

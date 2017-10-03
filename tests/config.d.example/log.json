@@ -1,0 +1,7 @@
+{
+  "default" : {
+    "name" : "default",
+    "output" : "php://stderr",
+    "level" : "info"
+  }
+}

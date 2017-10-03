@@ -109,4 +109,13 @@ class TestModelCollectionTest extends TestCase {
 
   }
 
+  public function test_remove_by_attr() {
+    $this->obj_tmc->populate_collection($this->example_data);
+    $this->assertEquals(2, $this->obj_tmc->get_count());
+    // Remove by attribute
+    $int_removed = $this->obj_tmc->remove_by_attr('token', 'aaaaaabbbbbb');
+    $this->assertEquals(1, $int_removed);
+    $this->assertEquals(1, $this->obj_tmc->get_count());
+  }
+
 }
