@@ -41,6 +41,33 @@ class TestModelCollectionTest extends TestCase {
     ]
   ];
 
+  private $example_nesting_data = [
+    [
+      "int" => 1,
+      "datetime" => "2016-12-12 12:12:12",
+      "email" => "test@test.com",
+      "string" => "asdfghjk",
+      "password" => '$2y$10$2CFEq2lryIaYkd7M1X0o7ebFxrdpU1H5rPElBifCxPEX/NWb35MVG',
+      "token" => "aaaaaabbbbbb",
+      "boolean" => 1,
+      "image" => "image_01.jpg",
+      "file" => "file_01.txt",
+      'string_with_options' => "asadasdasd"
+    ],
+    [
+      "int" => 2,
+      "datetime" => "2016-12-12 13:13:13",
+      "email" => "test@test2.com",
+      "string" => "asdfghjkaaaaaaaaa",
+      "password" => '$2y$10$2CFEq2lryIaYkd7M1X0o7ebFxrdpU1H5rPElBifCxPEX/NWb35MVG',
+      "token" => "aaabbabccccc",
+      "boolean" => 0,
+      "image" => "image_02.jpg",
+      "file" => "file_02.txt",
+      'string_with_options' => "asadasdasd2"
+    ]
+  ];
+
   private $example_update_data = [
     [
       "int" => 1,
@@ -59,6 +86,8 @@ class TestModelCollectionTest extends TestCase {
   public function __construct() {
     Config::set_config_root(__DIR__."/../../config.d");
     $this->obj_tmc = new TestModelCollection();
+    // Add collection to nesting model
+    $this->example_nesting_data[1]['collection'] = $this->example_data;
   }
 
   public function test_instantiation() {
@@ -91,6 +120,14 @@ class TestModelCollectionTest extends TestCase {
         $arr_example_data,
         $this->obj_tmc->get_flat_data("include:int,datetime,email")
       );
+
+  }
+
+  public function test_get_flat_nested_data() {
+    // Test it on nesting as well
+    $this->obj_tmc->populate_collection($this->example_nesting_data);
+    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tmc->get_collection()[1]->get_attr('collection'));
+    $this->assertEquals($this->example_nesting_data, $this->obj_tmc->get_flat_data('nesting:true|exclude:nested_model'));
   }
 
   public function test_update_collection_by_key() {

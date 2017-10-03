@@ -327,7 +327,6 @@ abstract class AbstractCore {
    * @todo implement method type recognition
    */
   protected function get_model_flat_data($arr_options, $int_data_type) {
-
     // Initiate return data array
     $arr_return_data = [];
 
@@ -349,26 +348,28 @@ abstract class AbstractCore {
       }
 
       // Check if this is a child class
-      if ($this->is_attribute_child_class($str_attr_name)) {
+      if ($this->is_attribute_child_class($str_attr_name) || $this->is_attribute_collection_class($str_attr_name)) {
 
         // Attribute is a child class. Check if it is supposed to be included
-        if ($arr_options["nesting"]) {
-
-          // Initiate the array
-          $arr_return_data[$str_attr_name] = [];
+        if (array_key_exists('nesting', $arr_options) && $arr_options["nesting"][0]) {
 
           // Include child class. Check if this is a collection class or not
-          if ($this->$str_attr_name->is_collection_class()) {
+          if ($this->get_attr($str_attr_name)
+              && $this->get_attr($str_attr_name)->is_collection_class()
+              && $this->get_attr($str_attr_name)->is_collection_populated()
+            ) {
+            // Initiate the array
+            $arr_return_data[$str_attr_name] = [];
 
             // Iterate over the collection
             foreach ($this->$str_attr_name->get_collection() as $obj_collectable) {
-              $arr_return_data[$str_attr_name][] = $obj_collectable->get_model_db_formatted_data($arr_options);
+              $arr_return_data[$str_attr_name][] = $obj_collectable->get_model_flat_data($arr_options, $int_data_type);
             }
 
-          } else {
+          } elseif ($this->get_attr($str_attr_name)) {
 
             // Include model data
-            $arr_return_data[$str_attr_name] = $this->$str_attr_name->get_model_db_formatted_data($arr_options);
+            $arr_return_data[$str_attr_name] = $this->$str_attr_name->get_flat_data($arr_options);
           }
 
         } else {
