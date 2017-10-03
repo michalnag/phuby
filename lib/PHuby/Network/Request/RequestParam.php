@@ -80,7 +80,14 @@ class RequestParam extends AbstractModel {
   }
 
   public function get_value() {
-    return $this->value;
+    switch ($this->get_attr('type')->get()) {
+      case 'integer':
+        return (int) $this->value;
+        break;
+      default:
+        return $this->value;
+        break;
+    }
   }
 
 }
