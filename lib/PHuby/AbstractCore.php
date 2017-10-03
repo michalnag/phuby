@@ -129,6 +129,11 @@ abstract class AbstractCore {
           // Standard attribute. Instantiate it
           $str_attr_class = $arr_attr_details['class'];
           $this->$str_attr_name = new $str_attr_class;
+
+          // Check for default value
+          if (array_key_exists('options', $arr_attr_details) && array_key_exists('default_value', $arr_attr_details['options'])) {
+            $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
+          }
         }
       }
 
