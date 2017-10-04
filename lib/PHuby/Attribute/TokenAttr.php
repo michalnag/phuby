@@ -16,21 +16,22 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
 
   protected $attr_options = [
               'allow_spaces'  => false,
-              'length'        => 32
+              'length'        => 32,
+              'uppercase'     => false
             ];
 
   public function set($value) {
     if(is_object($value) && $value instanceof $this) {
-      $this->attr_value = $value;
+      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
       return true;
     } elseif(is_null($value)) {
-      $this->attr_value = $value;
+      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
       return true;     
     } elseif(StringValidator::is_valid($value, [
         "allow_spaces" => $this->attr_options["allow_spaces"],
         "length" => ["exact" => $this->attr_options["length"]]
       ])) {
-      $this->attr_value = $value;
+      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
       return true;      
     } else {
       throw new Error\InvalidAttributeError(StringValidator::get_first_validation_error()->getMessage());
@@ -43,7 +44,7 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     } else {
       $length = $this->attr_options['length'];
     }
-    $this->attr_value = substr(md5(uniqid(rand(),true)), 0, $length);
+    $this->set(substr(md5(uniqid(rand(),true)), 0, $length));
     return $this->attr_value;
   }
 
