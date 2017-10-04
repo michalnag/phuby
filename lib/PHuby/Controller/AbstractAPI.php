@@ -34,12 +34,12 @@ abstract class AbstractAPI extends AbstractCore {
       ]);
   }
 
-  public function api_not_found() {
+  public function api_not_found($data = null) {
     http_response_code(404);
     return json_encode([
         "status" => "error",
         "responseCode" => 404,
-        "data" => null
+        "data" => $data
       ]);
   }
 

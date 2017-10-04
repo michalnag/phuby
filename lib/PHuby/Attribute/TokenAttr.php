@@ -38,12 +38,10 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
   }
 
   public function generate(array $params = null) {
-    if($params) {
-      if(array_key_exists('length', $params)) {
+    if($params && array_key_exists('length', $params)) {
         $length = $params['length'];
-      } else {
-        $length = $this->attr_options['length'];
-      }
+    } else {
+      $length = $this->attr_options['length'];
     }
     $this->attr_value = substr(md5(uniqid(rand(),true)), 0, $length);
     return $this->attr_value;

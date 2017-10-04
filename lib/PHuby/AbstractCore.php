@@ -130,9 +130,12 @@ abstract class AbstractCore {
           $str_attr_class = $arr_attr_details['class'];
           $this->$str_attr_name = new $str_attr_class;
 
-          // Check for default value
-          if (array_key_exists('options', $arr_attr_details) && array_key_exists('default_value', $arr_attr_details['options'])) {
-            $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
+          // Check for options and default value
+          if (array_key_exists('options', $arr_attr_details)) {
+            $this->$str_attr_name->set_attribute_options($arr_attr_details['options']);
+            if (array_key_exists('default_value', $arr_attr_details['options'])) {
+              $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
+            }
           }
         }
       }
