@@ -6,10 +6,12 @@ require_once __DIR__ . "/AttributeTestInterface.php";
 
 use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\StringAttr;
+use PHuby\Config;
 
 class StringAttrTest extends TestCase implements AttributeTestInterface {
 
   public function __construct() {
+    Config::set_config_root(__DIR__."/../../config.d");
     $this->stringAttr = new StringAttr();
   }
 

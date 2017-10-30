@@ -15,23 +15,25 @@ use PHuby\Helpers\Validator\StringValidator;
 class TokenAttr extends AbstractAttribute implements AttributeInterface {
 
   protected $attr_options = [
-              'allow_spaces'  => false,
-              'length'        => 32,
-              'uppercase'     => false
-            ];
+    "validation" => [
+        'allow_spaces'  => false,
+        'length'        => 32,
+        'uppercase'     => false
+      ]
+    ];
 
   public function set($value) {
     if(is_object($value) && $value instanceof $this) {
-      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
+      $this->attr_value = $this->get_option('validation:uppercase') ? strtoupper($value) : $value;
       return true;
     } elseif(is_null($value)) {
-      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
+      $this->attr_value = $this->get_option('validation:uppercase') ? strtoupper($value) : $value;
       return true;     
     } elseif(StringValidator::is_valid($value, [
-        "allow_spaces" => $this->attr_options["allow_spaces"],
-        "length" => ["exact" => $this->attr_options["length"]]
+        "allow_spaces" => $this->get_option("validation:allow_spaces"),
+        "length" => ["exact" => $this->get_option("validation:length")]
       ])) {
-      $this->attr_value = $this->attr_options['uppercase'] ? strtoupper($value) : $value;
+      $this->attr_value = $this->get_option('validation:uppercase') ? strtoupper($value) : $value;
       return true;      
     } else {
       throw new Error\InvalidAttributeError(StringValidator::get_first_validation_error()->getMessage());
@@ -42,7 +44,7 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     if($params && array_key_exists('length', $params)) {
         $length = $params['length'];
     } else {
-      $length = $this->attr_options['length'];
+      $length = $this->get_option('length');
     }
     $this->set(substr(md5(uniqid(rand(),true)), 0, $length));
     return $this->attr_value;
@@ -57,6 +59,6 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
   }
 
   public function get_exact_length() {
-    return $this->attr_options['length']['exact'];
+    return $this->get_option('validation:length:exact');
   }
 }

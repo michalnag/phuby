@@ -34,7 +34,6 @@ class StringValidator extends AbstractValidator implements ValidatorInterface {
         foreach($options as $option => $data) {
           // Check if the option is supported
           if(self::is_validation_option_supported($option)) {
-
             // Validation is supported. Check if the calidation data is the correct type
             if(gettype($options[$option]) == self::ALLOWED_VALIDATION_OPTIONS[$option]) {
 

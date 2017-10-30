@@ -36,9 +36,11 @@ class TestModel extends AbstractModel {
     'string_with_options' => [
       "class" => "\PHuby\Attribute\StringAttr",
       "options" => [
-        "length" => [
-          "min" => 8,
-          "max" => 12
+        "validation" => [
+          "length" => [
+            "min" => 8,
+            "max" => 12
+          ]
         ]
       ]
     ],
@@ -48,7 +50,9 @@ class TestModel extends AbstractModel {
     'token' => [
       "class" => "\PHuby\Attribute\TokenAttr",
       "options" => [
-        "length" => 12
+        "validation" => [
+          "length" => 12
+        ]
       ]
     ],
     'boolean' => [

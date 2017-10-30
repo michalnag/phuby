@@ -17,8 +17,11 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
 
   /** @var mixed[] $attr_options Array containing default options */
   protected $attr_options = [
-    "allow_null" => true,
-    "allow_spaces" => true
+    // This attribute is using PHuby\Helpers\Validator\StringValidator. Set some default options
+    "validation" => [
+      "allow_null" => true,
+      "allow_spaces" => true
+    ]
   ];
 
   /**
@@ -31,7 +34,7 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
   public function set($value) {
     if(is_string($value)) {
       Logger::debug("Starting validation for $value with following options: " . json_encode($this->attr_options));
-      if(StringValidator::is_valid($value, $this->attr_options)) {
+      if(StringValidator::is_valid($value, $this->get_option("validation"))) {
         $this->attr_value = $value;
         return true;        
       } else {
@@ -40,7 +43,7 @@ class StringAttr extends AbstractAttribute implements AttributeInterface {
     } elseif(is_object($value) && $value instanceof StringAttr) {
       $this->attr_value = $value->get();
       return true;
-    } elseif(is_null($value) && $this->get_option('allow_null')) { 
+    } elseif(is_null($value) && $this->get_option('validation:allow_null')) { 
       $this->attr_value = $value;
       return true;
     } else {

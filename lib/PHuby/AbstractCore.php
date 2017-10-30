@@ -22,13 +22,12 @@ abstract class AbstractCore {
     FLAT_DATA_RAW = 1,
     FLAT_DATA_DB_FORMAT = 2;
 
-
+  // Set options for default DB formatted data options
   protected $arr_default_get_db_formatted_data_options = [
     "include" => [],
     "exclude" => [],
     "nesting" => false
   ];
-
 
   /**
    * Method sets the attribute based on the configuration inside ATTRIBUTE_MAP
@@ -121,7 +120,6 @@ abstract class AbstractCore {
     // Check if the ATTRIBUTE_MAP is defined
     $str_caller_class = get_class($this);
     if (defined("$str_caller_class::ATTRIBUTE_MAP")) {
-
       // We have a map set. Iterate over it and create standard attributes
       foreach ($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_details) {
         // Check if this is standard attribute
