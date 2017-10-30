@@ -36,6 +36,7 @@ class TestModel extends AbstractModel {
     'string_with_options' => [
       "class" => "\PHuby\Attribute\StringAttr",
       "options" => [
+        "default_value" => "default",
         "validation" => [
           "length" => [
             "min" => 8,

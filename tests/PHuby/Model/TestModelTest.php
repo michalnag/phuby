@@ -38,7 +38,7 @@ class TestModelTest extends TestCase {
           break;
         case 'string_with_options':
           $this->assertInstanceOf("\PHuby\Attribute\StringAttr", $this->obj_tm->get_attr($key));
-          $this->assertEquals(null, $this->obj_tm->get_attr($key)->to_db_format());          
+          $this->assertEquals("default", $this->obj_tm->get_attr($key)->to_db_format());          
           break;
         default:
           $this->assertInstanceOf("\PHuby\Attribute\\".ucfirst($key)."Attr", $this->obj_tm->get_attr($key));
