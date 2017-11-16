@@ -12,6 +12,7 @@ use PHuby\Error\FileError;
 use PHuby\Error\MissingConfigError;
 use PHuby\Helpers\Utils\FileUtils;
 use PHuby\Helpers\Utils\JSONUtils;
+use PHuby\Helpers\Utils\YAMLUtils;
 
 class Config {
 
@@ -98,11 +99,14 @@ class Config {
           self::$data = new \stdClass(); 
         }        
         self::$data->$config_name = JSONUtils::read(self::$config_root.self::DS.$config_file);
-      } elseif(YAMLUtils::check_extension($config_file)) {
+      } 
+      /** TODO YAML SUPPORT
+      elseif(YAMLUtils::check_extension($config_file)) {
         // @todo This is YAML file
         $config_name = FileUtils::get_filename_without_extension($config_file);
 
-      } else {
+      }*/ 
+      else {
 
         // found configuration in the format different then JSON. 
         /** @todo - does it really need to hrow an error? */ 
