@@ -16,10 +16,12 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
 
   /** @var mixed[] $attr_options representing default attribute options */
   protected $attr_options = [
-    "allow_negative" => true,
-    "allow_zero" => true,
-    "allow_positive" => true,
-    "allow_null" => true
+    "validation" => [
+      "allow_negative" => true,
+      "allow_zero" => true,
+      "allow_positive" => true,
+      "allow_null" => true
+    ]
   ];
 
   /**
@@ -45,7 +47,7 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
       $this->attr_value = intval($value);
       return true;
  
-    } elseif(is_null($value) && $this->get_option("allow_null")) {
+    } elseif(is_null($value) && $this->get_option("validation:allow_null")) {
       $this->attr_value = $value;
       return true; 
     }
