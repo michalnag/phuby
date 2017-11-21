@@ -44,7 +44,7 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     if($params && array_key_exists('length', $params)) {
         $length = $params['length'];
     } else {
-      $length = $this->get_option('length');
+      $length = $this->get_option('validation:length');
     }
     $this->set(substr(md5(uniqid(rand(),true)), 0, $length));
     return $this->attr_value;
