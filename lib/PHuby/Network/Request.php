@@ -12,6 +12,7 @@ use PHuby\AbstractNetwork;
 use PHuby\Logger;
 use PHuby\Error;
 use PHuby\Network\Request\RequestParam;
+use PHuby\Helpers\Utils\ArrayUtils;
 
 class Request extends AbstractNetwork {
 
@@ -130,11 +131,29 @@ class Request extends AbstractNetwork {
 
 
   /**
-   * Retrieves parameter value based on the parameter name
-   * @param string $str_param_name representing requested parameter name
-   * @return mixed representing parameter value, null if not found
+   * Retrieves parameter or multiple parameter values based on the parameter name(s)
+   * @param string $str_params representing requested parameter name
+   * @return mixed representing parameter value, null if not found, array if multiple parameters are retrieved
    */
-  public function get_param_value($str_param_name) {
+  public function get_param_value($str_params) {
+    $arr_parts = ArrayUtils::keymap_to_array($str_params);
+    if (count($arr_parts) == 1) {
+      return $this->retrieve_param_value($arr_parts[0]);
+    } else {
+      $arr_params = [];
+      foreach($arr_parts as $str_param_name) {
+        $arr_params[$str_param_name] = $this->retrieve_param_value($str_param_name);
+      }
+      return $arr_params;
+    }
+  }
+
+  /**
+   * Retrieves param value based on the param name
+   * @param string $str_param_name representing parameter name
+   * @return mixed representing param value, null if not found
+   */
+  private function retrieve_param_value($str_param_name) {
     if ($this->get_param($str_param_name)) {
       return $this->get_param($str_param_name)->get_value();      
     } else {
