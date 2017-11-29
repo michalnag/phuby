@@ -105,6 +105,10 @@ class Request extends AbstractNetwork {
       case "POST":
         return isset($_POST[$str_param_name]);
         break;
+      case "PUT":
+        parse_str(file_get_contents("php://input"), $arr_put_vars);
+        return array_key_exists($str_param_name, $arr_put_vars);
+        break;
       case "FILES":
         return isset($_FILES[$str_param_name]);
         break;
