@@ -136,17 +136,26 @@ class Request extends AbstractNetwork {
 
   /**
    * Retrieves parameter or multiple parameter values based on the parameter name(s)
-   * @param string $str_params representing requested parameter name
+   * @param string $str_params representing requested parameter name. If multiple parameters
+   *        are requested, use comma to separate them. To translate retrieved parameter name to a different
+   *        key, use '|' symbol, e.g. 'qty|quantity'.
    * @return mixed representing parameter value, null if not found, array if multiple parameters are retrieved
    */
   public function get_param_value($str_params) {
-    $arr_parts = ArrayUtils::keymap_to_array($str_params);
+    $arr_parts = explode(",", $str_params);
     if (count($arr_parts) == 1) {
       return $this->retrieve_param_value($arr_parts[0]);
     } else {
       $arr_params = [];
       foreach($arr_parts as $str_param_name) {
-        $arr_params[$str_param_name] = $this->retrieve_param_value($str_param_name);
+        // Check if we have a transaltion in the paramter
+        $arr_parts = explode("|", $str_param_name);
+        if (count($arr_parts) === 1) {
+          $arr_params[$str_param_name] = $this->retrieve_param_value($str_param_name);
+        } else {
+          // Use first parameter to retrieve value from request, and secend one as an array key
+          $arr_params[$arr_parts[1]] = $this->retrieve_param_value($arr_parts[0]);
+        }
       }
       return $arr_params;
     }
