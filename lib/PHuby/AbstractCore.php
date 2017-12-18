@@ -71,9 +71,14 @@ abstract class AbstractCore {
           $this->$str_attr_name = new $str_attr_class;
         }
 
-        // And now populate attributes
-        $this->$str_attr_name->populate_attributes($value);
-        
+        // Check if the value is an object and class matches the one set on the object
+        $str_child_class = $this->get_attribute_class($str_attr_name);
+        if (is_object($value) && $value instanceof $str_child_class) {
+          $this->$str_attr_name = $value;
+        } elseif (is_array($value)) {
+          // And now populate attributes
+          $this->$str_attr_name->populate_attributes($value);
+        }
       }
 
       // Check if this is a collection class
@@ -288,20 +293,26 @@ abstract class AbstractCore {
 
   /**
    * Method gets the flat data using one of the method available in the attribute interface
-   * @param string $str_options representing custom options to get for the method
+   * @param string|array $mix_options representing custom options to get for the method
    * @param integer $int_data_type representing the type of the data to be retrieved
    * @return mixed[] Array representing raw data
    */
-  public function get_flat_data($str_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
+  public function get_flat_data($mix_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
 
     // Initiate the array to hold the data
     $arr_result = [];
 
     // Check if we have options passed, and if so, process them
-    $arr_options = $this->arr_default_get_db_formatted_data_options;    
-    if ($str_options) {
-      $arr_options = array_merge($arr_options, Utils\ArrayUtils::keymap_to_array($str_options));
+    $arr_options = $this->arr_default_get_db_formatted_data_options;
+    // Set custom options
+    $arr_custom_options = [];
+    if (is_string($mix_options)) {
+      $arr_custom_options = Utils\ArrayUtils::keymap_to_array($mix_options);
+    } elseif (is_array($mix_options)) {
+      $arr_custom_options = $mix_options;
     }
+
+    $arr_options = array_merge($arr_options, $arr_custom_options);
 
     // First, check if this is a collection class
     if ($this->is_collection_class()) {
