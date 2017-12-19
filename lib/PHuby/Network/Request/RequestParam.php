@@ -88,6 +88,12 @@ class RequestParam extends AbstractModel {
       case 'integer':
         return (int) $this->value;
         break;
+      case 'float':
+        return floatval($this->value);
+        break;
+      case 'string':
+        return (string) $this->value;
+        break;
       default:
         return $this->value;
         break;
