@@ -39,13 +39,21 @@ abstract class AbstractPage extends AbstractController {
     return $this;
   }
 
-  protected function render(array $params = null) {
+  protected function render($custom_params = null) {
     // Check parameters
-    if(!$params) {
-      $params = [
-        "template" => $this->template,
-        "template_vars" => $this->template_vars
-      ];
+    $params = [
+      "template" => $this->template,
+      "template_vars" => $this->template_vars
+    ];
+
+    if($custom_params !== null) {
+      // We have custom params set
+      if (is_string($custom_params)) {
+        // If string, this will be a template
+        $params['template'] = $custom_params;
+      } elseif (is_array($custom_params)) {
+        $params = array_merge($params, $custom_params);
+      }
     }
 
     // Make sure that the Twig is setup correctly
