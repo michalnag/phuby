@@ -72,8 +72,7 @@ abstract class AbstractCore {
         }
 
         // Check if the value is an object and class matches the one set on the object
-        $str_child_class = $this->get_attribute_class($str_attr_name);
-        if (is_object($value) && $value instanceof $str_child_class) {
+        if (is_object($value) && $value instanceof $str_attr_class) {
           $this->$str_attr_name = $value;
         } elseif (is_array($value)) {
           // And now populate attributes
@@ -88,8 +87,20 @@ abstract class AbstractCore {
           $this->$str_attr_name = new $str_attr_class;
         }
 
-        // And now populate attributes
-        $this->$str_attr_name->populate_collection($value);
+        // Check if value is an instance of the configured class
+        if (is_object($value)) {
+          if ($value instanceof $str_attr_class) {
+            // Assign object to the attribute
+            $this->$str_attr_name = $value;
+          } else {
+            // Invalid instance of the class
+            throw new Error\InvalidAttributeError(get_class($this) . "::$str_attr_name received instance of class " . get_class($value));
+          }
+        } else {
+          // And now populate attributes
+          $this->$str_attr_name->populate_collection($value);
+        }
+
 
       }
 
