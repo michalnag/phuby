@@ -3,5 +3,10 @@
     "name" : "default",
     "output" : "php://stderr",
     "level" : "info"
+  },
+  "additional" : {
+    "name" : "additional",
+    "output" : "php://stderr",
+    "level" : "info"
   }
 }
