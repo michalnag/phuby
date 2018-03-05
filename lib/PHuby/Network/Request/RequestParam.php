@@ -59,6 +59,7 @@ class RequestParam extends AbstractModel {
         $this->value = isset($_POST[$this->name->__toString()]) ? $_POST[$this->name->__toString()] : null;
         break;
       case "PUT":
+      case "DELETE":
         parse_str(file_get_contents("php://input"), $arr_put_vars);
         $this->value = array_key_exists($this->name->__toString(), $arr_put_vars) ? $arr_put_vars[$this->name->__toString()] : null;
         break;

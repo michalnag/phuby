@@ -14,7 +14,7 @@ use PHuby\AbstractCore;
 
 abstract class AbstractAPI extends AbstractCore {
 
-  public function api_success($mix_data, $response_code = 200, $message = null) {
+  public function api_success($mix_data = null, $response_code = 200, $message = null) {
     http_response_code($response_code);
     return json_encode([
         "status" => "success",
