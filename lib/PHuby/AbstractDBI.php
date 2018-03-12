@@ -231,5 +231,10 @@ abstract class AbstractDBI {
       return null;
     }
   }
+
+  protected static function _get_all($table) {
+    $arr_data = self::query_and_fetch("SELECT * FROM {$table}");
+    return !empty($arr_data) ? $arr_data : null;
+  }
   
 }
