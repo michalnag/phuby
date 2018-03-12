@@ -53,7 +53,7 @@ class IntAttr extends AbstractAttribute implements AttributeInterface {
     }
 
     // No condition have been met
-    throw new Error\InvalidAttributeError("Invalid argument of type " . gettype($value) . " passed.");
+    throw new Error\InvalidAttributeError("Invalid argument ". json_encode($value) . " of type " . gettype($value) . " passed.");
     
   }
 

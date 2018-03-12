@@ -107,6 +107,18 @@ abstract class AbstractProcess extends AbstractCore {
   }
 
   /**
+   * This is a convenience method to fail the process. It sets the status, error message and returns false
+   * 
+   * @param string $msg representing feedback error
+   * @return boolean false
+   */
+  public function fail($msg) {
+    $this->set_status(self::FAIL);
+    $this->add_error($msg);
+    return false;
+  }
+
+  /**
    * Checks if the status is allowed to be set
    * 
    * @param integer $int_process_status represeting the status id

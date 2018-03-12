@@ -75,6 +75,41 @@ class FileUtils extends AbstractUtils {
   }
 
   /**
+   * Method opens the file
+   * 
+   * @param string $str_filepath representing the path of the file
+   * @param string $str_mode rpresenting file open mode
+   * @return resource|false
+   */
+  public static function open($str_filepath, $str_mode = "w+") {
+    return fopen($str_filepath, $str_mode);
+  }
+
+  /**
+   * Method writes to the file
+   * 
+   * @param string $resource resource
+   * @param string $content
+   * @return int|false
+   */
+  public static function write($resource, $content) {
+    return fwrite($resource, $content);
+  }
+
+  /**
+   * Method writes to the file
+   * 
+   * @param string $str_path resource
+   * @param string $content
+   * @return int|false
+   */
+  public static function create_with_content($str_path, $content) {
+    $handle = self::open($str_path, "w+");
+    self::write($handle, $content);
+    fclose($handle);
+  }
+
+  /**
    * This method checks the file extension of the filename given
    * @param string $filename containing full filename 
    * @param string[] $extensions Array containing allowed extensions
