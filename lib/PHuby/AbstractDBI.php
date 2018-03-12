@@ -60,7 +60,6 @@ abstract class AbstractDBI {
     }
   }
 
-
   /**
    * Sets an instance of the PDO to the dbh
    *
@@ -215,5 +214,22 @@ abstract class AbstractDBI {
     return self::get_affected_rows();
   }
 
+  protected static function _get_by_id($table, $id, $multiple = false) {
+    return self::_get_by_key($table, 'id', $id, $multiple);
+  }
+
+  protected static function _get_by_key($table, $key, $value, $multiple = false) {
+    $q = "SELECT * FROM {$table} WHERE {$key} = ?";
+    $arr_data = self::query_and_fetch($q, [$value]);
+    if ($arr_data) {
+      if ($multiple) {
+        return $arr_data;
+      } else {
+        return array_shift($arr_data);
+      }
+    } else {
+      return null;
+    }
+  }
   
 }
