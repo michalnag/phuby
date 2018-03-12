@@ -88,6 +88,7 @@ class TestModelCollectionTest extends TestCase {
     $this->obj_tmc = new TestModelCollection();
     // Add collection to nesting model
     $this->example_nesting_data[1]['collection'] = $this->example_data;
+    $this->example_nesting_data[0]['collection'] = [];
   }
 
   public function test_instantiation() {
@@ -125,6 +126,8 @@ class TestModelCollectionTest extends TestCase {
 
   public function test_get_flat_nested_data() {
     // Test it on nesting as well
+    $this->example_nesting_data[1]['collection'][0]['collection'] = [];
+    $this->example_nesting_data[1]['collection'][1]['collection'] = [];
     $this->obj_tmc->populate_collection($this->example_nesting_data);
     $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tmc->get_collection()[1]->get_attr('collection'));
     $this->assertEquals($this->example_nesting_data, $this->obj_tmc->get_flat_data('nesting:true|exclude:nested_model'));

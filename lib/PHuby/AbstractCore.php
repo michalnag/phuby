@@ -132,7 +132,6 @@ abstract class AbstractCore {
    * @return boolean true once all attributes are created, false if ATTRIBUTE_MAP is undefined
    */
   public function initiate_attributes() {
-
     // Check if the ATTRIBUTE_MAP is defined
     $str_caller_class = get_class($this);
     if (defined("$str_caller_class::ATTRIBUTE_MAP")) {
@@ -151,6 +150,10 @@ abstract class AbstractCore {
               $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
             }
           }
+        } elseif ($this->is_attribute_collection_class($str_attr_name)) {
+          // Instantiate only collection class without any elements inside it
+          $str_attr_class = $arr_attr_details['collection_class'];
+          $this->$str_attr_name = new $str_attr_class;
         }
       }
 
@@ -329,13 +332,12 @@ abstract class AbstractCore {
     if ($this->is_collection_class()) {
 
       if ($this->is_collection_populated()) {
-
         // Iterate over the collection
         foreach($this->get_collection() as $obj_collectable) {
           $arr_result[] = $obj_collectable->get_model_flat_data($arr_options, $int_data_type);
         }
-
       }
+
     } else {
 
       // Standard child class
@@ -343,7 +345,7 @@ abstract class AbstractCore {
     }
 
     // Return
-    return empty($arr_result) ? null : $arr_result; 
+    return $arr_result; 
   }
 
 
