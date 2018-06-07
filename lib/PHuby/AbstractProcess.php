@@ -137,6 +137,15 @@ abstract class AbstractProcess extends AbstractCore {
   }
 
   /**
+   * Method gets first error from all error messages that occured during the process.
+   * 
+   * @return string|null containing error message, null if no errors occured
+   */
+  public function get_first_error() {
+    return empty($this->arr_errors) ? null : $this->arr_errors[0];
+  }
+
+  /**
    * Method gets all error messages that occured during the process.
    * 
    * @return mixed[] Array containing all errors, null if no errors occured
