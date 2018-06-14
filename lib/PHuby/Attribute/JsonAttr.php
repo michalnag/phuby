@@ -41,7 +41,7 @@ class JsonAttr extends AbstractAttribute implements AttributeInterface {
   }
 
   public function to_db_format() {
-    return $this->__toString();
+    return $this->attr_value;
   }
 
   public function __toString() {

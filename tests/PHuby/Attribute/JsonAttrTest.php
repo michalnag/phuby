@@ -50,7 +50,7 @@ class JsonAttrTest extends TestCase implements AttributeTestInterface {
 
   public function test_to_db_format() {
     $this->attr->set($this->arr_1);
-    $this->assertEquals($this->str_1, $this->attr->to_db_format());
+    $this->assertEquals($this->arr_1, $this->attr->to_db_format());
   }
 
   public function test_toString() {}
