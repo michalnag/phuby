@@ -11,6 +11,7 @@ namespace PHuby\Controller;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\ArrayUtils;
 use PHuby\AbstractCore;
+use PHuby\Error\NetworkRequestError;
 
 abstract class AbstractAPI extends AbstractCore {
 
