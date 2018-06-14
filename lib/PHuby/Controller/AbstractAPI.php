@@ -49,11 +49,25 @@ abstract class AbstractAPI extends AbstractCore {
     return $this->obj_body;
   }
 
-  protected function get_body_param($str_param) {
-    if (isset($this->get_body()->{$str_param})) {
-      return $this->get_body()->{$str_param};
+  protected function get_body_param($str_param, $obj_data = null) {
+    $arr_parts = explode(':', $str_param);
+    $obj_source = $obj_data ? $obj_data : $this->get_body();
+    if (count($arr_parts) == 1) {
+      if (isset($obj_source->{$str_param})) {
+        return $obj_source->{$str_param};
+      } else {
+        return null;
+      }      
     } else {
-      return null;
+      $str_first_param = array_shift($arr_parts);
+      if (isset($obj_source->{$str_first_param})) {
+        return $this->get_body_param(
+          join(':', $arr_parts),
+          $obj_source->{$str_first_param}
+        );
+      } else {
+        return null;
+      }   
     }
   }
 
