@@ -11,6 +11,7 @@ namespace PHuby\Controller;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\ArrayUtils;
 use PHuby\AbstractCore;
+use PHuby\Error;
 
 abstract class AbstractAPI extends AbstractCore {
 
@@ -42,6 +43,16 @@ abstract class AbstractAPI extends AbstractCore {
         "status" => "error",
         "responseCode" => 404,
         "data" => $data
+      ]);
+  }
+
+  public function api_forbidden($msg = null, $data = null) {
+    http_response_code(403);
+    return json_encode([
+        "status" => "forbidden",
+        "responseCode" => 403,
+        "data" => $data,
+        "message" => $msg
       ]);
   }
 
@@ -89,7 +100,7 @@ abstract class AbstractAPI extends AbstractCore {
       $arr_required = ArrayUtils::keymap_to_array($str_required);
       foreach ($arr_required as $str_key) {
         if(!isset($obj_body->{$str_key}) || is_null($obj_body->{$str_key})) {
-          throw new NetworkRequestError("Missing $str_key from request.");
+          throw new Error\NetworkRequestError("Missing $str_key from request.");
         }
       }
     }
