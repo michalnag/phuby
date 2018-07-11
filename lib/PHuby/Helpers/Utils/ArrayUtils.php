@@ -57,7 +57,7 @@ class ArrayUtils extends AbstractUtils {
           if(is_array($arr_source[$str_keymap])) {
             $arr_source[$str_keymap][] = $data; 
           } else {
-            // TODO - check if the key is a duplicate      
+            $arr_source[$str_keymap] = $data; 
           }
         }
       }

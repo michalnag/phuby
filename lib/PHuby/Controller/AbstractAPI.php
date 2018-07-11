@@ -11,6 +11,7 @@ namespace PHuby\Controller;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\ArrayUtils;
 use PHuby\AbstractCore;
+use PHuby\Error;
 
 abstract class AbstractAPI extends AbstractCore {
 
@@ -45,15 +46,39 @@ abstract class AbstractAPI extends AbstractCore {
       ]);
   }
 
+  public function api_forbidden($msg = null, $data = null) {
+    http_response_code(403);
+    return json_encode([
+        "status" => "forbidden",
+        "responseCode" => 403,
+        "data" => $data,
+        "message" => $msg
+      ]);
+  }
+
   protected function get_body() {
     return $this->obj_body;
   }
 
-  protected function get_body_param($str_param) {
-    if (isset($this->get_body()->{$str_param})) {
-      return $this->get_body()->{$str_param};
+  protected function get_body_param($str_param, $obj_data = null) {
+    $arr_parts = explode(':', $str_param);
+    $obj_source = $obj_data ? $obj_data : $this->get_body();
+    if (count($arr_parts) == 1) {
+      if (isset($obj_source->{$str_param})) {
+        return $obj_source->{$str_param};
+      } else {
+        return null;
+      }      
     } else {
-      return null;
+      $str_first_param = array_shift($arr_parts);
+      if (isset($obj_source->{$str_first_param})) {
+        return $this->get_body_param(
+          join(':', $arr_parts),
+          $obj_source->{$str_first_param}
+        );
+      } else {
+        return null;
+      }   
     }
   }
 
@@ -75,7 +100,7 @@ abstract class AbstractAPI extends AbstractCore {
       $arr_required = ArrayUtils::keymap_to_array($str_required);
       foreach ($arr_required as $str_key) {
         if(!isset($obj_body->{$str_key}) || is_null($obj_body->{$str_key})) {
-          throw new NetworkRequestError("Missing $str_key from request.");
+          throw new Error\NetworkRequestError("Missing $str_key from request.");
         }
       }
     }
