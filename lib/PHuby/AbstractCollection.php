@@ -9,8 +9,11 @@
 namespace PHuby;
 
 use PHuby\Error;
+use PHuby\AbstractCore;
+use \IteratorAggregate;
+use \ArrayIterator;
 
-abstract class AbstractCollection extends AbstractCore {
+abstract class AbstractCollection extends AbstractCore implements IteratorAggregate {
 
   const
     CLASS_TYPE = self::CLASS_TYPE_COLLECTION;
@@ -21,6 +24,15 @@ abstract class AbstractCollection extends AbstractCore {
     if ($arr_collection) {
       $this->populate_collection($arr_collection);
     }
+  }
+
+  /**
+   * Allow foreach to be called on the instance
+   *
+   * @return ArrayIterator
+   */
+  public function getIterator() {
+    return new ArrayIterator($this->get_collection());
   }
 
   /**

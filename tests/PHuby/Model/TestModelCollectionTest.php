@@ -93,7 +93,7 @@ class TestModelCollectionTest extends TestCase {
 
   public function test_instantiation() {
     $this->obj_tmc->populate_collection($this->example_data);
-    foreach ($this->obj_tmc->get_collection() as $obj_test_model) {
+    foreach ($this->obj_tmc as $obj_test_model) {
       $this->assertInstanceOf("\Model\TestModel", $obj_test_model);
     }
   }
