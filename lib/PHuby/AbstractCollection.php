@@ -12,8 +12,11 @@ use PHuby\Error;
 use PHuby\AbstractCore;
 use \IteratorAggregate;
 use \ArrayIterator;
+use PHuby\Traits\SupportsFlatData;
 
 abstract class AbstractCollection extends AbstractCore implements IteratorAggregate {
+
+  use SupportsFlatData;
 
   const
     CLASS_TYPE = self::CLASS_TYPE_COLLECTION;

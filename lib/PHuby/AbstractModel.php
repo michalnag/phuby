@@ -12,8 +12,13 @@ use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\StringUtils;
 use PHuby\Error;
+use PHuby\Traits\SupportsAttributes;
+use PHuby\Traits\SupportsFlatData;
 
 abstract class AbstractModel extends AbstractCore {
+
+  use SupportsAttributes;
+  use SupportsFlatData;
 
   const
     CLASS_TYPE = self::CLASS_TYPE_MODEL;
