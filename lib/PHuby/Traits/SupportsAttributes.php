@@ -116,11 +116,11 @@ trait SupportsAttributes {
         // Check if this is standard attribute
         if ($this->is_attribute_standard($str_attr_name)) {
           // Standard attribute. Instantiate it
-          $str_attr_class = $arr_attr_details['class'];
+          $str_attr_class =  is_array($arr_attr_details) ? $arr_attr_details['class'] : $arr_attr_details;
           $this->$str_attr_name = new $str_attr_class;
 
           // Check for options and default value
-          if (array_key_exists('options', $arr_attr_details)) {
+          if (is_array($arr_attr_details) && array_key_exists('options', $arr_attr_details)) {
             $this->$str_attr_name->set_attribute_options($arr_attr_details['options']);
             if (array_key_exists('default_value', $arr_attr_details['options'])) {
               $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
@@ -180,8 +180,11 @@ trait SupportsAttributes {
     if (defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)) {
       
       // Check whether it contains class or child_class key
-      if (array_key_exists('class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
+      if (is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists('class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
         return $this::ATTRIBUTE_MAP[$str_attr_name]['class'];
+
+      } elseif (is_string($this::ATTRIBUTE_MAP[$str_attr_name])) {
+        return $this::ATTRIBUTE_MAP[$str_attr_name];
 
       } elseif (array_key_exists('child_class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
         return $this::ATTRIBUTE_MAP[$str_attr_name]['child_class'];
@@ -206,7 +209,7 @@ trait SupportsAttributes {
    * @return mixed[] Array representing attribute options, null if no options are set
    */
   public function get_attribute_options($str_attr_name) {
-    if (array_key_exists('options', $this::ATTRIBUTE_MAP[$str_attr_name])) {
+    if (is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists('options', $this::ATTRIBUTE_MAP[$str_attr_name])) {
       return $this::ATTRIBUTE_MAP[$str_attr_name]['options'];
     } else {
       return null;
@@ -236,7 +239,10 @@ trait SupportsAttributes {
    */
   public function is_attribute_standard($str_attr_name) {
     $caller_class = get_class($this);
-    return defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    return 
+      defined("$caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) 
+      && ((is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists("class", $this::ATTRIBUTE_MAP[$str_attr_name])) ||  is_string($this::ATTRIBUTE_MAP[$str_attr_name]));
   }
 
 
@@ -247,7 +253,11 @@ trait SupportsAttributes {
    */
   public function is_attribute_child_class($str_attr_name) {
     $str_caller_class = get_class($this);
-    return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("child_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    return 
+      defined("$str_caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) 
+      && is_array($this::ATTRIBUTE_MAP[$str_attr_name])
+      && array_key_exists("child_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
 
@@ -258,7 +268,11 @@ trait SupportsAttributes {
    */
   public function is_attribute_collection_class($str_attr_name) {
     $str_caller_class = get_class($this);
-    return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    return 
+      defined("$str_caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)
+      && is_array($this::ATTRIBUTE_MAP[$str_attr_name])
+      && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
 }
