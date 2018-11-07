@@ -33,4 +33,12 @@ abstract class AbstractModel extends AbstractCore {
     }
   }
 
+  public function __get($str_attr) {
+    return $this->get_attr($str_attr);
+  }
+
+  public function __set($str_attr, $mix_value) {
+    return $this->set_attr($str_attr, $mix_value);
+  }
+
 }

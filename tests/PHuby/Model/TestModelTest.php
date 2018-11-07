@@ -48,6 +48,14 @@ class TestModelTest extends TestCase {
     }
   }
 
+  public function test_magic_methods() {
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $this->assertEquals($this->obj_tm->token, $this->example_test_model_data['token']);
+    $this->assertEquals($this->obj_tm->email, $this->example_test_model_data['email']);
+    $this->obj_tm->email = 'test@asd.com';
+    $this->assertEquals($this->obj_tm->email, 'test@asd.com');    
+  }
+
   public function test_populate_attributes() {
 
     $this->obj_tm->populate_attributes($this->example_test_model_data);
