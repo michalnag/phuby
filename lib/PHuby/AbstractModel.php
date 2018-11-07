@@ -41,4 +41,8 @@ abstract class AbstractModel extends AbstractCore {
     return $this->set_attr($str_attr, $mix_value);
   }
 
+  public function __isset($str_attr) {
+    return $this->is_attribute_allowed($str_attr);
+  }
+
 }
