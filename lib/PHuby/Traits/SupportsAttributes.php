@@ -2,6 +2,7 @@
 
 namespace PHuby\Traits;
 use PHuby\Logger;
+use PHuby\Error;
 
 trait SupportsAttributes {
   
