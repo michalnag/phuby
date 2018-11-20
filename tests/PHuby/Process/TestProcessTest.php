@@ -1,17 +1,12 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/../../../tests/lib/autoload.php";
-
-use PHPUnit\Framework\TestCase;
 use Process\TestProcess;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 
 class TestProcessTest extends TestCase {
 
-  public function __construct() {
+  public function setUp() {
     $this->obj_process = new TestProcess();
   }
 

@@ -1,16 +1,11 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/AttributeTestInterface.php";
-
-use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\JsonAttr;
 use PHuby\Error\InvalidArgumentError;
 
 class JsonAttrTest extends TestCase implements AttributeTestInterface {
 
-  public function __construct() {
+  public function setUp() {
     $this->attr = new JsonAttr();
     $this->arr_1 = [
       'test' => 1,

@@ -1,10 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../../../../lib/autoload.php";
-require_once __DIR__ . "/../../../../vendor/autoload.php";
-
 use PHuby\Helpers\Validator\EmailValidator as EV;
-use PHPUnit\Framework\TestCase;
 
 
 class EmailValidatorTest extends TestCase {

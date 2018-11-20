@@ -1,10 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/../../../tests/lib/autoload.php";
-
-use PHPUnit\Framework\TestCase;
 use Model\TestModel;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
@@ -24,8 +19,7 @@ class TestModelTest extends TestCase {
     'string_with_options' => "asadasdasd"
   ];
 
-  public function __construct() {
-    Config::set_config_root(__DIR__."/../../config.d");
+  public function setUp() {
     $this->obj_tm = new TestModel();
   }
 

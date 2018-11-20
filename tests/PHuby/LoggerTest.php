@@ -1,15 +1,7 @@
 <?php
 
-require_once __DIR__ . "/../../lib/autoload.php";
-require_once __DIR__ . "/../../vendor/autoload.php";
-require_once __DIR__ . "/../../tests/lib/autoload.php";
-
-use PHPUnit\Framework\TestCase;
-use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 use PHuby\{Error,Logger};
-
-Config::set_config_root(__DIR__."/../config.d");
 
 class LoggerTest extends TestCase {
 

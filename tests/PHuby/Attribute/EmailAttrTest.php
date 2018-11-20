@@ -1,8 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/AttributeTestInterface.php";
 
 use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\EmailAttr;

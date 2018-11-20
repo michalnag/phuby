@@ -1,10 +1,7 @@
 <?php
 
-require_once __DIR__ . "/../../../../lib/autoload.php";
-require_once __DIR__ . "/../../../../vendor/autoload.php";
 
 use PHuby\Helpers\Validator\StringValidator as SV;
-use PHPUnit\Framework\TestCase;
 
 
 class StringValidatorTest extends TestCase {
