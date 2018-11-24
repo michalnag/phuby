@@ -1,34 +1,11 @@
 <?php
-/**
- * AbstractCore
- * Every Controller / Model / ModelCollection / Process / Network inherits
- * this class. All functionality found here is available in namespaces listed.
- * 
- * @author Michal Nagielski <michal.nagielski@gmail.com>
- * @package PHuby
- */
 
-namespace PHuby;
-
+namespace PHuby\Traits;
 use PHuby\Logger;
-use PHuby\Helpers\Utils;
+use PHuby\Error;
 
-abstract class AbstractCore {
-
-  const 
-    CLASS_TYPE_MODEL = 1,
-    CLASS_TYPE_COLLECTION = 2,
-
-    FLAT_DATA_RAW = 1,
-    FLAT_DATA_DB_FORMAT = 2;
-
-  // Set options for default DB formatted data options
-  protected $arr_default_get_db_formatted_data_options = [
-    "include" => [],
-    "exclude" => [],
-    "nesting" => false
-  ];
-
+trait SupportsAttributes {
+  
   /**
    * Method sets the attribute based on the configuration inside ATTRIBUTE_MAP
    * @param string $str_attr_name representing name of the attribute
@@ -140,11 +117,11 @@ abstract class AbstractCore {
         // Check if this is standard attribute
         if ($this->is_attribute_standard($str_attr_name)) {
           // Standard attribute. Instantiate it
-          $str_attr_class = $arr_attr_details['class'];
+          $str_attr_class =  is_array($arr_attr_details) ? $arr_attr_details['class'] : $arr_attr_details;
           $this->$str_attr_name = new $str_attr_class;
 
           // Check for options and default value
-          if (array_key_exists('options', $arr_attr_details)) {
+          if (is_array($arr_attr_details) && array_key_exists('options', $arr_attr_details)) {
             $this->$str_attr_name->set_attribute_options($arr_attr_details['options']);
             if (array_key_exists('default_value', $arr_attr_details['options'])) {
               $this->$str_attr_name->set($arr_attr_details['options']['default_value']);
@@ -204,8 +181,11 @@ abstract class AbstractCore {
     if (defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)) {
       
       // Check whether it contains class or child_class key
-      if (array_key_exists('class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
+      if (is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists('class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
         return $this::ATTRIBUTE_MAP[$str_attr_name]['class'];
+
+      } elseif (is_string($this::ATTRIBUTE_MAP[$str_attr_name])) {
+        return $this::ATTRIBUTE_MAP[$str_attr_name];
 
       } elseif (array_key_exists('child_class', $this::ATTRIBUTE_MAP[$str_attr_name])) {
         return $this::ATTRIBUTE_MAP[$str_attr_name]['child_class'];
@@ -230,7 +210,7 @@ abstract class AbstractCore {
    * @return mixed[] Array representing attribute options, null if no options are set
    */
   public function get_attribute_options($str_attr_name) {
-    if (array_key_exists('options', $this::ATTRIBUTE_MAP[$str_attr_name])) {
+    if (is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists('options', $this::ATTRIBUTE_MAP[$str_attr_name])) {
       return $this::ATTRIBUTE_MAP[$str_attr_name]['options'];
     } else {
       return null;
@@ -260,7 +240,10 @@ abstract class AbstractCore {
    */
   public function is_attribute_standard($str_attr_name) {
     $caller_class = get_class($this);
-    return defined("$caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    return 
+      defined("$caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) 
+      && ((is_array($this::ATTRIBUTE_MAP[$str_attr_name]) && array_key_exists("class", $this::ATTRIBUTE_MAP[$str_attr_name])) ||  is_string($this::ATTRIBUTE_MAP[$str_attr_name]));
   }
 
 
@@ -271,7 +254,11 @@ abstract class AbstractCore {
    */
   public function is_attribute_child_class($str_attr_name) {
     $str_caller_class = get_class($this);
-    return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("child_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+    return 
+      defined("$str_caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) 
+      && is_array($this::ATTRIBUTE_MAP[$str_attr_name])
+      && array_key_exists("child_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
 
@@ -282,135 +269,11 @@ abstract class AbstractCore {
    */
   public function is_attribute_collection_class($str_attr_name) {
     $str_caller_class = get_class($this);
-    return defined("$str_caller_class::ATTRIBUTE_MAP") && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP) && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
-  }
-
-
-  /**
-   * Method gets the class type by interpreting CLASS_TYPE constant set on the class
-   * @return integer representing a class type (set on the AbsstractCore), null if undefined
-   * @todo check if the constant is set on the class
-   */
-  public function get_class_type() {
-    return $this::CLASS_TYPE;
-  }
-
-
-  /**
-   * Method checks whether the class is a collection class or not
-   * @return boolean true is current class is a collection class, false otherwise
-   */
-  protected function is_collection_class() {
-    return $this->get_class_type() == self::CLASS_TYPE_COLLECTION;
-  }
-
-
-  /**
-   * Method gets the flat data using one of the method available in the attribute interface
-   * @param string|array $mix_options representing custom options to get for the method
-   * @param integer $int_data_type representing the type of the data to be retrieved
-   * @return mixed[] Array representing raw data
-   */
-  public function get_flat_data($mix_options = null, $int_data_type = self::FLAT_DATA_DB_FORMAT) {
-
-    // Initiate the array to hold the data
-    $arr_result = [];
-
-    // Check if we have options passed, and if so, process them
-    $arr_options = $this->arr_default_get_db_formatted_data_options;
-    // Set custom options
-    $arr_custom_options = [];
-    if (is_string($mix_options)) {
-      $arr_custom_options = Utils\ArrayUtils::keymap_to_array($mix_options);
-    } elseif (is_array($mix_options)) {
-      $arr_custom_options = $mix_options;
-    }
-
-    $arr_options = array_merge($arr_options, $arr_custom_options);
-
-    // First, check if this is a collection class
-    if ($this->is_collection_class()) {
-
-      if ($this->is_collection_populated()) {
-        // Iterate over the collection
-        foreach($this->get_collection() as $obj_collectable) {
-          $arr_result[] = $obj_collectable->get_model_flat_data($arr_options, $int_data_type);
-        }
-      }
-
-    } else {
-
-      // Standard child class
-      $arr_result = $this->get_model_flat_data($arr_options, $int_data_type);
-    }
-
-    // Return
-    return $arr_result; 
-  }
-
-
-  /**
-   * Method gets the flat data from the model type of object
-   * @param mixed[] $arr_options representing an array with options (see get_flat_data for more details)
-   * @param integer $int_data_type representing a flat data type (see get_flat_data for more details)
-   * @return mixed[] representing requested flat data
-   * @todo implement method type recognition
-   */
-  protected function get_model_flat_data($arr_options, $int_data_type) {
-    // Initiate return data array
-    $arr_return_data = [];
-
-    // Iterate over ATTRIBUTE_MAP
-    foreach ($this::ATTRIBUTE_MAP as $str_attr_name => $arr_attr_options) {
-
-      // Check if the attribute is excluded from options or if we have any include set
-      if (
-        (array_key_exists('include', $arr_options) && !empty($arr_options['include']) && !array_key_exists($str_attr_name, array_flip($arr_options['include'])))
-        || (array_key_exists('exclude', $arr_options) && array_key_exists($str_attr_name, array_flip($arr_options['exclude'])))
-      ) {
-        // We want do not want to process this attribute
-        continue;
-      }
-
-      // Start checking whether this is a standard attribute or not
-      if ($this->is_attribute_standard($str_attr_name)) {
-        $arr_return_data[$str_attr_name] = $this->$str_attr_name->to_db_format();
-      }
-
-      // Check if this is a child class
-      if ($this->is_attribute_child_class($str_attr_name) || $this->is_attribute_collection_class($str_attr_name)) {
-
-        // Attribute is a child class. Check if it is supposed to be included
-        if (array_key_exists('nesting', $arr_options) && $arr_options["nesting"][0]) {
-
-          // Include child class. Check if this is a collection class or not
-          if ($this->get_attr($str_attr_name)
-              && $this->get_attr($str_attr_name)->is_collection_class()
-              && $this->get_attr($str_attr_name)->is_collection_populated()
-            ) {
-            // Initiate the array
-            $arr_return_data[$str_attr_name] = [];
-
-            // Iterate over the collection
-            foreach ($this->$str_attr_name->get_collection() as $obj_collectable) {
-              $arr_return_data[$str_attr_name][] = $obj_collectable->get_model_flat_data($arr_options, $int_data_type);
-            }
-
-          } elseif ($this->get_attr($str_attr_name)) {
-
-            // Include model data
-            $arr_return_data[$str_attr_name] = $this->$str_attr_name->get_flat_data($arr_options);
-          }
-
-        } else {
-          // Do not include child class
-        }
-      } 
-
-
-    }
-
-    return $arr_return_data;
+    return 
+      defined("$str_caller_class::ATTRIBUTE_MAP") 
+      && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)
+      && is_array($this::ATTRIBUTE_MAP[$str_attr_name])
+      && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
   }
 
 }

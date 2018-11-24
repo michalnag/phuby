@@ -1,15 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/AttributeTestInterface.php";
-
-use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\PasswordAttr;
 
 class PasswordAttrTest extends TestCase implements AttributeTestInterface {
 
-  public function __construct() {
+  public function setUp() {
     $this->passwordAttr = new PasswordAttr();
   }
 

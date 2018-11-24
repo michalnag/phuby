@@ -12,8 +12,13 @@ use PHuby\Helpers\Utils\ObjectUtils;
 use PHuby\Logger;
 use PHuby\Helpers\Utils\StringUtils;
 use PHuby\Error;
+use PHuby\Traits\SupportsAttributes;
+use PHuby\Traits\SupportsFlatData;
 
 abstract class AbstractModel extends AbstractCore {
+
+  use SupportsAttributes;
+  use SupportsFlatData;
 
   const
     CLASS_TYPE = self::CLASS_TYPE_MODEL;
@@ -26,6 +31,18 @@ abstract class AbstractModel extends AbstractCore {
     if ($arr_attributes) {
       $this->populate_attributes($arr_attributes);
     }
+  }
+
+  public function __get($str_attr) {
+    return $this->get_attr($str_attr);
+  }
+
+  public function __set($str_attr, $mix_value) {
+    return $this->set_attr($str_attr, $mix_value);
+  }
+
+  public function __isset($str_attr) {
+    return $this->is_attribute_allowed($str_attr);
   }
 
 }

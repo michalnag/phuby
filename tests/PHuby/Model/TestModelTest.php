@@ -1,10 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/../../../tests/lib/autoload.php";
-
-use PHPUnit\Framework\TestCase;
 use Model\TestModel;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
@@ -24,8 +19,7 @@ class TestModelTest extends TestCase {
     'string_with_options' => "asadasdasd"
   ];
 
-  public function __construct() {
-    Config::set_config_root(__DIR__."/../../config.d");
+  public function setUp() {
     $this->obj_tm = new TestModel();
   }
 
@@ -46,6 +40,14 @@ class TestModelTest extends TestCase {
           break;
       }
     }
+  }
+
+  public function test_magic_methods() {
+    $this->obj_tm->populate_attributes($this->example_test_model_data);
+    $this->assertEquals($this->obj_tm->token, $this->example_test_model_data['token']);
+    $this->assertEquals($this->obj_tm->email, $this->example_test_model_data['email']);
+    $this->obj_tm->email = 'test@asd.com';
+    $this->assertEquals($this->obj_tm->email, 'test@asd.com');    
   }
 
   public function test_populate_attributes() {

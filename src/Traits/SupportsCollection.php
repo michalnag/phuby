@@ -1,19 +1,12 @@
 <?php
-/**
- * AbstractCollection sits as a base in every collection object
- * 
- * @author Michal Nagielski <michal.nagielski@gmail.com>
- * @package PHuby
- */
 
-namespace PHuby;
+namespace PHuby\Traits;
 
+use \ArrayIterator;
 use PHuby\Error;
 
-abstract class AbstractCollection extends AbstractCore {
-
-  const
-    CLASS_TYPE = self::CLASS_TYPE_COLLECTION;
+trait SupportsCollection {
+  
 
   protected $collection = [];
 
@@ -21,6 +14,15 @@ abstract class AbstractCollection extends AbstractCore {
     if ($arr_collection) {
       $this->populate_collection($arr_collection);
     }
+  }
+
+  /**
+   * Allow foreach to be called on the instance
+   *
+   * @return ArrayIterator
+   */
+  public function getIterator() {
+    return new ArrayIterator($this->get_collection());
   }
 
   /**

@@ -1,19 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../../../../lib/autoload.php";
-require_once __DIR__ . "/../../../../vendor/autoload.php";
-
 use PHuby\Helpers\Utils\ImageUtils;
 use PHuby\Helpers\Utils\FileUtils;
-use PHPUnit\Framework\TestCase;
 use PHuby\Helpers\Utils;
-use PHuby\Config;
 
 class ImageUtilsTest extends TestCase {
-
-  public function __construct() {
-    Config::set_config_root(__DIR__."/../../../config.d");
-  }
 
   public function test_px_to_cm() {
     $args = [

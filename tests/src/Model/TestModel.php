@@ -3,6 +3,7 @@
 namespace Model;
 
 use PHuby\AbstractModel;
+use PHuby\Attribute;
 
 class TestModel extends AbstractModel {
 
@@ -21,9 +22,7 @@ class TestModel extends AbstractModel {
     $nested_model;
     
   const ATTRIBUTE_MAP = [
-    'int'        => [
-      "class" => "\PHuby\Attribute\IntAttr"
-    ],
+    'int'        => Attribute\IntAttr::class,
     'datetime'        => [
       "class" => "\PHuby\Attribute\DateTimeAttr"
     ],

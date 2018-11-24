@@ -1,10 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/../../../tests/lib/autoload.php";
-
-use PHPUnit\Framework\TestCase;
 use Model\TestModel;
 use Model\TestModelCollection;
 use PHuby\Config;
@@ -83,7 +78,7 @@ class TestModelCollectionTest extends TestCase {
     ]
   ];
 
-  public function __construct() {
+  public function setUp() {
     Config::set_config_root(__DIR__."/../../config.d");
     $this->obj_tmc = new TestModelCollection();
     // Add collection to nesting model
@@ -93,7 +88,7 @@ class TestModelCollectionTest extends TestCase {
 
   public function test_instantiation() {
     $this->obj_tmc->populate_collection($this->example_data);
-    foreach ($this->obj_tmc->get_collection() as $obj_test_model) {
+    foreach ($this->obj_tmc as $obj_test_model) {
       $this->assertInstanceOf("\Model\TestModel", $obj_test_model);
     }
   }

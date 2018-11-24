@@ -1,17 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../../../lib/autoload.php";
-require_once __DIR__ . "/../../../vendor/autoload.php";
-require_once __DIR__ . "/AttributeTestInterface.php";
-
-use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\StringAttr;
-use PHuby\Config;
 
 class StringAttrTest extends TestCase implements AttributeTestInterface {
 
-  public function __construct() {
-    Config::set_config_root(__DIR__."/../../config.d");
+  public function setUp() {
     $this->stringAttr = new StringAttr();
   }
 

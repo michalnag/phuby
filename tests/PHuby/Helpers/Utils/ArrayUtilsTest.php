@@ -1,17 +1,8 @@
 <?php
 
-require_once __DIR__ . "/../../../../lib/autoload.php";
-require_once __DIR__ . "/../../../../vendor/autoload.php";
-
-use PHPUnit\Framework\TestCase;
 use PHuby\Helpers\Utils\ArrayUtils;
-use PHuby\Config;
 
 class ArrayUtilsTest extends TestCase {
-
-  public function __construct() {
-    Config::set_config_root(__DIR__."/../../../config.d");
-  }
 
   public function test_add_data() {
     $arr1 = ["msg" => ["error" => [["content" => "Error 1"]]]];
