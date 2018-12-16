@@ -23,7 +23,7 @@ abstract class AbstractPage extends AbstractController {
   protected $twig;
   protected $template, $template_vars = [];
 
-  private function setup_twig() {
+  protected function setup_twig() {
     if(!$this->twig && !$this->twig instanceof Twig_Environment) {
       Twig_Autoloader::register();
       $loader = new Twig_Loader_Filesystem(
