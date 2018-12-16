@@ -20,7 +20,7 @@ use Twig_Environment;
 
 abstract class AbstractPage extends AbstractController {
 
-  private $twig;
+  protected $twig;
   protected $template, $template_vars = [];
 
   private function setup_twig() {
