@@ -1,6 +1,6 @@
 <?php
 
-namespace Process;
+namespace PHubyTest\Process;
 
 use PHuby\AbstractProcess;
 

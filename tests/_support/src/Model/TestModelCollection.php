@@ -1,13 +1,13 @@
 <?php
 
-namespace Model;
+namespace PHubyTest\Model;
 
 use PHuby\AbstractCollection;
 
 class TestModelCollection extends AbstractCollection {
 
   const COLLECT_CLASS = [
-    "name"        => "\Model\TestModel"
+    "name"        => "\PHubyTest\Model\TestModel"
   ];
 
 }

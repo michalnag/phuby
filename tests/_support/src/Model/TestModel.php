@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace PHubyTest\Model;
 
 use PHuby\AbstractModel;
 use PHuby\Attribute;
@@ -67,10 +67,10 @@ class TestModel extends AbstractModel {
 
     // Child classes
     'collection' => [
-      "collection_class" => "\Model\TestModelCollection"
+      "collection_class" => "\PHubyTest\Model\TestModelCollection"
     ],
     'nested_model' => [
-      "child_class" => "\Model\TestModel"
+      "child_class" => "\PHubyTest\Model\TestModel"
     ]
 
   ];

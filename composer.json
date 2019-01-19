@@ -12,6 +12,7 @@
     "twig/twig":"~1.0",
     "phroute/phroute": "^2.1",
     "monolog/monolog" : "1.11.0",
+    "robmorgan/phinx" : "^0.10",
     "vlucas/phpdotenv" : "^2.5"
   },
   "require-dev": {
@@ -20,7 +21,8 @@
   },
   "autoload" : {
     "psr-4": {
-      "PHuby\\" : "src/"
+      "PHuby\\" : "src/",
+      "PHubyTest\\" : "tests/_support/src/"
     }
   }
 }

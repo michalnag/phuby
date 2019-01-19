@@ -1,6 +1,6 @@
 <?php
 
-use Model\TestModel;
+use PHubyTest\Model\TestModel;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 
@@ -20,6 +20,7 @@ class TestModelTest extends TestCase {
   ];
 
   public function setUp() {
+    parent::setUp();
     $this->obj_tm = new TestModel();
   }
 
@@ -122,8 +123,8 @@ class TestModelTest extends TestCase {
 
     $this->obj_tm->populate_attributes($arr_data_with_collection);
 
-    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tm->get_attr('collection'));
-    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->get_attr('collection')->get_collection()[0]);
+    $this->assertInstanceOf(TestModelCollection::class, $this->obj_tm->get_attr('collection'));
+    $this->assertInstanceOf(TestModel::class, $this->obj_tm->get_attr('collection')->get_collection()[0]);
 
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
@@ -152,7 +153,7 @@ class TestModelTest extends TestCase {
 
     $this->obj_tm->populate_attributes($arr_nested_data);
 
-    $this->assertInstanceOf("\Model\TestModel", $this->obj_tm->get_attr('nested_model'));
+    $this->assertInstanceOf(TestModel::class, $this->obj_tm->get_attr('nested_model'));
 
     $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->get_attr('nested_model')->get_attr('email')->get());
     $this->assertEquals($arr_nested_data['nested_model']['boolean'], $this->obj_tm->get_attr('nested_model')->get_attr('boolean')->to_db_format());

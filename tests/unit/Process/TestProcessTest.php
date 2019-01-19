@@ -1,12 +1,13 @@
 <?php
 
-use Process\TestProcess;
+use PHubyTest\Process\TestProcess;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 
 class TestProcessTest extends TestCase {
 
   public function setUp() {
+    parent::setUp();
     $this->obj_process = new TestProcess();
   }
 

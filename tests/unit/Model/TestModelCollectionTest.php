@@ -1,7 +1,7 @@
 <?php
 
-use Model\TestModel;
-use Model\TestModelCollection;
+use PHubyTest\Model\TestModel;
+use PHubyTest\Model\TestModelCollection;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 use PHuby\Helpers\Utils\ArrayUtils;
@@ -79,7 +79,7 @@ class TestModelCollectionTest extends TestCase {
   ];
 
   public function setUp() {
-    Config::set_config_root(__DIR__."/../../config.d");
+    parent::setUp();
     $this->obj_tmc = new TestModelCollection();
     // Add collection to nesting model
     $this->example_nesting_data[1]['collection'] = $this->example_data;
@@ -89,7 +89,7 @@ class TestModelCollectionTest extends TestCase {
   public function test_instantiation() {
     $this->obj_tmc->populate_collection($this->example_data);
     foreach ($this->obj_tmc as $obj_test_model) {
-      $this->assertInstanceOf("\Model\TestModel", $obj_test_model);
+      $this->assertInstanceOf(TestModel::class, $obj_test_model);
     }
   }
 
@@ -124,7 +124,7 @@ class TestModelCollectionTest extends TestCase {
     $this->example_nesting_data[1]['collection'][0]['collection'] = [];
     $this->example_nesting_data[1]['collection'][1]['collection'] = [];
     $this->obj_tmc->populate_collection($this->example_nesting_data);
-    $this->assertInstanceOf("\Model\TestModelCollection", $this->obj_tmc->get_collection()[1]->get_attr('collection'));
+    $this->assertInstanceOf(TestModelCollection::class, $this->obj_tmc->get_collection()[1]->get_attr('collection'));
     $this->assertEquals($this->example_nesting_data, $this->obj_tmc->get_flat_data('nesting:true|exclude:nested_model'));
   }
 
