@@ -2,17 +2,18 @@
 
 use PHuby\Attribute\BooleanAttr;
 
-class BooleanAttrTest extends TestCase implements AttributeTestInterface {
+class BooleanAttrTest extends TestCase {
 
   public function setUp() {
+    parent::setUp();
     $this->booleanAttr = new BooleanAttr();
   }
 
-  public function test_instance() {
-    $this->assertInstanceOf('PHuby\Attribute\BooleanAttr', $this->booleanAttr);
+  public function testInstantiation() {
+    $this->assertInstanceOf(BooleanAttr::class, $this->booleanAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     // Test valid values
     foreach([1, true, new BooleanAttr(true)] as $value) {
@@ -39,10 +40,16 @@ class BooleanAttrTest extends TestCase implements AttributeTestInterface {
 
   }
   
-  public function test_get() {}
+  public function testGet() {
+    $this->markTestIncomplete();
+  }
   
-  public function test_to_db_format() {}
+  public function testToDBFormat() {
+    $this->markTestIncomplete();
+  }
 
-  public function test_toString() {}
+  public function testToString() {
+    $this->markTestIncomplete();
+  }
 
 }

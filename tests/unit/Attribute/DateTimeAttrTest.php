@@ -2,7 +2,7 @@
 
 use PHuby\Attribute\DateTimeAttr;
 
-class DateTimeAttrTest extends TestCase implements AttributeTestInterface {
+class DateTimeAttrTest extends TestCase {
 
   public function setUp() {
     $this->dateTimeAttr = new DateTimeAttr();

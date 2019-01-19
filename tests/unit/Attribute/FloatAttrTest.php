@@ -2,7 +2,7 @@
 
 use PHuby\Attribute\FloatAttr;
 
-class FloatAttrTest extends TestCase implements AttributeTestInterface {
+class FloatAttrTest extends TestCase {
 
   public function setUp() {
     $this->FloatAttr = new FloatAttr();

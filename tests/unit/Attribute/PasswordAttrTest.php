@@ -2,7 +2,7 @@
 
 use PHuby\Attribute\PasswordAttr;
 
-class PasswordAttrTest extends TestCase implements AttributeTestInterface {
+class PasswordAttrTest extends TestCase {
 
   public function setUp() {
     $this->passwordAttr = new PasswordAttr();

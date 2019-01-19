@@ -4,9 +4,10 @@
 use PHPUnit\Framework\TestCase;
 use PHuby\Attribute\EmailAttr;
 
-class EmailAttrTest extends TestCase implements AttributeTestInterface {
+class EmailAttrTest extends TestCase {
 
-  public function __construct() {
+  public function setUp() {
+    parent::setUp();
     $this->emailAttr = new EmailAttr();
   }
 

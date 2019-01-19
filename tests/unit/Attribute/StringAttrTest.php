@@ -2,7 +2,7 @@
 
 use PHuby\Attribute\StringAttr;
 
-class StringAttrTest extends TestCase implements AttributeTestInterface {
+class StringAttrTest extends TestCase {
 
   public function setUp() {
     $this->stringAttr = new StringAttr();

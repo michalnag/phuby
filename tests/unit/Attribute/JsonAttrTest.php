@@ -3,7 +3,7 @@
 use PHuby\Attribute\JsonAttr;
 use PHuby\Error\InvalidArgumentError;
 
-class JsonAttrTest extends TestCase implements AttributeTestInterface {
+class JsonAttrTest extends TestCase {
 
   public function setUp() {
     $this->attr = new JsonAttr();

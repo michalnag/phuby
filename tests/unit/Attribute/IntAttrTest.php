@@ -2,7 +2,7 @@
 
 use PHuby\Attribute\IntAttr;
 
-class IntAttrTest extends TestCase implements AttributeTestInterface {
+class IntAttrTest extends TestCase {
 
   public function setUp() {
     $this->intAttr = new IntAttr();
