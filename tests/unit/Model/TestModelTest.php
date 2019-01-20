@@ -1,6 +1,7 @@
 <?php
 
 use PHubyTest\Model\TestModel;
+use PHubyTest\Model\TestModelCollection;
 use PHuby\Config;
 use PHuby\Helpers\Utils\FileUtils;
 
@@ -87,10 +88,10 @@ class TestModelTest extends TestCase {
     }
 
     // We also want to make sure we set location
-    $str_assets_location = __DIR__."/../../assets";
+    $str_assets_location = __DIR__."/../../_support/assets";
     $this->obj_tm->get_attr('image')->set_location($str_assets_location);
-    $this->assertEquals("image_01.jpg", $this->obj_tm->get_attr('image')->get());
-    $this->assertTrue($this->obj_tm->get_attr('image')->exists());
+    $this->assertEquals("image_01.jpg", $this->obj_tm->image->get());
+    $this->assertTrue($this->obj_tm->image->exists());
     $this->obj_tm->get_attr('file')->set_location($str_assets_location);
     $this->assertTrue($this->obj_tm->get_attr('file')->exists());
 
@@ -123,8 +124,8 @@ class TestModelTest extends TestCase {
 
     $this->obj_tm->populate_attributes($arr_data_with_collection);
 
-    $this->assertInstanceOf(TestModelCollection::class, $this->obj_tm->get_attr('collection'));
-    $this->assertInstanceOf(TestModel::class, $this->obj_tm->get_attr('collection')->get_collection()[0]);
+    $this->assertInstanceOf(TestModelCollection::class, $this->obj_tm->collection);
+    $this->assertInstanceOf(TestModel::class, $this->obj_tm->collection->get_collection()[0]);
 
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {

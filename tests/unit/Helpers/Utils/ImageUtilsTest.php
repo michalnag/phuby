@@ -43,8 +43,8 @@ class ImageUtilsTest extends TestCase {
 
   public function test_resize() {
     // First let's copy the image
-    $str_source = __DIR__ . "/../../../assets/image_01.jpg";
-    $str_destination = __DIR__ . "/../../../assets/image_01_copy.jpg";
+    $str_source = __DIR__ . "/../../../_support/assets/image_01.jpg";
+    $str_destination = __DIR__ . "/../../../_support/assets/testing/image_01_copy.jpg";
     FileUtils::copy($str_source, $str_destination, ["overwrite" => true]);
 
     // Resize copied image
@@ -63,8 +63,8 @@ class ImageUtilsTest extends TestCase {
 
   public function test_crop() {
     // First let's copy the image
-    $str_source = __DIR__ . "/../../../assets/image_01.jpg";
-    $str_destination = __DIR__ . "/../../../assets/image_01_crop.jpg";
+    $str_source = __DIR__ . "/../../../_support/assets/image_01.jpg";
+    $str_destination = __DIR__ . "/../../../_support/assets/testing/image_01_crop.jpg";
     FileUtils::copy($str_source, $str_destination, ["overwrite" => true]);
 
     // Resize copied image
