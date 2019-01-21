@@ -2,6 +2,8 @@
 
 namespace PHuby\Traits;
 
+use PHuby\DBI\ResourceDBI;
+
 trait IsResource {
     
     protected static function instantiate($rawData) {
@@ -9,24 +11,24 @@ trait IsResource {
     }
 
     public static function find($id) {
-        return self::instantiate(static::DBI()::findById($id));
+        return self::instantiate(ResourceDBI::findById(static::$table, $id));
     }
 
     public function refresh() {
-        $this->populate(static::DBI()::findById($this->id));
+        $this->populate(ResourceDBI::findById(static::$table, $this->id));
     }
 
     public function save() {
         if ($this->id->get()) {
-            return static::DBI()::update($this->getUpdateData());
+            return ResourceDBI::update(static::$table, $this->getUpdateData());
         } else {
-            $this->set_attr('id', (static::DBI()::create($this->getCreateData())));
+            $this->set_attr('id', (ResourceDBI::insert(static::$table, $this->getCreateData())));
             return $this;
         }
     }
 
     public function delete() {
-        return static::DBI()::delete($this->id->get());
+        return ResourceDBI::delete(static::$table, $this->id->get());
     }
 
 }
