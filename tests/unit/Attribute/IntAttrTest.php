@@ -8,11 +8,11 @@ class IntAttrTest extends TestCase {
     $this->intAttr = new IntAttr();
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\IntAttr', $this->intAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     foreach([1, 2, 0, -123, new IntAttr(12)] as $value) {
       $this->assertTrue($this->intAttr->set($value));
@@ -33,10 +33,10 @@ class IntAttrTest extends TestCase {
 
   }
   
-  public function test_get() {}
+  public function testGet() {}
   
-  public function test_to_db_format() {}
+  public function testToDbFormat() {}
 
-  public function test_toString() {}
+  public function testToString() {}
 
 }

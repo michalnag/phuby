@@ -25,7 +25,7 @@ class TestModelTest extends TestCase {
     $this->obj_tm = new TestModel();
   }
 
-  public function test_instantiation() {
+  public function testInstantiation() {
     foreach($this->example_test_model_data as $key => $value) {
       switch($key) {
         case 'datetime':
@@ -44,7 +44,7 @@ class TestModelTest extends TestCase {
     }
   }
 
-  public function test_magic_methods() {
+  public function testMagicMethods() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals($this->obj_tm->token, $this->example_test_model_data['token']);
     $this->assertEquals($this->obj_tm->email, $this->example_test_model_data['email']);
@@ -52,7 +52,7 @@ class TestModelTest extends TestCase {
     $this->assertEquals($this->obj_tm->email, 'test@asd.com');    
   }
 
-  public function test_populate_attributes() {
+  public function testPopulateAttributes() {
 
     $this->obj_tm->populate_attributes($this->example_test_model_data);
 
@@ -116,7 +116,7 @@ class TestModelTest extends TestCase {
     $this->assertEquals($this->example_test_model_data['string'], $this->obj_tm->get_attr('string')->to_db_format());
   }
 
-  public function test_populate_attributes_with_collection() {
+  public function testPopulateAttributesWithCollection() {
     $arr_data_with_collection = $this->example_test_model_data;
     $arr_data_with_collection["collection"] = [
       $arr_data_with_collection
@@ -145,7 +145,7 @@ class TestModelTest extends TestCase {
     }
   }
 
-  public function test_multiple_population() {
+  public function testMultiplePopulation() {
     $this->obj_tm = new TestModel();
 
     // Add nested model
@@ -170,7 +170,7 @@ class TestModelTest extends TestCase {
     $this->assertEquals($arr_nested_data['nested_model']['email'], $this->obj_tm->get_attr('nested_model')->get_attr('email')->get());
   }
 
-  public function test_get_flat_data() {
+  public function testGetFlatData() {
     $this->obj_tm->populate_attributes($this->example_test_model_data);
     $this->assertEquals(
         $this->example_test_model_data,

@@ -86,14 +86,14 @@ class TestModelCollectionTest extends TestCase {
     $this->example_nesting_data[0]['collection'] = [];
   }
 
-  public function test_instantiation() {
+  public function testInstantiation() {
     $this->obj_tmc->populate_collection($this->example_data);
     foreach ($this->obj_tmc as $obj_test_model) {
       $this->assertInstanceOf(TestModel::class, $obj_test_model);
     }
   }
 
-  public function test_get_flat_data() {
+  public function testGetFlatData() {
     $this->obj_tmc->populate_collection($this->example_data);
     $this->assertEquals(
         $this->example_data,
@@ -119,7 +119,7 @@ class TestModelCollectionTest extends TestCase {
 
   }
 
-  public function test_get_flat_nested_data() {
+  public function testGetFlatNestedData() {
     // Test it on nesting as well
     $this->example_nesting_data[1]['collection'][0]['collection'] = [];
     $this->example_nesting_data[1]['collection'][1]['collection'] = [];
@@ -144,7 +144,7 @@ class TestModelCollectionTest extends TestCase {
 
   }
 
-  public function test_remove_by_attr() {
+  public function testRemoveByAttr() {
     $this->obj_tmc->populate_collection($this->example_data);
     $this->assertEquals(2, $this->obj_tmc->get_count());
     // Remove by attribute

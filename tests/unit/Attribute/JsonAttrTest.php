@@ -17,11 +17,11 @@ class JsonAttrTest extends TestCase {
     $this->str_1 = json_encode($this->arr_1);
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\JsonAttr', $this->attr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     foreach ([1, false, 'asd', '{aaaa}'] as $val) {
       $exception = false;
@@ -41,14 +41,14 @@ class JsonAttrTest extends TestCase {
 
   }
   
-  public function test_get() {}
+  public function testGet() {}
 
-  public function test_to_db_format() {
+  public function testToDbFormat() {
     $this->attr->set($this->arr_1);
     $this->assertEquals(json_encode($this->arr_1), $this->attr->to_db_format());
   }
 
-  public function test_toString() {}
+  public function testToString() {}
 
   public function test_key_exist() {
     $this->attr->set($this->arr_1);

@@ -11,14 +11,14 @@ class TestProcessTest extends TestCase {
     $this->obj_process = new TestProcess();
   }
 
-  public function test_instantiation() {
+  public function testInstantiation() {
     $this->assertEquals($this->obj_process->get_status(), TestProcess::NOT_STARTED);
     $this->assertEquals(null, $this->obj_process->get_errors());
     $this->assertEquals(null, $this->obj_process->get_warnings());
     $this->assertFalse($this->obj_process->has_completed());
   }
 
-  public function test_is_status_allowed() {
+  public function testIsStatusAllowed() {
     foreach([
         TestProcess::NOT_STARTED,
         TestProcess::COMPLETE,
@@ -42,12 +42,14 @@ class TestProcessTest extends TestCase {
       }
   }
 
-  public function test_add_error() {
+  public function testAddError() {
     $this->assertEquals(null, $this->obj_process->get_errors());
     $this->obj_process->add_error("Test Error message");
     $this->assertEquals(["Test Error message"], $this->obj_process->get_errors());
   }
 
-  public function test_add_warning() {}
+  public function testAddWarning() {
+    $this->markTestIncomplete();
+  }
 
 }

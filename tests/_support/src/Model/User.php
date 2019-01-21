@@ -3,9 +3,16 @@
 namespace PHubyTest\Model;
 
 use PHuby\AbstractModel;
-use PHuby\Attribute\{StringAttr,PasswordAttr};
+use PHuby\Attribute;
+use PHuby\Attribute\StringAttr;
+use PHuby\Attribute\PasswordAttr;
+use PHuby\Interfaces\ResourceModelInterface;
+use PHubyTest\DBI\UserDBI;
+use PHuby\Traits\IsResource;
 
-class User extends AbstractModel {
+class User extends AbstractModel implements ResourceModelInterface {
+
+  use IsResource;
 
   const 
     STATUS_ACTIVE = 1,
@@ -17,13 +24,13 @@ class User extends AbstractModel {
     $id, $email, $password, $password_reset_token, $activation_token, $first_name, $last_name, $company_name, $contact_number, $dtm_created, $status;
 
   const ATTRIBUTE_MAP = [
-    'id'            => [ "class" => "\PHuby\Attribute\IntAttr" ],
-    'email'         => [ "class" => "\PHuby\Attribute\EmailAttr" ],
-    'password'      => [ "class" => "\PHuby\Attribute\PasswordAttr" ],
-    'password_reset_token'      => [ "class" => "\PHuby\Attribute\TokenAttr" ],
-    'activation_token'          => [ "class" => "\PHuby\Attribute\TokenAttr" ],
+    'id'            => Attribute\IntAttr::class,
+    'email'         => Attribute\EmailAttr::class,
+    'password'      => Attribute\PasswordAttr::class,
+    'password_reset_token'      => Attribute\TokenAttr::class,
+    'activation_token'          => Attribute\TokenAttr::class,
     'first_name'      => [ 
-      "class" => "\PHuby\Attribute\StringAttr",
+      "class" => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -31,7 +38,7 @@ class User extends AbstractModel {
       ]
     ],
     'last_name'       => [
-      "class" => "\PHuby\Attribute\StringAttr",
+      "class" => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -39,7 +46,7 @@ class User extends AbstractModel {
       ]
     ],
     'company_name'    => [
-      "class" => "\PHuby\Attribute\StringAttr",
+      "class" => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -47,24 +54,19 @@ class User extends AbstractModel {
       ]
     ],
     'contact_number'  => [
-      "class" => "\PHuby\Attribute\StringAttr",
+      "class" => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 16 ]
         ]
       ]
     ],
-    'dtm_created'     => [ "class" => "\PHuby\Attribute\DateTimeAttr" ],
+    'dtm_created'     => Attribute\DateTimeAttr::class,
     'status'          => [ 
-      "class" => "\PHuby\Attribute\IntAttr" ,
+      "class" => Attribute\IntAttr::class,
       "options" => [
         "default_value" => self::STATUS_LOCKED
       ]
-    ],
-
-    // Non IO
-    'addresses' => [
-      'collection_class' => "DFC\Model\User\UserAddressCollection"
     ]
   ];
 
@@ -73,19 +75,19 @@ class User extends AbstractModel {
     return $this->set_attr('password', PasswordAttr::hash_password($str_password));
   }
 
-  public function get_api_data() {
-    return $this->get_flat_data("exclude:password,password_reset_token,activation_token|nesting:true");
+  public static function DBI() {
+    return UserDBI::class;
   }
 
-  public function set_as_guest() {
-    $this->set_attr('status', self::STATUS_GUEST);
+  public function getCreateData(): array {
+    return $this->get_formatted_params('email,password,password_reset_token,activation_token,first_name,last_name,company_name,contact_number,dtm_created,status');
   }
 
-  public function is_guest() {
-    return $this->get_attr('status')->get() === self::STATUS_GUEST;
+  public function getUpdateData(): array {
+    return array_merge(
+      $this->get_formatted_params('id'),
+      $this->getCreateData()
+    );
   }
 
-  public function canPlaceOrder() {
-    return $this->get_attr('status')->to_int() !== self::STATUS_ARCHIVED;
-  }
 }

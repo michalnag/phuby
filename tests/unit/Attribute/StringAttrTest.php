@@ -8,11 +8,11 @@ class StringAttrTest extends TestCase {
     $this->stringAttr = new StringAttr();
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\StringAttr', $this->stringAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     foreach(["asdasd", new StringAttr("asdasd")] as $value) {
       $this->assertTrue($this->stringAttr->set($value));
@@ -36,10 +36,10 @@ class StringAttrTest extends TestCase {
 
   }
   
-  public function test_get() {}
+  public function testGet() {}
   
-  public function test_to_db_format() {}
+  public function testToDbFormat() {}
 
-  public function test_toString() {}
+  public function testToString() {}
 
 }

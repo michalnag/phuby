@@ -8,11 +8,11 @@ class PasswordAttrTest extends TestCase {
     $this->passwordAttr = new PasswordAttr();
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\PasswordAttr', $this->passwordAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
     $example_hash = "\$2y\$10\$To1mEE22Aomjw3gmvTkvB.RA2.x72kb4R7lGocnZ3uEMufvRTev4i";
     $this->assertTrue($this->passwordAttr->set($example_hash));
     $this->assertTrue($this->passwordAttr->set(PasswordAttr::hash_password("asdasd")));
@@ -30,10 +30,10 @@ class PasswordAttrTest extends TestCase {
     }
   }
   
-  public function test_get() {}
+  public function testGet() {}
   
-  public function test_to_db_format() {}
+  public function testToDbFormat() {}
 
-  public function test_toString() {}
+  public function testToString() {}
 
 }

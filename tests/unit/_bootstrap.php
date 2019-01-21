@@ -2,9 +2,17 @@
 
 require_once __DIR__ . "/../../vendor/autoload.php";
 
+use PHubyTest\DBI;
+use PHubyTest\Model\User;
+use PHuby\Attribute\PasswordAttr;
+
 class TestCase extends PHPUnit\Framework\TestCase {
 
-    protected $requiresDB = false;
+    protected 
+        $requiresDB = false,
+        $phinxApp,
+        $phinxTextWrapper;
+
     
     public function setUp() {
         \PHuby\Config::set_config_root(__DIR__."/../_support/config.d.testing");
@@ -22,24 +30,29 @@ class TestCase extends PHPUnit\Framework\TestCase {
 
     protected function setDB() {
         // see also https://github.com/robmorgan/phinx/issues/364
-        $phinxApp = new \Phinx\Console\PhinxApplication();
-        $phinxTextWrapper = new \Phinx\Wrapper\TextWrapper($phinxApp);
+        $this->phinxApp = new \Phinx\Console\PhinxApplication();
+        $this->phinxTextWrapper = new \Phinx\Wrapper\TextWrapper($this->phinxApp);
 
-        $phinxTextWrapper->setOption('configuration', __DIR__ . '/../../phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-
-        $logMigrate = $phinxTextWrapper->getMigrate('testing');
-        $logSeed = $phinxTextWrapper->getSeed();
+        $this->phinxTextWrapper->setOption('configuration', __DIR__ . '/../../phinx.yml');
+        $this->phinxTextWrapper->setOption('parser', 'YAML');
+        
+        $logMigrate = $this->phinxTextWrapper->getMigrate('testing');
+        $logSeed = $this->phinxTextWrapper->getSeed();
 
         $this->requiresDB = true;
     }
 
     protected function unsetDB() {
-        $phinxApp = new \Phinx\Console\PhinxApplication();
-        $phinxTextWrapper = new \Phinx\Wrapper\TextWrapper($phinxApp);
+        $this->phinxTextWrapper->getRollback('testing', '0');
+    }
 
-        $phinxTextWrapper->setOption('configuration', __DIR__ . '/../../phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->getRollback('testing', '0');
+    protected function createUser() {
+        $user = new User([
+            'email' => 'adams@gmail.com',
+            'password' => PasswordAttr::hash_password('password'),
+            'first_name' => 'Tester'
+        ]);
+        $user->save();
+        return $user;
     }
 }

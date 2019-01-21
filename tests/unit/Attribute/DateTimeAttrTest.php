@@ -8,11 +8,11 @@ class DateTimeAttrTest extends TestCase {
     $this->dateTimeAttr = new DateTimeAttr();
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\DateTimeAttr', $this->dateTimeAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     foreach (["2016-12-12", "2016-12-12 00:00:00", 1481500800,
         new \DateTime("2016-12-12 00:00:00"), new DateTimeAttr("2016-12-12 00:00:00")] as $value) {
@@ -34,10 +34,10 @@ class DateTimeAttrTest extends TestCase {
 
   }
   
-  public function test_get() {}
+  public function testGet() {}
   
-  public function test_to_db_format() {}
+  public function testToDbFormat() {}
 
-  public function test_toString() {}
+  public function testToString() {}
 
 }

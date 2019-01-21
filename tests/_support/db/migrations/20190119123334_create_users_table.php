@@ -7,7 +7,7 @@ class CreateUsersTable extends AbstractMigration
 {
     protected $table = 'users';
 
-    public function change()
+    public function up()
     {
         $table = $this->table($this->table, [
                 'engine' => 'MyISAM', 'collate' => 'utf8mb4_unicode_ci', 'charset' => 'utf8mb4'
@@ -28,5 +28,10 @@ class CreateUsersTable extends AbstractMigration
               ->addIndex(['email'], ['unique' => true])
 
               ->save();
+    }
+
+    public function down()
+    {
+      $this->table($this->table)->drop()->save();
     }
 }

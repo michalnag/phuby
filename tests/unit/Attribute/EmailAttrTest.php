@@ -11,11 +11,11 @@ class EmailAttrTest extends TestCase {
     $this->emailAttr = new EmailAttr();
   }
 
-  public function test_instance() {
+  public function testInstantiation() {
     $this->assertInstanceOf('PHuby\Attribute\EmailAttr', $this->emailAttr);
   }
 
-  public function test_set() {
+  public function testSet() {
 
     // Test valid options
     foreach(["mn@mn.com", "test.asd@domain.co.uk", "m_trev+1@test.org", "m-m_987+12@98dom.com", new EmailAttr("test@gmail.com")] as $value) {
@@ -36,10 +36,10 @@ class EmailAttrTest extends TestCase {
 
   }
   
-  public function test_get() {}
+  public function testGet() {}
   
-  public function test_to_db_format() {}
+  public function testToDbFormat() {}
 
-  public function test_toString() {}
+  public function testToString() {}
 
 }

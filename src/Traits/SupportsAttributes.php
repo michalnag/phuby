@@ -3,6 +3,7 @@
 namespace PHuby\Traits;
 use PHuby\Logger;
 use PHuby\Error;
+use PHuby\Helpers\Utils\ArrayUtils;
 
 trait SupportsAttributes {
   
@@ -165,6 +166,12 @@ trait SupportsAttributes {
     return true;
   }
 
+  /**
+   * Alias method for populate_attributes
+   */
+  public function populate($arr_attributes) {
+    return $this->populate_attributes($arr_attributes);
+  }
 
   /**
    * Method retrieves class name of the attribute configured inside ATTRIBUTE_MAP
@@ -274,6 +281,19 @@ trait SupportsAttributes {
       && array_key_exists($str_attr_name, $this::ATTRIBUTE_MAP)
       && is_array($this::ATTRIBUTE_MAP[$str_attr_name])
       && array_key_exists("collection_class", $this::ATTRIBUTE_MAP[$str_attr_name]);
+  }
+
+  /**
+   * Method returns an array of parameters to db format
+   * @param string $str_params   Comma separated parameters to be returned
+   * @return mixed[] Array       Containing keyed and db formatted parameters 
+   */
+  public function get_formatted_params($str_params, $str_callback_method = 'to_db_format') {
+    $arr_return_params = [];
+    foreach (ArrayUtils::keymap_to_array($str_params) as $str_param_name) {
+      $arr_return_params[$str_param_name] = $this->$str_param_name->{$str_callback_method}();
+    }
+    return $arr_return_params;
   }
 
 }
