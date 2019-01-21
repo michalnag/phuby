@@ -1,7 +1,7 @@
 version: '2'
 services:
     php:
-        build: ./.docker/testing
+        build: ./tests
         volumes:
           - .:/var/www/html
         restart: always
