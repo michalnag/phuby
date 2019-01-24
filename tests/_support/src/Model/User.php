@@ -23,10 +23,9 @@ class User extends AbstractModel implements ResourceModelInterface {
   public static $table = 'users';
 
   protected 
-    $id, $email, $password, $password_reset_token, $activation_token, $first_name, $last_name, $company_name, $contact_number, $dtm_created, $status;
+    $email, $password, $password_reset_token, $activation_token, $first_name, $last_name, $company_name, $contact_number, $dtm_created, $status;
 
   const ATTRIBUTE_MAP = [
-    'id'            => Attribute\IntAttr::class,
     'email'         => Attribute\EmailAttr::class,
     'password'      => Attribute\PasswordAttr::class,
     'password_reset_token'      => Attribute\TokenAttr::class,

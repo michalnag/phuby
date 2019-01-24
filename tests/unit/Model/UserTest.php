@@ -6,6 +6,12 @@ use PHubyTest\DBI;
 
 class UserTest extends TestCase {
 
+    public function testsAttributeMapCreation() {
+        $user = new User();
+        $attribute_map = $user->get_attribute_map();
+        $this->assertTrue(array_key_exists('id', $attribute_map));
+    }
+
     public function testResourceFindAndRefresh() {
         $this->setDB();
         $user = User::find(1);
