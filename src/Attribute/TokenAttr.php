@@ -18,7 +18,8 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     "validation" => [
         'allow_spaces'  => false,
         'length'        => 32,
-        'uppercase'     => false
+        'uppercase'     => false,
+        'allow_null'    => true
       ]
     ];
 
@@ -26,9 +27,12 @@ class TokenAttr extends AbstractAttribute implements AttributeInterface {
     if(is_object($value) && $value instanceof $this) {
       $this->attr_value = $this->get_option('validation:uppercase') ? strtoupper($value) : $value;
       return true;
-    } elseif(is_null($value)) {
-      $this->attr_value = $this->get_option('validation:uppercase') ? strtoupper($value) : $value;
-      return true;     
+    } elseif(is_null($value) || empty($value)) {
+      if ($this->get_option('validation:allow_null')) {
+        $this->attr_value = null;
+        return true;
+      }
+      throw new Error\InvalidAttributeError("Null value passed but not allowed");
     } elseif(StringValidator::is_valid($value, [
         "allow_spaces" => $this->get_option("validation:allow_spaces"),
         "length" => ["exact" => $this->get_option("validation:length")]
