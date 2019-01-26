@@ -3,15 +3,10 @@
 namespace PHuby\Traits;
 
 use PHuby\DBI\ResourceDBI;
-use PHuby\Attribute\IntAttr;
 
 trait IsResource {
 
-    protected $id;
-
-    public $_attribute_map_resource = [
-        'id' => IntAttr::class,
-    ];
+    use HasNumericId;
 
     protected static function instantiate($rawData) {
         return $rawData ? new self($rawData) : null;

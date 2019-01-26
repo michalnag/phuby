@@ -9,6 +9,7 @@ use PHuby\Attribute\PasswordAttr;
 use PHuby\Interfaces\ResourceModelInterface;
 use PHubyTest\DBI\UserDBI;
 use PHuby\Traits\IsResource;
+use PHuby\Attribute\AttributeInterface;
 
 class User extends AbstractModel implements ResourceModelInterface {
 
@@ -31,7 +32,7 @@ class User extends AbstractModel implements ResourceModelInterface {
     'password_reset_token'      => Attribute\TokenAttr::class,
     'activation_token'          => Attribute\TokenAttr::class,
     'first_name'      => [ 
-      "class" => Attribute\StringAttr::class,
+      AttributeInterface::ATTRIBUTE_CLASS => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -39,7 +40,7 @@ class User extends AbstractModel implements ResourceModelInterface {
       ]
     ],
     'last_name'       => [
-      "class" => Attribute\StringAttr::class,
+      AttributeInterface::ATTRIBUTE_CLASS => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -47,7 +48,7 @@ class User extends AbstractModel implements ResourceModelInterface {
       ]
     ],
     'company_name'    => [
-      "class" => Attribute\StringAttr::class,
+      AttributeInterface::ATTRIBUTE_CLASS => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 40 ]
@@ -55,7 +56,7 @@ class User extends AbstractModel implements ResourceModelInterface {
       ]
     ],
     'contact_number'  => [
-      "class" => Attribute\StringAttr::class,
+      AttributeInterface::ATTRIBUTE_CLASS => Attribute\StringAttr::class,
       "options" => [
         "validation" => [
           "length" => [ "max" => 16 ]
@@ -64,7 +65,7 @@ class User extends AbstractModel implements ResourceModelInterface {
     ],
     'dtm_created'     => Attribute\DateTimeAttr::class,
     'status'          => [ 
-      "class" => Attribute\IntAttr::class,
+      AttributeInterface::ATTRIBUTE_CLASS => Attribute\IntAttr::class,
       "options" => [
         "default_value" => self::STATUS_LOCKED
       ]

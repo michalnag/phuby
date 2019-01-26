@@ -43,6 +43,12 @@ trait SupportsAttributes {
 
   }
 
+  /**
+   * Returns all shared attribute maps located and accessible inside parent objects
+   * and traits.
+   *
+   * @return mixed[]
+   */
   protected function get_shared_attribute_maps() {
     $attribute_map_vars = array_filter(
       get_object_vars($this),
@@ -66,11 +72,12 @@ trait SupportsAttributes {
 
   /**
    * Method sets the attribute based on the configuration inside ATTRIBUTE_MAP
+   * 
    * @param string $str_attr_name representing name of the attribute
    * @param mixed $value representing a vlaue of the parameter to be set
+   * 
    * @return boolean true once succesfully set
    * @throws \PHuby\Error\InvalidArgumentError when invalid value is passed
-   * @todo - accomodate $value to be a class as well
    */
   public function set_attr($str_attr_name, $value) {
     Logger::debug("Setting $str_attr_name on " . get_class($this));
@@ -190,7 +197,8 @@ trait SupportsAttributes {
   }
 
   /**
-   * Method retrieves class name of the attribute configured inside ATTRIBUTE_MAP
+   * Method retrieves class name of the attribute configured inside the attribute map
+   * 
    * @param string $str_attr_name representing attribute name
    * @return string representing attribute class name
    * @throws \PHuby\Error\InvalidAttributeError when ATTRIBUTE_MAP is not set or attribute is not configured
