@@ -30,6 +30,7 @@ class EmailAttr extends AbstractAttribute implements AttributeInterface {
         $this->attr_value = $value;
         return true;
       }
+      throw new Error\InvalidAttributeError(EmailValidator::get_first_validation_error());
     }
 
     // We have failed to set the passed value as an attribute value

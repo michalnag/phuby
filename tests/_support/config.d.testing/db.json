@@ -1,0 +1,8 @@
+{
+    "default" : {
+        "host" : "test_db",
+        "user" : "root",
+        "pass" : "password",
+        "db_name" : "phuby"
+    }
+}

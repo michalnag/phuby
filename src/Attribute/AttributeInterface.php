@@ -9,7 +9,12 @@
 namespace PHuby\Attribute;
 
 interface AttributeInterface {
-   
+
+  const 
+    ATTRIBUTE_CLASS = 'class',
+    MODEL_CLASS = 'child_class',
+    COLLECTION_CLASS = 'collection_class';
+
   public function set($value);
   
   public function get();

@@ -3,11 +3,11 @@
 namespace PHuby\Traits;
 
 use \ArrayIterator;
+use PHuby\Config;
 use PHuby\Error;
 
 trait SupportsCollection {
   
-
   protected $collection = [];
 
   public function __construct(array $arr_collection = null) {
